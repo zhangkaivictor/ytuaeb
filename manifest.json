@@ -1,0 +1,13 @@
+{
+  "name": "shq",
+  "start_url": "",
+  "display": "standalone",
+  "background_color": "#fff",
+  "description": "一个基于 Ant Design 和 UmiJS 的安全分析管理平台！",
+  "icons": [
+    {
+      "src": "./logo-small.ico",
+      "sizes": "72x72 96x96 128x128"
+    }
+  ]
+}
