@@ -10,12 +10,12 @@ export default modelExtend(pageModel, {
     setup({ dispatch, history }) {
       history.listen(location => {
         if (pathMatchRegexp('/project/FTA', location.pathname)) {
-          if(location.query.projectId != undefined){
+          if (location.query.projectId != undefined) {
             dispatch({
               type: 'getTree',
               payload: {
-                projectId: location.query.projectId
-              }
+                projectId: location.query.projectId,
+              },
             })
           }
         }
@@ -26,8 +26,8 @@ export default modelExtend(pageModel, {
   effects: {
     *createQuery({ payload = {} }, { call, put }) {
       const headers = {
-        'Authorization': window.localStorage.getItem('token')
-      };
+        Authorization: window.localStorage.getItem('token'),
+      }
       const data = yield call(createPostFtaMap, payload, headers)
       if (data.success) {
         console.log(data)
@@ -41,10 +41,10 @@ export default modelExtend(pageModel, {
         throw data
       }
     },
-    *getTree({ payload = {} }, { call, put }){
+    *getTree({ payload = {} }, { call, put }) {
       const headers = {
-        'Authorization': window.localStorage.getItem('token')
-      };
+        Authorization: window.localStorage.getItem('token'),
+      }
       const data = yield call(getFtaMap, payload, headers)
       if (data.success) {
         yield put({
@@ -57,11 +57,11 @@ export default modelExtend(pageModel, {
         throw data
       }
     },
-    *getMapAnalyzeTree({ payload = {} }, { call, put }){
+    *getMapAnalyzeTree({ payload = {} }, { call, put }) {
       const headers = {
-        'Authorization': window.localStorage.getItem('token')
-      };
-      console.log(payload);
+        Authorization: window.localStorage.getItem('token'),
+      }
+      console.log(payload)
       const data = yield call(getAnalyzeTree, payload, headers)
       if (data.success) {
         yield put({
@@ -75,6 +75,5 @@ export default modelExtend(pageModel, {
       }
     },
   },
-  reducers: {}
-
+  reducers: {},
 })
