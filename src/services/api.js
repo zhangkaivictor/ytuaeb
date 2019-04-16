@@ -15,6 +15,11 @@ const api = {
   createPost: 'POST /api/Projects/Add',
   updatePost: 'PUT /api/Projects/Update',
 
+  // createPostFtaMap:'POST /api/FTAProjects/test',
+  createPostFtaMap:'POST /api/FTAProjects/AddTree',
+  getFtaMap:'/api/FTAProjects/GetTree',
+  getAnalyzeTree:'POST /api/FTAProjects/AnalyzeTree',
+
 
   queryDashboard: '/dashboard',
 }

@@ -66,47 +66,8 @@ let database = [
     name: 'FTA analysis',
     zhName: 'FTA 分析',
     icon: 'area-chart',
-    route: '/project/FTA/:id',
+    route: '/project/FTA',
   },
-  {
-    id: '21',
-    menuParentId: '-1',
-    breadcrumbParentId: '2',
-    name: 'User Detail',
-    zhName: '用户详情',
-    route: '/user/:id',
-  },
-  // {
-  //   id: '3',
-  //   breadcrumbParentId: '1',
-  //   name: 'Request',
-  //   zhName: 'Request',
-  //   icon: 'api',
-  //   route: '/request',
-  // },
-  // {
-  //   id: '4',
-  //   breadcrumbParentId: '1',
-  //   name: 'UI Element',
-  //   zhName: 'UI组件',
-  //   icon: 'camera-o',
-  // },
-  // {
-  //   id: '45',
-  //   breadcrumbParentId: '4',
-  //   menuParentId: '4',
-  //   name: 'Editor',
-  //   zhName: 'Editor',
-  //   icon: 'edit',
-  //   route: '/UIElement/editor',
-  // },
-  // {
-  //   id: '5',
-  //   breadcrumbParentId: '1',
-  //   name: 'Charts',
-  //   zhName: 'Charts',
-  //   icon: 'code-o',
-  // },
 ]
 
 export default {
@@ -205,20 +166,52 @@ export default {
           }
           const { permissions } = user;
           for(let i=0; i<= postList.list.length-1; i++){
-            let newPost = {
-              id: '',
-              itemId: '',
-              breadcrumbParentId: '63',
-              menuParentId: '63',
-              name: '',
-              zhName: '',
-              icon: 'area-chart',
-              route: '',
-            }
-            newPost.id = postList.list[i].id;
-            newPost.itemId = postList.list[i].id;
-            newPost.zhName = postList.list[i].name;
-            newPost.route = '/project/FTA/'+ newPost.itemId
+           if(postList.list[i].type == "FMEAProject"){
+             var newPost = {
+               id: '',
+               itemId: '',
+               breadcrumbParentId: '62',
+               menuParentId: '62',
+               name: '',
+               zhName: '',
+               icon: 'area-chart',
+               route: '',
+             }
+             newPost.id = postList.list[i].id;
+             newPost.itemId = postList.list[i].id;
+             newPost.zhName = postList.list[i].name;
+             newPost.route = '/project/FMEA'+'?projectId='+newPost.itemId;
+           }else if(postList.list[i].type == "FTAProject"){
+             var newPost = {
+               id: '',
+               itemId: '',
+               breadcrumbParentId: '63',
+               menuParentId: '63',
+               name: '',
+               zhName: '',
+               icon: 'area-chart',
+               route: '',
+             }
+             newPost.id = postList.list[i].id;
+             newPost.itemId = postList.list[i].id;
+             newPost.zhName = postList.list[i].name;
+             newPost.route = '/project/FTA'+'?projectId='+newPost.itemId;
+           }else {
+             var newPost = {
+               id: '',
+               itemId: '',
+               breadcrumbParentId: '61',
+               menuParentId: '61',
+               name: '',
+               zhName: '',
+               icon: 'area-chart',
+               route: '',
+             }
+             newPost.id = postList.list[i].id;
+             newPost.itemId = postList.list[i].id;
+             newPost.zhName = postList.list[i].name;
+             newPost.route = '/project/vars'+'?projectId='+newPost.itemId;
+           }
             let itemArrey = [];
             database.map((item ,index) => {
                 itemArrey.push(item.id)

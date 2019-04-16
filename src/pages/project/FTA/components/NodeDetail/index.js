@@ -1,4 +1,5 @@
 import React from 'react';
+import { connect } from 'dva'
 import { Card, Form, Input } from 'antd';
 import { withPropsAPI } from 'gg-editor';
 import styles from './index.less'
@@ -38,12 +39,14 @@ const onlineFormItemLayout = {
   },
 };
 
+@connect(({ FTA, loading }) => ({ FTA, loading }))
 class NodeDetail extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
 
     const { form, propsAPI } = this.props;
-    const { getSelected, executeCommand, update } = propsAPI;
+    const { getSelected, executeCommand, find, update } = propsAPI;
+    const {nodes} = propsAPI.save();
 
     form.validateFieldsAndScroll((err, values) => {
       if (err) {
@@ -55,13 +58,52 @@ class NodeDetail extends React.Component {
       if (!item) {
         return;
       }
-
       executeCommand(() => {
         update(item, {
           ...values,
         });
       });
+
+      for (let i=0; i <= nodes.length-1; i++){
+        if(item.model.name == nodes[i].name){
+            let nextId = nodes[i].id;
+            let nextItem = find(nextId);
+            executeCommand(() => {
+              update(nextItem, {
+                ...values,
+              });
+            });
+        }
+      }
+
     });
+  }
+
+  componentWillMount() {
+    const { propsAPI } = this.props;
+    const { getSelected, update, executeCommand } = propsAPI;
+    const { nodes } = propsAPI.save();
+
+    const item = getSelected()[0];
+
+    const { name, failureRateQ } = item.getModel();
+    if(failureRateQ == ""){
+      nodes.some(itemNode => {
+        if(itemNode.name == name && itemNode.failureRateQ != ""){
+          executeCommand(() => {
+            update(item, {
+              "failureRateQ":itemNode.failureRateQ,
+              "invalidRate":itemNode.invalidRate,
+              "failureTime":itemNode.failureTime,
+              "dCrf":itemNode.dCrf,
+              "dClf":itemNode.dClf,
+              "referenceFailureRateq":itemNode.referenceFailureRateq
+            });
+          });
+        }
+      })
+    }
+
   }
 
   render() {
@@ -77,6 +119,7 @@ class NodeDetail extends React.Component {
     }
 
     const { name, note, shape, failureRateQ, invalidRate, failureTime, dCrf, dClf, referenceFailureRateq} = item.getModel();
+
     if(itemType.indexOf(shape)>=0){
       return null;
     }else {

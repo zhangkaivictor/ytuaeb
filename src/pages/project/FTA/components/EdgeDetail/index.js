@@ -55,7 +55,6 @@ class EdgeDetail extends React.Component {
     const { getFieldDecorator } = form;
     const { getSelected } = propsAPI;
 
-    console.log(getSelected()[0]);
     const item = getSelected()[0];
 
     if (!item) {
@@ -66,28 +65,28 @@ class EdgeDetail extends React.Component {
 
     return (
       <Card type="inner" title="边线属性" bordered={false} headStyle={{ backgroundColor:'#e5e5e5'}}>
-        <Form onSubmit={this.handleSubmit}>
-          <Item
-            label="标签"
-            {...inlineFormItemLayout}
-          >
-            {
-              getFieldDecorator('label', {
-                initialValue: label,
-              })(<Input onBlur={this.handleSubmit} />)
-            }
-          </Item>
-          <Item
-            label="图形"
-            {...inlineFormItemLayout}
-          >
-            {
-              getFieldDecorator('shape', {
-                initialValue: shape,
-              })(this.renderShapeSelect())
-            }
-          </Item>
-        </Form>
+        {/*<Form onSubmit={this.handleSubmit}>*/}
+          {/*<Item*/}
+            {/*label="标签"*/}
+            {/*{...inlineFormItemLayout}*/}
+          {/*>*/}
+            {/*{*/}
+              {/*getFieldDecorator('label', {*/}
+                {/*initialValue: label,*/}
+              {/*})(<Input onBlur={this.handleSubmit} />)*/}
+            {/*}*/}
+          {/*</Item>*/}
+          {/*<Item*/}
+            {/*label="图形"*/}
+            {/*{...inlineFormItemLayout}*/}
+          {/*>*/}
+            {/*{*/}
+              {/*getFieldDecorator('shape', {*/}
+                {/*initialValue: shape,*/}
+              {/*})(this.renderShapeSelect())*/}
+            {/*}*/}
+          {/*</Item>*/}
+        {/*</Form>*/}
       </Card>
     );
   }

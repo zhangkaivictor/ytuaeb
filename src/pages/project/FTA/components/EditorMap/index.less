@@ -1,0 +1,48 @@
+.editor {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  border: steelblue solid 1px;
+}
+
+.editorHd {
+  padding: 8px;
+}
+
+.editorBd {
+  flex: 1;
+}
+
+.editorSidebar,
+.editorContent {
+  display: flex;
+  flex-direction: column;
+}
+
+.editorContent{
+  flex: 1;
+  flex-direction: column;
+  border: 1px solid #474747;
+}
+
+.save{
+  position: absolute;
+  top:3px;
+  right: 2%;
+}
+
+.editorSidebar {
+  background: #FAFAFA;
+
+  &:first-child {
+    border-right: 1px solid #E6E9ED;
+  }
+
+  &:last-child {
+    border-left: 1px solid #E6E9ED;
+  }
+}
+
+.flow {
+  flex: 1;
+}

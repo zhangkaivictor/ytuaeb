@@ -1,6 +1,7 @@
 import React from "react";
-import { Row, Col, Button } from 'antd';
 import { withPropsAPI } from "gg-editor";
+import { Row, Col, Button } from 'antd';
+
 
 const hash = ["name", "failureRateQ", "invalidRate", "failureTime", "dCrf", "dClf", "referenceFailureRateq"];
 const itemType = ["andGate","orGate","nonGate"];
@@ -49,7 +50,7 @@ const findHash = (arr) => {
   return arr;
 }
 
-class Save extends React.Component {
+class Analysis extends React.Component {
 
   handleClick = () => {
     console.log(this.props);
@@ -57,7 +58,7 @@ class Save extends React.Component {
     let saveData = propsAPI.save();
 
     if(Object.keys(saveData).length == 0){
-      alert('画布为空！！！')
+      alert('画布为空,无法分析！！！')
       return;
     }else {
       let nodes = saveData.nodes;
@@ -65,7 +66,6 @@ class Save extends React.Component {
       saveData.attributes = attributes;
     }
     console.log(saveData);
-    // AddTree接口定义
     let data = {
       Content: JSON.stringify(saveData),
     }
@@ -74,9 +74,9 @@ class Save extends React.Component {
 
   render() {
     return (
-       <Button onClick={this.handleClick}>保存</Button>
+      <Button onClick={this.handleClick}>分析</Button>
     );
   }
 }
 
-export default withPropsAPI(Save);
+export default withPropsAPI(Analysis);

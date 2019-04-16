@@ -62,14 +62,14 @@ let routes = [
         "component": dynamic({ loader: () => import(/* webpackChunkName: "p__post__index" */'../post/index.js'), loading: require('C:/Users/zwang46/Desktop/saic-Safety analysis/src/components/Loader/Loader').default })
       },
       {
-        "path": "/project/FMEA",
+        "path": "/project/FTA",
         "exact": true,
-        "component": dynamic({ loader: () => import(/* webpackChunkName: "p__project__FMEA__index" */'../project/FMEA/index.js'), loading: require('C:/Users/zwang46/Desktop/saic-Safety analysis/src/components/Loader/Loader').default })
+        "component": dynamic({ loader: () => import(/* webpackChunkName: "p__project__FTA__index" */'../project/FTA/index.js'), loading: require('C:/Users/zwang46/Desktop/saic-Safety analysis/src/components/Loader/Loader').default })
       },
       {
-        "path": "/:lang(en|zh)/project/FMEA",
+        "path": "/:lang(en|zh)/project/FTA",
         "exact": true,
-        "component": dynamic({ loader: () => import(/* webpackChunkName: "p__project__FMEA__index" */'../project/FMEA/index.js'), loading: require('C:/Users/zwang46/Desktop/saic-Safety analysis/src/components/Loader/Loader').default })
+        "component": dynamic({ loader: () => import(/* webpackChunkName: "p__project__FTA__index" */'../project/FTA/index.js'), loading: require('C:/Users/zwang46/Desktop/saic-Safety analysis/src/components/Loader/Loader').default })
       },
       {
         "path": "/project/FMEA/:id",
@@ -80,16 +80,6 @@ let routes = [
         "path": "/:lang(en|zh)/project/FMEA/:id",
         "exact": true,
         "component": dynamic({ loader: () => import(/* webpackChunkName: "p__project__FMEA__$id__index" */'../project/FMEA/$id/index.js'), loading: require('C:/Users/zwang46/Desktop/saic-Safety analysis/src/components/Loader/Loader').default })
-      },
-      {
-        "path": "/project/FTA/:id",
-        "exact": true,
-        "component": dynamic({ loader: () => import(/* webpackChunkName: "p__project__FTA__$id__index" */'../project/FTA/$id/index.js'), loading: require('C:/Users/zwang46/Desktop/saic-Safety analysis/src/components/Loader/Loader').default })
-      },
-      {
-        "path": "/:lang(en|zh)/project/FTA/:id",
-        "exact": true,
-        "component": dynamic({ loader: () => import(/* webpackChunkName: "p__project__FTA__$id__index" */'../project/FTA/$id/index.js'), loading: require('C:/Users/zwang46/Desktop/saic-Safety analysis/src/components/Loader/Loader').default })
       },
       {
         "path": "/project/vars",
@@ -130,6 +120,16 @@ let routes = [
         "path": "/:lang(en|zh)/user",
         "exact": true,
         "component": dynamic({ loader: () => import(/* webpackChunkName: "p__user__index" */'../user/index.js'), loading: require('C:/Users/zwang46/Desktop/saic-Safety analysis/src/components/Loader/Loader').default })
+      },
+      {
+        "path": "/project/FMEA",
+        "exact": true,
+        "component": dynamic({ loader: () => import(/* webpackChunkName: "p__project__FMEA__index" */'../project/FMEA/index.js'), loading: require('C:/Users/zwang46/Desktop/saic-Safety analysis/src/components/Loader/Loader').default })
+      },
+      {
+        "path": "/:lang(en|zh)/project/FMEA",
+        "exact": true,
+        "component": dynamic({ loader: () => import(/* webpackChunkName: "p__project__FMEA__index" */'../project/FMEA/index.js'), loading: require('C:/Users/zwang46/Desktop/saic-Safety analysis/src/components/Loader/Loader').default })
       },
       {
         "component": () => React.createElement(require('c:/Users/wanzhiyo/AppData/Roaming/npm/node_modules/umi/node_modules/umi-build-dev/lib/plugins/404/NotFound.js').default, { pagesPath: 'src/pages', hasRoutesInConfig: false })

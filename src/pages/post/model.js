@@ -55,7 +55,7 @@ export default modelExtend(pageModel, {
       const data = yield call(createPost, payload, headers)
       if (data.success) {
         yield put({ type: 'hideModal' })
-        // yield put({ type: 'app/query' })
+        yield put({ type: 'app/query' })
       } else {
         throw data
       }

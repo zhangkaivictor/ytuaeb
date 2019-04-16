@@ -141,7 +141,7 @@ class EditorItemPanel extends React.Component {
                               height,
                               radius: borderRadius,
                               fill: 'white',
-                              stroke: '#CED4D9'
+                              stroke: '#1890FF'
                             }
                           });
                           //注册文本信息
@@ -163,11 +163,11 @@ class EditorItemPanel extends React.Component {
                             group.addShape('rect', {
                               attrs: {
                                 x,
-                                y:y-80,
+                                y:y-70,
                                 width,
                                 height,
                                 fill: 'white',
-                                stroke: '#1890FF',
+                                stroke: '#FF00FF',
                                 radius: borderRadius,
                               }
                             });
@@ -265,7 +265,7 @@ class EditorItemPanel extends React.Component {
                           [ 0.5, 1 ] // 下边边的中点
                         ]
                       }}/>
-        <RegisterNode name='Round'
+        <RegisterNode name='round'
                       config={{
                         draw(item) {
                           const group = item.getGraphicGroup();
@@ -336,23 +336,23 @@ class EditorItemPanel extends React.Component {
         <Card bordered={false} title="操作节点" type="inner" headStyle={{ backgroundColor:'#e5e5e5'}}>
           <Item
             type="node"
-            size="60*60"
+            size="40*40"
             shape="square"
             model={{
-              color: '#286555',
+              color: '#1890FF',
               name: '根节点',
-              note: '注释输入',
+              note: '根节点',
               checkDis: true,
               itemType:'square',
-              failureRateQ: 2.1,
-              invalidRate: 3.1,
-              failureTime: 4.1,
-              dCrf: 5.1,
-              dClf: 6.1,
-              referenceFailureRateq: 7.1
+              failureRateQ: '',
+              invalidRate: '',
+              failureTime: '',
+              dCrf: '',
+              dClf: '',
+              referenceFailureRateq: ''
 
             }}
-            src="https://gw.alipayobjects.com/zos/rmsportal/wHcJakkCXDrUUlkNzSy.svg"
+            src="/square.png"
           />
           <Item
             type="node"
@@ -364,39 +364,40 @@ class EditorItemPanel extends React.Component {
               note: '注释输入',
               checkDis: true,
               itemType:'rectangle',
-              failureRateQ: 2.1,
-              invalidRate: 3.1,
-              failureTime: 4.1,
-              dCrf: 5.1,
-              dClf: 6.1,
-              referenceFailureRateq: 7.1
+              failureRateQ: '',
+              invalidRate: '',
+              failureTime: '',
+              dCrf: '',
+              dClf: '',
+              referenceFailureRateq: ''
             }}
             src="https://gw.alipayobjects.com/zos/rmsportal/wHcJakkCXDrUUlNkNzSy.svg"
           />
           <Item
             type="node"
             size="68*68"
-            shape="Round"
+            shape="round"
             model={{
               color: '#FA8C16',
               name: '叶子节点',
               note: '节点注释',
               checkDis: true,
-              itemType:'Round',
-              failureRateQ: 2.1,
-              invalidRate: 3.1,
-              failureTime: 4.1,
-              dCrf: 5.1,
-              dClf: 6.1,
-              referenceFailureRateq: 7.1
+              itemType:'round',
+              failureRateQ: '',
+              invalidRate: '',
+              failureTime: '',
+              dCrf: '',
+              dClf: '',
+              referenceFailureRateq: ''
             }}
-            src="https://gw.alipayobjects.com/zos/rmsportal/ZnPxbVjKYADMYxkTQXRi.svg"
+            src="/round.png"
           />
           <Item
             type="node"
             size="80*72"
             shape="orGate"
             model={{
+              name: 'orGate',
               color: '#1890FF',
               itemType:'orGate'
             }}
@@ -407,6 +408,7 @@ class EditorItemPanel extends React.Component {
             size="80*72"
             shape="andGate"
             model={{
+              name:'andGate',
               color: '#13C2C2',
               itemType:'andGate'
             }}
@@ -417,6 +419,7 @@ class EditorItemPanel extends React.Component {
             size="80*72"
             shape="nonGate"
             model={{
+              name: 'nonGate',
               color: '#722ED1',
               itemType:'nonGate'
             }}

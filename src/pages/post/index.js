@@ -136,11 +136,6 @@ class Post extends PureComponent {
         })
       },
     }
-
-    const userlist = {
-      // list:
-    }
-
     return (
       <Page inner>
         <Filter {...filterProps}/>

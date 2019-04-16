@@ -19,5 +19,5 @@ app.model({ namespace: 'app', ...(require('C:/Users/zwang46/Desktop/saic-Safety 
 app.model({ namespace: 'model', ...(require('C:/Users/zwang46/Desktop/saic-Safety analysis/src/pages/dashboard/model.js').default) });
 app.model({ namespace: 'model', ...(require('C:/Users/zwang46/Desktop/saic-Safety analysis/src/pages/login/model.js').default) });
 app.model({ namespace: 'model', ...(require('C:/Users/zwang46/Desktop/saic-Safety analysis/src/pages/post/model.js').default) });
-app.model({ namespace: 'model', ...(require('C:/Users/zwang46/Desktop/saic-Safety analysis/src/pages/project/FTA/$id/model.js').default) });
+app.model({ namespace: 'model', ...(require('C:/Users/zwang46/Desktop/saic-Safety analysis/src/pages/project/FTA/model.js').default) });
 app.model({ namespace: 'model', ...(require('C:/Users/zwang46/Desktop/saic-Safety analysis/src/pages/user/model.js').default) });
