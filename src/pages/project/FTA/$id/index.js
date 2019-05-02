@@ -8,8 +8,6 @@ import { FlowToolbar } from '../components/EditorToolbar/index';
 import EditorItemPanel from '../components/EditorItemPanel/index';
 import { FlowDetailPanel } from '../components/EditorDetailPanel/index';
 import Save from "../components/Save";
-
-import { modelTree} from './components/modelTree'
 import styles from './index.less';
 
 let data = {};

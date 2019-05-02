@@ -1,92 +1,178 @@
 import React from 'react'
-import { Row, Col, Button } from 'antd'
+import { Row, Col, Button, Modal, Input } from 'antd'
 import styles from './index.less'
 import GGEditor, { Flow, Mind } from 'gg-editor'
-const data = {
-  nodes: [
-    {
-      type: 'node',
-      size: '70*70',
-      shape: 'flow-circle',
-      color: '#FA8C16',
-      label: '起止节点',
-      x: 55,
-      y: 55,
-      id: 'ea1184e8',
-      index: 0,
-    },
-    {
-      type: 'node',
-      size: '70*70',
-      shape: 'flow-circle',
-      color: '#FA8C16',
-      label: '结束节点',
-      x: 55,
-      y: 255,
-      id: '481fbb1a',
-      index: 2,
-    },
-  ],
-  edges: [
-    {
-      source: 'ea1184e8',
-      sourceAnchor: 2,
-      target: '481fbb1a',
-      targetAnchor: 0,
-      id: '7989ac70',
-      index: 1,
-    },
-  ],
-}
-const data2 = {
-  roots: [
-    {
-      label: '中心主题',
-      children: [
-        {
-          label: '分支主题 1',
-        },
-        {
-          label: '分支主题 2',
-        },
-        {
-          label: '分支主题 3',
-        },
-      ],
-    },
-  ],
-}
+import StructurePage from './components/structurePage'
+import TreePage from './components/treePage'
+import AddModal from './components/Modal'
+import { connect } from 'dva'
 
-class FlowPage extends React.Component {
-  // renderFlow() {
-  //   return (
-  //     <Flow className={styles.flow} style={{height: 650 }} grid data={{}}/>
-  //   )
+@connect(({ FMEA }) => ({ FMEA }))
+class FmeaPage extends React.Component {
+  constructor(props) {
+    super(props)
+    // console.log(props)
+  }
+  // componentDidMount() {
+
   // }
-
+  panelAction(e) {
+    switch (e.type) {
+      case 'node':
+        this.props.dispatch({ type: 'FMEA/addNode', payload: e })
+        break
+      case 'edge':
+        this.props.dispatch({ type: 'FMEA/addEdge', payload: e })
+        break
+      default:
+        return
+    }
+  }
+  //选择结构
+  nodeClick(e) {
+    console.log(e)
+    this.props.dispatch({ type: 'FMEA/selectStructure', payload: e })
+  }
   render() {
+    const { dispatch, FMEA, location } = this.props
+    const {
+      createModalType,
+      createModalTitle,
+      createModalVisible,
+      createModalItem,
+    } = FMEA
+    console.log(createModalVisible, this.props)
+    const modalProps = {
+      type: createModalType,
+      visible: createModalVisible,
+      title: createModalTitle,
+      FMEA: FMEA,
+      onCancel() {
+        dispatch({
+          type: 'FMEA/triggerModal',
+          payload: {
+            visiable: false,
+          },
+        })
+      },
+      onOk(data) {
+        console.log(data)
+        if (createModalType == 0) {
+          dispatch({
+            type: 'FMEA/addFunction',
+            payload: {
+              data,
+            },
+          })
+        } else if (createModalType == 1) {
+          dispatch({
+            type: 'FMEA/addFunctionFailure',
+            payload: {
+              data,
+            },
+          })
+        } else if (createModalType == 2) {
+          dispatch({
+            type: 'FMEA/addFunctionFailureDependent',
+            payload: {
+              data,
+            },
+          })
+        } else {
+          dispatch({
+            type: 'FMEA/addFunctionDependent',
+            payload: {
+              data,
+            },
+          })
+        }
+      },
+    }
+    // const treeProps = {
+    //   ...this.props,
+    //   treeClick(e, treeId, treeNode) {
+    //     console.log(treeNode)
+    //     if (treeNode.type == 'fun') {
+    //       dispatch({ type: 'FMEA/triggerType', payload: { id: treeNode.id, type: 1 } })
+    //     } else {
+    //       dispatch({ type: 'FMEA/triggerType', payload: { id: treeNode.id, type: 2 } })
+    //     }
+    //   },
+    //   structureClick() {
+    //     dispatch({ type: 'FMEA/triggerType', payload: { type: 0 } })
+    //   }
+    // }
+    let viewData = null
+    const getViewData = () => {
+      console.log(this.props.FMEA)
+      if (this.props.FMEA.actionType == 1) {
+        console.log(this.props.FMEA.selectedFun)
+        viewData = {
+          roots: [
+            {
+              label: this.props.FMEA.selectedFun.name,
+              children: this.props.FMEA.selectedFun.dependentFunctionSet.map(
+                fun => {
+                  return {
+                    label: fun.name,
+                  }
+                }
+              ),
+            },
+          ],
+        }
+      } else if (this.props.FMEA.actionType == 2) {
+        console.log(this.props.FMEA.selectedFail)
+        viewData = {
+          roots: [
+            {
+              label: this.props.FMEA.selectedFail.name,
+              children: this.props.FMEA.selectedFail.dependentFailureSet.map(
+                fail => {
+                  return {
+                    label: fail.name,
+                  }
+                }
+              ),
+            },
+          ],
+        }
+      }
+    }
+    getViewData()
     return (
       <div className={styles.structurePage}>
         <Row>
           <Col span={18} className={styles.structure}>
-            <GGEditor>
-              <Flow style={{ width: 500, height: 500 }} data={data} />
-            </GGEditor>
+            <StructurePage
+              panelAction={e => {
+                this.panelAction(e)
+              }}
+              nodeClick={e => {
+                this.nodeClick(e)
+              }}
+            />
           </Col>
           <Col span={6} className={styles.set}>
-            col-12
+            <TreePage {...this.props} />
           </Col>
         </Row>
         <Row>
           <Col span={24} className={styles.view}>
-            <GGEditor>
-              <Mind style={{ width: 500, height: 250 }} data={data2} />
-            </GGEditor>
+            {viewData != null && (
+              <GGEditor>
+                <Mind style={{ width: 500, height: 250 }} data={viewData} />
+              </GGEditor>
+            )}
           </Col>
         </Row>
+        {createModalVisible && <AddModal {...modalProps} />}
       </div>
     )
   }
 }
 
-export default FlowPage
+export default FmeaPage
+// export default connect(({ FMEA }) => ({
+//   FMEA,
+// }))(FmeaPage);
