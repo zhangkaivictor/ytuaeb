@@ -17,7 +17,7 @@ package-lock.json
 # umi
 .umi/
 .umi-production
-
+.umi/
 # jslingui
 src/locales/_build
 src/locales/**/*.js

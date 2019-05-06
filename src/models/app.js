@@ -5,10 +5,13 @@ import { stringify } from 'qs'
 import store from 'store'
 import { queryLayout, pathMatchRegexp } from 'utils'
 import { CANCEL_REQUEST_MESSAGE } from 'utils/constant'
-import {  logoutUser, loginUser, queryPostList } from 'api'
+import { logoutUser, loginUser, queryPostList } from 'api'
 import config from 'config'
 import { deLangPrefix } from 'utils'
-
+import $ from 'jquery'
+window.$ = $
+window.jQuery = $
+// export default $
 // 菜单列表
 let database = [
   {
@@ -133,29 +136,37 @@ export default {
   },
   effects: {
     *query({}, { call, put, select }) {
-        let email = window.localStorage.getItem('username');
-        let token = window.localStorage.getItem('token');
-        if(email == null && token == null){
-          router.push({
-            pathname: '/login'
-          })
-        }else {
-        const queryInfo = yield call(loginUser, {'email':email} ,{'Authorization':token})
+      let email = window.localStorage.getItem('username')
+      let token = window.localStorage.getItem('token')
+      if (email == null && token == null) {
+        router.push({
+          pathname: '/login',
+        })
+      } else {
+        const queryInfo = yield call(
+          loginUser,
+          { email: email },
+          { Authorization: token }
+        )
         const { locationPathname } = yield select(_ => _.app)
         if (queryInfo.success && queryInfo.list.status == 1) {
-          const postList = yield call(queryPostList, {}, {'Authorization':token})
+          const postList = yield call(
+            queryPostList,
+            {},
+            { Authorization: token }
+          )
 
-          let isAdmin = queryInfo.list.roles[0];
+          let isAdmin = queryInfo.list.roles[0]
           let user = {}
-          if(isAdmin == 'Administrator'){
+          if (isAdmin == 'Administrator') {
             user = {
               id: 0,
               permissions: {
                 role: 'admin',
                 visit: [],
-              }
+              },
             }
-          }else {
+          } else {
             user = {
               id: 1,
               permissions: {
@@ -164,62 +175,62 @@ export default {
               },
             }
           }
-          const { permissions } = user;
-          for(let i=0; i<= postList.list.length-1; i++){
-           if(postList.list[i].type == "FMEAProject"){
-             var newPost = {
-               id: '',
-               itemId: '',
-               breadcrumbParentId: '62',
-               menuParentId: '62',
-               name: '',
-               zhName: '',
-               icon: 'area-chart',
-               route: '',
-             }
-             newPost.id = postList.list[i].id;
-             newPost.itemId = postList.list[i].id;
-             newPost.zhName = postList.list[i].name;
-             newPost.route = '/project/FMEA'+'?projectId='+newPost.itemId;
-           }else if(postList.list[i].type == "FTAProject"){
-             var newPost = {
-               id: '',
-               itemId: '',
-               breadcrumbParentId: '63',
-               menuParentId: '63',
-               name: '',
-               zhName: '',
-               icon: 'area-chart',
-               route: '',
-             }
-             newPost.id = postList.list[i].id;
-             newPost.itemId = postList.list[i].id;
-             newPost.zhName = postList.list[i].name;
-             newPost.route = '/project/FTA'+'?projectId='+newPost.itemId;
-           }else {
-             var newPost = {
-               id: '',
-               itemId: '',
-               breadcrumbParentId: '61',
-               menuParentId: '61',
-               name: '',
-               zhName: '',
-               icon: 'area-chart',
-               route: '',
-             }
-             newPost.id = postList.list[i].id;
-             newPost.itemId = postList.list[i].id;
-             newPost.zhName = postList.list[i].name;
-             newPost.route = '/project/vars'+'?projectId='+newPost.itemId;
-           }
-            let itemArrey = [];
-            database.map((item ,index) => {
-                itemArrey.push(item.id)
+          const { permissions } = user
+          for (let i = 0; i <= postList.list.length - 1; i++) {
+            if (postList.list[i].type == 'FMEAProject') {
+              var newPost = {
+                id: '',
+                itemId: '',
+                breadcrumbParentId: '62',
+                menuParentId: '62',
+                name: '',
+                zhName: '',
+                icon: 'area-chart',
+                route: '',
+              }
+              newPost.id = postList.list[i].id
+              newPost.itemId = postList.list[i].id
+              newPost.zhName = postList.list[i].name
+              newPost.route = '/project/FMEA' + '?projectId=' + newPost.itemId
+            } else if (postList.list[i].type == 'FTAProject') {
+              var newPost = {
+                id: '',
+                itemId: '',
+                breadcrumbParentId: '63',
+                menuParentId: '63',
+                name: '',
+                zhName: '',
+                icon: 'area-chart',
+                route: '',
+              }
+              newPost.id = postList.list[i].id
+              newPost.itemId = postList.list[i].id
+              newPost.zhName = postList.list[i].name
+              newPost.route = '/project/FTA' + '?projectId=' + newPost.itemId
+            } else {
+              var newPost = {
+                id: '',
+                itemId: '',
+                breadcrumbParentId: '61',
+                menuParentId: '61',
+                name: '',
+                zhName: '',
+                icon: 'area-chart',
+                route: '',
+              }
+              newPost.id = postList.list[i].id
+              newPost.itemId = postList.list[i].id
+              newPost.zhName = postList.list[i].name
+              newPost.route = '/project/vars' + '?projectId=' + newPost.itemId
+            }
+            let itemArrey = []
+            database.map((item, index) => {
+              itemArrey.push(item.id)
             })
-            if(!itemArrey.includes(newPost.id)){
+            if (!itemArrey.includes(newPost.id)) {
               database.push(newPost)
             }
-            if(isAdmin != 'Administrator'){
+            if (isAdmin != 'Administrator') {
               permissions.visit.push(newPost.id)
             }
           }
@@ -229,9 +240,11 @@ export default {
             permissions.visit = list.map(item => item.id)
           } else {
             routeList = list.filter(item => {
-              const cases = [permissions.visit.includes(item.id), item.mpid
-                ? permissions.visit.includes(item.mpid) || item.mpid === '-1'
-                : true,
+              const cases = [
+                permissions.visit.includes(item.id),
+                item.mpid
+                  ? permissions.visit.includes(item.mpid) || item.mpid === '-1'
+                  : true,
                 item.bpid ? permissions.visit.includes(item.bpid) : true,
               ]
               return cases.every(_ => _)
@@ -258,31 +271,31 @@ export default {
             }),
           })
         }
-        }
+      }
     },
 
     *signOut({ payload }, { call, put }) {
-        yield put({
-          type: 'updateState',
-          payload: {
-            user: {},
-            permissions: { visit: [] },
-            menu: [
-              {
-                id: '1',
-                icon: 'laptop',
-                name: 'Dashboard',
-                zhName: '仪表盘',
-                router: '/dashboard',
-              },
-            ],
-          },
+      yield put({
+        type: 'updateState',
+        payload: {
+          user: {},
+          permissions: { visit: [] },
+          menu: [
+            {
+              id: '1',
+              icon: 'laptop',
+              name: 'Dashboard',
+              zhName: '仪表盘',
+              router: '/dashboard',
+            },
+          ],
+        },
+      })
+      if (queryLayout(config.layouts) !== 'public') {
+        router.push({
+          pathname: '/',
         })
-        if (queryLayout(config.layouts) !== 'public') {
-          router.push({
-            pathname: '/',
-          })
-        }
+      }
     },
   },
   reducers: {
