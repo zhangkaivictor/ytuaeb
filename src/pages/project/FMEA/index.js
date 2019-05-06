@@ -111,6 +111,7 @@ class FmeaPage extends React.Component {
           roots: [
             {
               label: this.props.FMEA.selectedFun.name,
+              side: 'left',
               children: this.props.FMEA.selectedFun.dependentFunctionSet.map(
                 fun => {
                   return {
@@ -127,6 +128,7 @@ class FmeaPage extends React.Component {
           roots: [
             {
               label: this.props.FMEA.selectedFail.name,
+              side: 'left',
               children: this.props.FMEA.selectedFail.dependentFailureSet.map(
                 fail => {
                   return {
