@@ -45,9 +45,14 @@ export default modelExtend(pageModel, {
       let nodesList = StructurePaneObj.structureNodes.concat(
         Object.assign(node, { paneId: payload.addModel.id })
       )
+      console.log(StructurePaneObj)
       return {
         ...state,
-        StructurePane: { ...state.StructurePane, structureNodes: nodesList },
+        StructurePane: Object.assign(
+          Object.create(Object.getPrototypeOf(StructurePaneObj)),
+          StructurePaneObj,
+          { structureNodes: nodesList }
+        ),
         selectedStructure: node,
         createModalType: 0,
         actionType: 0,
@@ -317,16 +322,25 @@ export default modelExtend(pageModel, {
         createModalVisible: action.payload.visible,
       }
     },
+    //设置根节点
+    setRootNode(state, action) {
+      let StructurePaneObj = Object.assign(
+        Object.create(Object.getPrototypeOf(state.StructurePane)),
+        state.StructurePane
+      )
+      //SetStructureTreeRootById
+      console.log(StructurePaneObj)
+      StructurePaneObj.SetStructureTreeRootById(state.selectedStructure.id)
+      // let node=StructurePaneObj.findStructureNodeById(state.selectedStructure.id)
+      // console.log(node)
+
+      return {
+        ...state,
+        StructurePane: StructurePaneObj,
+        // selectedStructure: node,
+        createModalType: 0,
+        actionType: 0,
+      }
+    },
   },
 })
-function resetTree(obj) {
-  delete obj['parent']
-  delete obj['children']
-  // if(obj.children.length>0){
-  //   obj.children.forEach(element => {
-  //    resetTree(element)
-  //   });}
-  // }else{
-  return obj
-  // }
-}

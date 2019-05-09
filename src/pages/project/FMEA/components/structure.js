@@ -123,7 +123,7 @@ StructureFunction.prototype.removeFailureById = function(failureId) {
 /*
 	定义结构树形点类
 */
-function StructureNode(name, x, y) {
+function StructureNode(name) {
   this.id = GenerateId()
   this.name = name
   this.description = ''
@@ -132,8 +132,8 @@ function StructureNode(name, x, y) {
   this.html = ''
 
   this.shape = ''
-  this.x = x
-  this.y = y
+  this.x = 0
+  this.y = 0
 
   this.parent = null
   this.children = []
@@ -147,6 +147,7 @@ StructureNode.prototype.findFunctionById = function(functionId) {
       return this.FunctionSet[i]
     }
   }
+
   return null
 }
 
@@ -156,6 +157,7 @@ StructureNode.prototype.appendFunction = function(child) {
       return
     }
   }
+
   for (var i = 0, length = child.FailureSet.length; i < length; i++) {
     child.FailureSet[i].structureNodeId = this.id
   }
@@ -355,6 +357,80 @@ StructurePane.prototype.FindAllAboveNodes = function(structureNodeId) {
   return null
 }
 
+StructurePane.prototype.AllStructureFunctions = function() {
+  var sfArray = []
+  this.structureTreeRoot.traverse(node => {
+    sfArray = sfArray.concat(node.FunctionSet)
+  })
+  return sfArray
+}
+
+StructurePane.prototype.GetStructureFunctionDepTree = function(
+  structureNodeId,
+  functionId
+) {
+  var sfArray = this.AllStructureFunctions()
+  var fs = sfArray.find(item => {
+    return item.structureNodeId === structureNodeId && item.id === functionId
+  })
+  if (!fs) return
+  var result = {}
+  result.Id = functionId
+  result.Name = fs.name
+  result.structureNodeId = fs.structureNodeId
+  result.leftChilds = []
+  result.rightChilds = []
+
+  // build left child
+  ;(function recurse(currentFunction, childs) {
+    for (
+      var i = 0, length = currentFunction.dependentFunctionSet.length;
+      i < length;
+      i++
+    ) {
+      var depFunction = currentFunction.dependentFunctionSet[i]
+      var r = {}
+      r.Id = depFunction.id
+      r.Name = depFunction.name
+      r.label = depFunction.name
+      r.side = 'left'
+      r.structureNodeId = depFunction.structureNodeId
+      r.Childs = []
+      childs.push(r)
+
+      recurse(depFunction, r.Childs)
+    }
+  })(fs, result.leftChilds)
+
+  // build right child
+  ;(function recurse(currentFunction, childs) {
+    var asParentFs = sfArray.filter(item => {
+      return item.dependentFunctionSet.find(chld => {
+        return (
+          chld.structureNodeId === currentFunction.structureNodeId &&
+          chld.id === currentFunction.id
+        )
+      })
+    })
+
+    for (var i = 0, length = asParentFs.length; i < length; i++) {
+      var depFunction = asParentFs[i]
+      var r = {}
+      r.Id = depFunction.id
+      r.Name = depFunction.name
+      r.structureNodeId = depFunction.structureNodeId
+      r.Childs = []
+      r.side = 'right'
+      r.label = depFunction.name
+      childs.push(r)
+
+      recurse(depFunction, r.Childs)
+    }
+  })(fs, result.rightChilds)
+
+  return result
+}
+
 StructurePane.prototype.FindStructureFunction = function(
   structureNodeId,
   functionId
@@ -421,6 +497,91 @@ StructurePane.prototype.deleteDependentFunction = function(
       sf.removeDependentFunctionId(dependentFunctionId)
     }
   }
+}
+
+StructurePane.prototype.AllFunctionFailures = function() {
+  var sfArray = this.AllStructureFunctions()
+  var ffArray = []
+  for (var i = 0, length = sfArray.length; i < length; i++) {
+    ffArray = ffArray.concat(sfArray[i].FailureSet)
+  }
+
+  return ffArray
+}
+
+StructurePane.prototype.GetFunctionFailureDepTree = function(
+  structureNodeId,
+  functionId,
+  failureId
+) {
+  var ffArray = this.AllFunctionFailures()
+  var fs = ffArray.find(item => {
+    return (
+      item.structureNodeId === structureNodeId &&
+      item.functionId == functionId &&
+      item.id === failureId
+    )
+  })
+  if (!fs) return
+  var result = {}
+  result.Id = failureId
+  result.Name = fs.name
+  result.structureNodeId = fs.structureNodeId
+  result.functionId = fs.functionId
+  result.leftChilds = []
+  result.rightChilds = []
+
+  // build left child
+  ;(function recurse(currentFailure, childs) {
+    for (
+      var i = 0, length = currentFailure.dependentFailureSet.length;
+      i < length;
+      i++
+    ) {
+      var depFailure = currentFailure.dependentFailureSet[i]
+      var r = {}
+      r.Id = depFailure.id
+      r.Name = depFailure.name
+      r.structureNodeId = depFailure.structureNodeId
+      r.functionId = depFailure.functionId
+      r.Childs = []
+      r.side = 'left'
+      r.label = depFailure.name
+      childs.push(r)
+
+      recurse(depFailure, r.Childs)
+    }
+  })(fs, result.leftChilds)
+
+  // build right child
+  ;(function recurse(currentFailure, childs) {
+    var asParentFs = ffArray.filter(item => {
+      return item.dependentFailureSet.find(chld => {
+        return (
+          chld.structureNodeId === currentFailure.structureNodeId &&
+          chld.functionId == currentFailure.functionId &&
+          chld.id === currentFailure.id
+        )
+      })
+    })
+
+    for (var i = 0, length = asParentFs.length; i < length; i++) {
+      var depFailure = asParentFs[i]
+      var r = {}
+      r.Id = depFailure.id
+      r.Name = depFailure.name
+      r.structureNodeId = depFailure.structureNodeId
+      r.functionId = depFailure.functionId
+      r.Childs = []
+      r.side = 'right'
+      r.label = depFailure.name
+      childs.push(r)
+
+      recurse(depFailure, r.Childs)
+    }
+  })(fs, result.rightChilds)
+
+  return result
 }
 
 StructurePane.prototype.FindFunctionFailure = function(
@@ -772,10 +933,12 @@ function ConvertJsonToStructurePane(jsonString) {
             }
           }
         }
+
         failure.dependentFailureSet = ffdependentFailureSet
       }
     }
   }
+
   return sp
 }
 
@@ -824,4 +987,5 @@ function CheckObjectValueType(objectValue, objectType) {
       objectType
   }
 }
+
 export { StructurePane, StructureFunction, FunctionFailure, StructureNode }

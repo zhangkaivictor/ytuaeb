@@ -102,39 +102,66 @@ class FmeaPage extends React.Component {
     //     dispatch({ type: 'FMEA/triggerType', payload: { type: 0 } })
     //   }
     // }
+    const getChildLebal = arr => {}
+
     let viewData = null
     const getViewData = () => {
       console.log(this.props.FMEA)
       if (this.props.FMEA.actionType == 1) {
         console.log(this.props.FMEA.selectedFun)
+        console.log(
+          this.props.FMEA.StructurePane.GetStructureFunctionDepTree(
+            this.props.FMEA.selectedStructure.id,
+            this.props.FMEA.selectedFun.id
+          )
+        )
         viewData = {
           roots: [
             {
-              label: this.props.FMEA.selectedFun.name,
-              side: 'left',
-              children: this.props.FMEA.selectedFun.dependentFunctionSet.map(
-                fun => {
-                  return {
-                    label: fun.name,
-                  }
-                }
+              label:
+                this.props.FMEA.selectedStructure.name +
+                '--' +
+                this.props.FMEA.selectedFun.name,
+              children: this.props.FMEA.StructurePane.GetStructureFunctionDepTree(
+                this.props.FMEA.selectedStructure.id,
+                this.props.FMEA.selectedFun.id
+              ).leftChilds.concat(
+                this.props.FMEA.StructurePane.GetStructureFunctionDepTree(
+                  this.props.FMEA.selectedStructure.id,
+                  this.props.FMEA.selectedFun.id
+                ).rightChilds
               ),
             },
           ],
         }
       } else if (this.props.FMEA.actionType == 2) {
         console.log(this.props.FMEA.selectedFail)
+        console.log(
+          this.props.FMEA.StructurePane.GetFunctionFailureDepTree(
+            this.props.FMEA.selectedStructure.id,
+            this.props.FMEA.selectedFun.id,
+            this.props.FMEA.selectedFail.id
+          )
+        )
         viewData = {
           roots: [
             {
-              label: this.props.FMEA.selectedFail.name,
-              side: 'left',
-              children: this.props.FMEA.selectedFail.dependentFailureSet.map(
-                fail => {
-                  return {
-                    label: fail.name,
-                  }
-                }
+              label:
+                this.props.FMEA.selectedStructure.name +
+                '--' +
+                this.props.FMEA.selectedFun.name +
+                '--' +
+                this.props.FMEA.selectedFail.name,
+              children: this.props.FMEA.StructurePane.GetFunctionFailureDepTree(
+                this.props.FMEA.selectedStructure.id,
+                this.props.FMEA.selectedFun.id,
+                this.props.FMEA.selectedFail.id
+              ).leftChilds.concat(
+                this.props.FMEA.StructurePane.GetFunctionFailureDepTree(
+                  this.props.FMEA.selectedStructure.id,
+                  this.props.FMEA.selectedFun.id,
+                  this.props.FMEA.selectedFail.id
+                ).rightChilds
               ),
             },
           ],
@@ -142,6 +169,7 @@ class FmeaPage extends React.Component {
       }
     }
     getViewData()
+    console.log(viewData)
     return (
       <div className={styles.structurePage}>
         <Row>

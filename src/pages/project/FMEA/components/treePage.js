@@ -36,6 +36,11 @@ class TreePage extends React.Component {
     //   this.props.dispatch({ type: 'FMEA/selectFun', payload: { id:  info.node.props.eventKey} })
     // }
   }
+  //设置根节点
+  setRoot(e) {
+    this.props.dispatch({ type: 'FMEA/setRootNode' })
+  }
+
   //添加功能
   addFun(e) {
     //打开添加功能modal
@@ -108,6 +113,9 @@ class TreePage extends React.Component {
             <div className={styles.currN}>
               <Icon type="appstore" theme="filled" />
               <span>{this.props.FMEA.selectedStructure.name}</span>
+              <Button type="dashed" onClick={e => this.setRoot(e)}>
+                <Icon type="plus" /> 设置根节点
+              </Button>
             </div>
           </div>
         )}
