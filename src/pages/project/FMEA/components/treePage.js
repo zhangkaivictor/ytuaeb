@@ -11,6 +11,11 @@ class TreePage extends React.Component {
   onSelect = (selectedKeys, info) => {
     console.log('selected', selectedKeys, info)
     console.log('selected', this.props.FMEA.selectedStructure)
+    console.log('selected', this.props.FMEA.StructurePane.structureTreeRoot)
+    if (!this.props.FMEA.StructurePane.structureTreeRoot) {
+      alert('请设置根节点')
+      return
+    }
     this.props.dispatch({
       type: 'FMEA/selectKey',
       payload: { id: info.node.props.eventKey },
@@ -54,6 +59,12 @@ class TreePage extends React.Component {
     }
     console.log(e, this.props.FMEA.selectedFun)
     this.props.dispatch({ type: 'FMEA/triggerType', payload: { type: 1 } })
+  }
+  //移除失效
+  removeFail(e) {
+    console.log(this.props.FMEA.selectedFun)
+    console.log(this.props.FMEA.selectedFail)
+    this.props.dispatch({ type: 'FMEA/removeFail' })
   }
   //添加功能依赖
   addFunDepend() {
@@ -113,8 +124,13 @@ class TreePage extends React.Component {
             <div className={styles.currN}>
               <Icon type="appstore" theme="filled" />
               <span>{this.props.FMEA.selectedStructure.name}</span>
-              <Button type="dashed" onClick={e => this.setRoot(e)}>
-                <Icon type="plus" /> 设置根节点
+              {/* <Button type="dashed" onClick={e => this.setRoot(e)}> */}
+              <Button
+                type="danger"
+                className={styles.rootBtn}
+                onClick={e => this.setRoot(e)}
+              >
+                设为根节点
               </Button>
             </div>
           </div>
@@ -124,9 +140,9 @@ class TreePage extends React.Component {
             <div>
               <div className={styles.currTree}>
                 <span>功能树:</span>
-                <Button type="dashed" onClick={e => this.addFun(e)}>
+                {/* <Button type="dashed" onClick={e => this.addFun(e)}>
                   <Icon type="plus" /> 添加功能
-                </Button>
+                </Button> */}
                 {/* <div> */}
                 {/* <Icon type="folder-add"  theme="twoTone" onClick={(e) => this.addFun(e)}/> */}
                 {/* <span>添加功能</span> */}
@@ -137,29 +153,54 @@ class TreePage extends React.Component {
               </Tree>
             </div>
           )}
-        {FMEA.actionType == 0 && (
-          <Button className={styles.addBtn} onClick={e => this.addFun(e)}>
-            添加功能
-          </Button>
-        )}
-        {FMEA.actionType == 1 && (
-          <Button className={styles.addBtn} onClick={e => this.addFunDepend(e)}>
-            添加功能依赖
-          </Button>
-        )}
-        {FMEA.actionType == 1 && (
-          <Button className={styles.addFaillBtn} onClick={e => this.addFail(e)}>
-            添加失效
-          </Button>
-        )}
-        {FMEA.actionType == 2 && (
-          <Button
-            className={styles.addBtn}
-            onClick={e => this.addFailDepend(e)}
-          >
-            添加失效依赖
-          </Button>
-        )}
+        <div className={styles.btnDiv}>
+          {(FMEA.actionType == 1 || FMEA.actionType == 0) && (
+            <Button className={styles.addBtn} onClick={e => this.addFun(e)}>
+              添加功能
+            </Button>
+          )}
+          {FMEA.actionType == 1 &&
+            FMEA.selectedStructure.FunctionSet.length > 0 && (
+              <Button
+                className={styles.addBtn}
+                onClick={e => this.props.dispatch({ type: 'FMEA/removeFun' })}
+              >
+                删除功能
+              </Button>
+            )}
+          {FMEA.actionType == 1 && (
+            <Button
+              className={styles.addBtnDepend}
+              onClick={e => this.addFunDepend(e)}
+            >
+              添加功能依赖
+            </Button>
+          )}
+          {FMEA.actionType == 1 && (
+            <Button
+              className={styles.addFaillBtn}
+              onClick={e => this.addFail(e)}
+            >
+              添加失效
+            </Button>
+          )}
+          {FMEA.actionType == 2 && (
+            <Button
+              className={styles.addBtn}
+              onClick={e => this.addFailDepend(e)}
+            >
+              添加失效依赖
+            </Button>
+          )}
+          {FMEA.actionType == 2 && (
+            <Button
+              className={styles.addBtn}
+              onClick={e => this.props.dispatch({ type: 'FMEA/removeFail' })}
+            >
+              删除失效
+            </Button>
+          )}
+        </div>
       </div>
     )
   }

@@ -14,6 +14,10 @@ import { cloneDeep, isString, flow, curry } from 'lodash'
 export default modelExtend(pageModel, {
   namespace: 'FMEA',
   state: {
+    nodeData: {
+      nodes: [],
+      edges: [],
+    },
     StructurePane: null,
     structureNodes: [],
     selectedStructure: null,
@@ -25,7 +29,6 @@ export default modelExtend(pageModel, {
     actionType: -1,
   },
   subscriptions: {},
-
   effects: {},
   reducers: {
     print(state, { payload: id }) {
@@ -45,6 +48,8 @@ export default modelExtend(pageModel, {
       let nodesList = StructurePaneObj.structureNodes.concat(
         Object.assign(node, { paneId: payload.addModel.id })
       )
+      //画布node
+      let paneNode = Object.assign(payload.addModel, { structureId: node.id })
       console.log(StructurePaneObj)
       return {
         ...state,
@@ -53,14 +58,32 @@ export default modelExtend(pageModel, {
           StructurePaneObj,
           { structureNodes: nodesList }
         ),
-        selectedStructure: node,
-        createModalType: 0,
-        actionType: 0,
+        nodeData: {
+          ...state.nodeData,
+          nodes: state.nodeData.nodes.concat(paneNode),
+        },
       }
     },
     //添加关系线=》添加子功能
     addEdge(state, { payload }) {
       console.log(payload)
+      //禁止指向根节点
+      if (
+        state.StructurePane.structureTreeRoot &&
+        state.StructurePane.structureTreeRoot.paneId == payload.addModel.target
+      ) {
+        alert('根节点')
+        let nodeData = Object.assign(
+          Object.create(Object.getPrototypeOf(state.nodeData)),
+          state.nodeData
+        )
+        return {
+          ...state,
+          nodeData: nodeData,
+        }
+      }
+      //防止闭环
+      // if()
       let parentNode = state.StructurePane.structureNodes.find(
         node => node.paneId == payload.addModel.source
       )
@@ -69,14 +92,62 @@ export default modelExtend(pageModel, {
       )
       if (parentNode && childNode) {
         parentNode.appendChild(childNode)
-        // return {
-        //   ...state,
-        //   // StructurePane: { ...state.StructurePane }
-        // }
+        return {
+          ...state,
+          nodeData: {
+            ...state.nodeData,
+            edges: state.nodeData.edges.concat(payload.addModel),
+          },
+        }
       }
     },
     //移除节点
-    deleteNode(state, action) {},
+    deleteNode(state, { payload }) {
+      console.log(payload)
+      //删除点时删除连接线
+      let filterEdges = state.nodeData.edges.filter(_ => {
+        if (
+          _.source !== state.nodeData.nodes[payload].id &&
+          _.target !== state.nodeData.nodes[payload].id
+        ) {
+          return _
+        }
+      })
+      //删除结构树的节点
+      let StructurePaneObj = Object.assign(
+        Object.create(Object.getPrototypeOf(state.StructurePane)),
+        state.StructurePane
+      )
+      StructurePaneObj.deleteStructureNodeById(
+        state.nodeData.nodes[payload].structureId
+      )
+      console.log(StructurePaneObj)
+      //删除结构
+
+      return {
+        ...state,
+        nodeData: {
+          ...state.nodeData,
+          nodes: state.nodeData.nodes.filter((_, i) => i !== payload),
+          edges: filterEdges,
+        },
+        StructurePane: StructurePaneObj,
+        selectedStructure: null,
+        selectedFun: null,
+      }
+    },
+    //移除连接线
+    deleteEdge(state, { payload }) {
+      console.log(payload)
+      console.log(state.nodeData.edges.filter((_, i) => i !== payload))
+      return {
+        ...state,
+        nodeData: {
+          ...state.nodeData,
+          edges: state.nodeData.edges.filter((_, i) => i !== payload),
+        },
+      }
+    },
     //选择节点
     selectStructure(state, { payload }) {
       let node = state.StructurePane.structureNodes.find(
@@ -108,23 +179,6 @@ export default modelExtend(pageModel, {
         selectedStructure: structureNodeObj,
       }
     },
-    //选择功能
-    // selectFun(state, { payload }) {
-    //   return {
-    //     ...state,
-    //     actionType: 1,
-    //     selectedFun: state.selectedStructure.FunctionSet.find(fun => fun.id == payload.id)
-    //   }
-    // },
-    // //选择失效
-    // selectFail(state, { payload }) {
-    //   console.log(state.selectedFun, payload)
-    //   return {
-    //     ...state,
-    //     actionType: 2,
-    //     selectedFail: state.selectedFun.FailureSet.find(fail => fail.id == payload.id)
-    //   }
-    // },
     //选择功能或失效
     selectKey(state, { payload }) {
       console.log(state.selectedFun, payload)
@@ -172,6 +226,20 @@ export default modelExtend(pageModel, {
         selectedFun: currentFun,
       }
     },
+    //删除功能
+    removeFun(state, { payload }) {
+      console.log(state.selectedStructure, state.selectedFun)
+      if (!state.selectedStructure || !state.selectedFun) {
+        alert('请选择功能')
+        return
+      }
+      state.selectedStructure.removeFunctionById(state.selectedFun.id)
+      return {
+        ...state,
+        selectedFun: null,
+        selectedFail: null,
+      }
+    },
     //添加功能依赖
     addFunctionDependent(state, { payload }) {
       let dependentFunction = null
@@ -193,45 +261,6 @@ export default modelExtend(pageModel, {
         ...state,
         createModalVisible: false,
       }
-      // for (var i = 0, length = state.selectedFun.dependentFunctionSet.length; i < length; i++) {
-      //   if (state.selectedFun.dependentFunctionSet[i].id == dependentFunction.id) {
-      //     return {
-      //       ...state,
-      //       createModalVisible: false,
-      //     }
-      //   }
-      // }
-      // let fun = Object.assign(Object.create(Object.getPrototypeOf(state.selectedFun)), state.selectedFun, { dependentFunctionSet: state.selectedFun.dependentFunctionSet.concat(dependentFunction) })
-      // console.log(fun)
-      // return {
-      //   ...state,
-      //   createModalVisible: false,
-      //   selectedFun: fun,
-      //   selectedStructure: Object.assign(Object.create(Object.getPrototypeOf(state.selectedStructure)), state.selectedStructure, {
-      //     FunctionSet: state.selectedStructure.FunctionSet.map(func => {
-      //       if (func.id == state.selectedFun.id) {
-      //         func = fun
-      //       }
-      //       return func
-      //     })
-      //   })
-      //   ,
-      //   StructurePane: {
-      //     ...state.StructurePane,
-      //     structureNodes: state.StructurePane.structureNodes.map(node => {
-      //       if (node.id == state.selectedStructure.id) {
-      //         node.FunctionSet.map(func => {
-      //           if (func.id == state.selectedFun.id) {
-      //             func = fun
-      //             console.log(func)
-      //           }
-      //           return func
-      //         })
-      //       }
-      //       return node
-      //     })
-      //   }
-      // }
     },
     //添加失效依赖
     addFunctionFailureDependent(state, { payload }) {
@@ -266,6 +295,14 @@ export default modelExtend(pageModel, {
         ...state,
         createModalVisible: false,
         // selectedFun:,
+      }
+    },
+    //移除失效
+    removeFail(state, { payload }) {
+      state.selectedFun.removeFailureById(state.selectedFail.id)
+      return {
+        ...state,
+        selectedFail: null,
       }
     },
     //点击modal类型
@@ -331,15 +368,17 @@ export default modelExtend(pageModel, {
       //SetStructureTreeRootById
       console.log(StructurePaneObj)
       StructurePaneObj.SetStructureTreeRootById(state.selectedStructure.id)
-      // let node=StructurePaneObj.findStructureNodeById(state.selectedStructure.id)
-      // console.log(node)
-
+      let edges = state.nodeData.edges.filter(
+        _ => _.target !== state.selectedStructure.paneId
+      )
+      console.log(edges)
       return {
         ...state,
         StructurePane: StructurePaneObj,
         // selectedStructure: node,
         createModalType: 0,
         actionType: 0,
+        nodeData: { ...state.nodeData, edges: edges },
       }
     },
   },
