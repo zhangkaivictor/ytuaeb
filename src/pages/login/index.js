@@ -29,19 +29,6 @@ class Login extends PureComponent {
     const { loading, form, i18n } = this.props
     const { getFieldDecorator } = form
 
-    let footerLinks = []
-
-    if (config.i18n) {
-      footerLinks = footerLinks.concat(
-        config.i18n.languages.map(item => ({
-          key: item.key,
-          title: (
-            <span onClick={setLocale.bind(null, item.key)}>{item.title}</span>
-          ),
-        }))
-      )
-    }
-
     return (
       <Fragment>
         <div className={styles.form}>
@@ -91,7 +78,7 @@ class Login extends PureComponent {
           </form>
         </div>
         <div className={styles.footer}>
-          <GlobalFooter links={footerLinks} copyright={config.copyright} />
+          <GlobalFooter links={[]} copyright={config.copyright} />
         </div>
       </Fragment>
     )

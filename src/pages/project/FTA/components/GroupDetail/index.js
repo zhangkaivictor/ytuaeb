@@ -1,8 +1,8 @@
-import React from 'react';
-import { Card, Form, Input } from 'antd';
-import { withPropsAPI } from 'gg-editor';
+import React from 'react'
+import { Card, Form, Input } from 'antd'
+import { withPropsAPI } from 'gg-editor'
 
-const { Item } = Form;
+const { Item } = Form
 
 const inlineFormItemLayout = {
   labelCol: {
@@ -11,63 +11,62 @@ const inlineFormItemLayout = {
   wrapperCol: {
     sm: { span: 18 },
   },
-};
+}
 
 class GroupDetail extends React.Component {
-  handleSubmit = (e) => {
-    e.preventDefault();
+  handleSubmit = e => {
+    e.preventDefault()
 
-    const { form, propsAPI } = this.props;
-    const { getSelected, update } = propsAPI;
+    const { form, propsAPI } = this.props
+    const { getSelected, update } = propsAPI
 
     form.validateFieldsAndScroll((err, values) => {
       if (err) {
-        return;
+        return
       }
 
-      const item = getSelected()[0];
+      const item = getSelected()[0]
 
       if (!item) {
-        return;
+        return
       }
 
       update(item, {
         ...values,
-      });
-    });
+      })
+    })
   }
 
   render() {
-    const { form, propsAPI } = this.props;
-    const { getFieldDecorator } = form;
-    const { getSelected } = propsAPI;
+    const { form, propsAPI } = this.props
+    const { getFieldDecorator } = form
+    const { getSelected } = propsAPI
 
-    console.log(this.props);
-    const item = getSelected()[0];
+    const item = getSelected()[0]
 
     if (!item) {
-      return null;
+      return null
     }
 
-    const { label = '新建分组' } = item.getModel();
+    const { label = '新建分组' } = item.getModel()
 
     return (
-      <Card type="inner" title="群组属性" bordered={false} headStyle={{ backgroundColor:'#e5e5e5'}}>
+      <Card
+        type="inner"
+        title="群组属性"
+        bordered={false}
+        headStyle={{ backgroundColor: '#e5e5e5' }}
+      >
         <Form onSubmit={this.handleSubmit}>
-          <Item
-            label="名称"
-            {...inlineFormItemLayout}
-          >
-            {
-              getFieldDecorator('label', {
-                initialValue: label,
-              })(<Input onBlur={this.handleSubmit} />)
-            }
+          <Item label="名称" {...inlineFormItemLayout}>
+            {getFieldDecorator('label', {
+              initialValue: label,
+            })(<Input onBlur={this.handleSubmit} />)}
           </Item>
         </Form>
       </Card>
-    );
+    )
   }
 }
 
-export default Form.create()(withPropsAPI(GroupDetail));
+export default Form.create()(withPropsAPI(GroupDetail))

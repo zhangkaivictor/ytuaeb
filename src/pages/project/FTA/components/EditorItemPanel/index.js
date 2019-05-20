@@ -1,377 +1,399 @@
-import React from 'react';
-import { Card } from 'antd';
-import { ItemPanel, Item, RegisterNode } from 'gg-editor';
-import styles from './index.less';
+import React from 'react'
+import { Card } from 'antd'
+import { ItemPanel, Item, RegisterNode, RegisterEdge } from 'gg-editor'
+import styles from './index.less'
 
 class EditorItemPanel extends React.Component {
-
   render() {
+    const { isHideScreen } = this.props
+    // console.log(isHideScreen)
     return (
       <ItemPanel className={styles.itemPanel}>
-        <RegisterNode name='andGate'
-                      config={{
-                        draw(item) {
-                          const group = item.getGraphicGroup();
-                          const model = item.getModel();
-                          const width = 64;
-                          const height = 60;
-                          const x = -width / 2;
-                          const y = -height / 2;
-                          const borderRadius = 4;
-                          const keyShape = group.addShape('rect', {
-                            attrs: {
-                              x,
-                              y,
-                              width,
-                              height,
-                              radius: borderRadius,
-                              fill: 'white',
-                              stroke: '#CED4D9'
-                            }
-                          });
-                          group.addShape('image', {
-                            attrs: {
-                              img: '/or.png',
-                              x,
-                              y,
-                              width,
-                              height,
-                            }
-                          });
-                          return keyShape;
-                        },
-                        // 设置锚点
-                        anchor: [
-                          [ 0.5, 0 ], // 上面边的中点
-                          [ 0.5, 1 ] // 下边边的中点
-                        ]
-                      }}/>
-        <RegisterNode name='orGate'
-                      config={{
-                        draw(item) {
-                          const group = item.getGraphicGroup();
-                          const model = item.getModel();
-                          const width = 64;
-                          const height = 60;
-                          const x = -width / 2;
-                          const y = -height / 2;
-                          const borderRadius = 4;
-                          const keyShape = group.addShape('rect', {
-                            attrs: {
-                              x,
-                              y,
-                              width,
-                              height,
-                              radius: borderRadius,
-                              fill: 'white',
-                              stroke: '#CED4D9'
-                            }
-                          });
-                          group.addShape('image', {
-                            attrs: {
-                              img: '/versus.png',
-                              x,
-                              y,
-                              width,
-                              height,
-                            }
-                          });
-                          return keyShape;
-                        },
-                        // 设置锚点
-                        anchor: [
-                          [ 0.5, 0 ], // 上面边的中点
-                          [ 0.5, 1 ] // 下边边的中点
-                        ]
-                      }}/>
-        <RegisterNode name='nonGate'
-                      config={{
-                        draw(item) {
-                          const group = item.getGraphicGroup();
-                          const model = item.getModel();
-                          const width = 64;
-                          const height = 60;
-                          const x = -width / 2;
-                          const y = -height / 2;
-                          const borderRadius = 4;
-                          const keyShape = group.addShape('rect', {
-                            attrs: {
-                              x,
-                              y,
-                              width,
-                              height,
-                              radius: borderRadius,
-                              fill: 'white',
-                              stroke: '#CED4D9'
-                            }
-                          });
-                          //logo注册
-                          group.addShape('image', {
-                            attrs: {
-                              img: '/non.png',
-                              x,
-                              y,
-                              width,
-                              height,
-                            }
-                          });
-                          return keyShape;
-                        },
-                        // 设置锚点
-                        anchor: [
-                          [ 0.5, 0 ], // 上面边的中点
-                          [ 0.5, 1 ] // 下边边的中点
-                        ]
-                      }}/>
-        <RegisterNode name='square'
-                      config={{
-                        draw(item) {
-                          const group = item.getGraphicGroup();
-                          const model = item.getModel();
-                          const width = 60;
-                          const height = 60;
-                          const x = -width / 2;
-                          const y = -height / 2;
-                          const borderRadius = 4;
-                          const keyShape = group.addShape('rect', {
-                            attrs: {
-                              x,
-                              y,
-                              width,
-                              height,
-                              radius: borderRadius,
-                              fill: 'white',
-                              stroke: '#1890FF'
-                            }
-                          });
-                          //注册文本信息
-                          const name = model.name ? model.name : this.name;
-                          group.addShape('text', {
-                            attrs: {
-                              text: name,
-                              x: x+30,
-                              y: y+20,
-                              textAlign: 'center',
-                              textBaseline: 'middle',
-                              fill: 'rgba(0,0,0,0.65)'
-                            }
-                          });
+        <RegisterNode
+          name="andGate"
+          config={{
+            draw(item) {
+              const group = item.getGraphicGroup()
+              const model = item.getModel()
+              const width = 64
+              const height = 60
+              const x = -width / 2
+              const y = -height / 2
+              const borderRadius = 4
+              const keyShape = group.addShape('rect', {
+                attrs: {
+                  x,
+                  y,
+                  width,
+                  height,
+                  radius: borderRadius,
+                  fill: 'white',
+                  stroke: '#CED4D9',
+                },
+              })
+              group.addShape('image', {
+                attrs: {
+                  img: '/or.png',
+                  x,
+                  y,
+                  width,
+                  height,
+                },
+              })
+              return keyShape
+            },
+            // 设置锚点
+            anchor: [
+              [0.5, 0], // 上面边的中点
+              [0.5, 1], // 下边边的中点
+            ],
+          }}
+        />
+        <RegisterNode
+          name="orGate"
+          config={{
+            draw(item) {
+              const group = item.getGraphicGroup()
+              const model = item.getModel()
+              const width = 64
+              const height = 60
+              const x = -width / 2
+              const y = -height / 2
+              const borderRadius = 4
+              const keyShape = group.addShape('rect', {
+                attrs: {
+                  x,
+                  y,
+                  width,
+                  height,
+                  radius: borderRadius,
+                  fill: 'white',
+                  stroke: '#CED4D9',
+                },
+              })
+              group.addShape('image', {
+                attrs: {
+                  img: '/versus.png',
+                  x,
+                  y,
+                  width,
+                  height,
+                },
+              })
+              return keyShape
+            },
+            // 设置锚点
+            anchor: [
+              [0.5, 0], // 上面边的中点
+              [0.5, 1], // 下边边的中点
+            ],
+          }}
+        />
+        <RegisterNode
+          name="nonGate"
+          config={{
+            draw(item) {
+              const group = item.getGraphicGroup()
+              const model = item.getModel()
+              const width = 64
+              const height = 60
+              const x = -width / 2
+              const y = -height / 2
+              const borderRadius = 4
+              const keyShape = group.addShape('rect', {
+                attrs: {
+                  x,
+                  y,
+                  width,
+                  height,
+                  radius: borderRadius,
+                  fill: 'white',
+                  stroke: '#CED4D9',
+                },
+              })
+              //logo注册
+              group.addShape('image', {
+                attrs: {
+                  img: '/non.png',
+                  x,
+                  y,
+                  width,
+                  height,
+                },
+              })
+              return keyShape
+            },
+            // 设置锚点
+            anchor: [
+              [0.5, 0], // 上面边的中点
+              [0.5, 1], // 下边边的中点
+            ],
+          }}
+        />
+        <RegisterNode
+          name="square"
+          config={{
+            draw(item) {
+              const group = item.getGraphicGroup()
+              const model = item.getModel()
+              const width = 60
+              const height = 60
+              const x = -width / 2
+              const y = -height / 2
+              const borderRadius = 4
+              const keyShape = group.addShape('rect', {
+                attrs: {
+                  x,
+                  y,
+                  width,
+                  height,
+                  radius: borderRadius,
+                  fill: 'white',
+                  stroke: '#1890FF',
+                },
+              })
+              //注册文本信息
+              const name = model.name ? model.name : this.name
+              group.addShape('text', {
+                attrs: {
+                  text: name,
+                  x: x + 30,
+                  y: y + 20,
+                  textAlign: 'center',
+                  textBaseline: 'middle',
+                  fill: 'rgba(0,0,0,0.65)',
+                },
+              })
 
-                          //注册注释信息
-                          if(model.checkDis) {
-                            //注释注册
-                            group.addShape('rect', {
-                              attrs: {
-                                x,
-                                y:y-70,
-                                width,
-                                height,
-                                fill: 'white',
-                                stroke: '#FF00FF',
-                                radius: borderRadius,
-                              }
-                            });
-                            const note = model.note ? model.note : this.note;
-                            group.addShape('text', {
-                              attrs: {
-                                text: note,
-                                x: x + 32,
-                                y: y - 40,
-                                width,
-                                height,
-                                textAlign: 'center',
-                                textBaseline: 'middle',
-                                fill: 'rgba(0,0,0,0.65)'
-                              }
-                            });
-                          }
+              //注册注释信息
+              if (model.checkDis) {
+                //注释注册
+                group.addShape('rect', {
+                  attrs: {
+                    x,
+                    y: y - 70,
+                    width,
+                    height,
+                    fill: 'white',
+                    stroke: '#FF00FF',
+                    radius: borderRadius,
+                  },
+                })
+                const note = model.note ? model.note : this.note
+                group.addShape('text', {
+                  attrs: {
+                    text: note,
+                    x: x + 32,
+                    y: y - 40,
+                    width,
+                    height,
+                    textAlign: 'center',
+                    textBaseline: 'middle',
+                    fill: 'rgba(0,0,0,0.65)',
+                  },
+                })
+              }
 
-                          return keyShape;
-                        },
-                        // 设置锚点
-                        anchor: [
-                          [ 0.5, 0 ],
-                          [ 0.5, 1 ] // 下边边的中点
-                        ]
-                      }}/>
-        <RegisterNode name='rectangle'
-                      config={{
-                        draw(item) {
-                          const group = item.getGraphicGroup();
-                          const model = item.getModel();
-                          const width = 88;
-                          const height = 46;
-                          const x = -width / 2;
-                          const y = -height / 2;
-                          const borderRadius = 4;
-                          const keyShape = group.addShape('rect', {
-                            attrs: {
-                              x,
-                              y,
-                              width,
-                              height,
-                              radius: borderRadius,
-                              fill: 'white',
-                              stroke: '#CED4D9'
-                            }
-                          });
-                          //注册文本信息
-                          const name = model.name ? model.name : this.name;
-                          group.addShape('text', {
-                            attrs: {
-                              text: name,
-                              x: x+30,
-                              y: y+20,
-                              textAlign: 'center',
-                              textBaseline: 'middle',
-                              fill: 'rgba(0,0,0,0.65)'
-                            }
-                          });
+              return keyShape
+            },
+            // 设置锚点
+            anchor: [
+              [0.5, 0],
+              [0.5, 1], // 下边边的中点
+            ],
+          }}
+        />
+        <RegisterNode
+          name="rectangle"
+          config={{
+            draw(item) {
+              const group = item.getGraphicGroup()
+              const model = item.getModel()
+              const width = 88
+              const height = 46
+              const x = -width / 2
+              const y = -height / 2
+              const borderRadius = 4
+              const keyShape = group.addShape('rect', {
+                attrs: {
+                  x,
+                  y,
+                  width,
+                  height,
+                  radius: borderRadius,
+                  fill: 'white',
+                  stroke: '#CED4D9',
+                },
+              })
+              //注册文本信息
+              const name = model.name ? model.name : this.name
+              group.addShape('text', {
+                attrs: {
+                  text: name,
+                  x: x + 40,
+                  y: y + 22,
+                  textAlign: 'center',
+                  textBaseline: 'middle',
+                  fill: 'rgba(0,0,0,0.65)',
+                },
+              })
 
-                          //注册注释信息
-                          if(model.checkDis) {
-                            //注释注册
-                            group.addShape('rect', {
-                              attrs: {
-                                x,
-                                y:y-60,
-                                width,
-                                height,
-                                fill: 'white',
-                                stroke: '#1890FF',
-                                radius: borderRadius,
-                              }
-                            });
-                            const note = model.note ? model.note : this.note;
-                            group.addShape('text', {
-                              attrs: {
-                                text: note,
-                                x: x + 32,
-                                y: y - 40,
-                                width,
-                                height,
-                                textAlign: 'center',
-                                textBaseline: 'middle',
-                                fill: 'rgba(0,0,0,0.65)'
-                              }
-                            });
-                          }
+              //注册注释信息
+              if (model.checkDis) {
+                //注释注册
+                group.addShape('rect', {
+                  attrs: {
+                    x,
+                    y: y - 60,
+                    width,
+                    height,
+                    fill: 'white',
+                    stroke: '#1890FF',
+                    radius: borderRadius,
+                  },
+                })
+                const note = model.note ? model.note : this.note
+                group.addShape('text', {
+                  attrs: {
+                    text: note,
+                    x: x + 32,
+                    y: y - 40,
+                    width,
+                    height,
+                    textAlign: 'center',
+                    textBaseline: 'middle',
+                    fill: 'rgba(0,0,0,0.65)',
+                  },
+                })
+              }
 
-                          return keyShape;
-                        },
-                        // 设置锚点
-                        anchor: [
-                          [ 0.5, 0 ],
-                          [ 0.5, 1 ] // 下边边的中点
-                        ]
-                      }}/>
-        <RegisterNode name='round'
-                      config={{
-                        draw(item) {
-                          const group = item.getGraphicGroup();
-                          const model = item.getModel();
-                          const width = 68;
-                          const height = 68;
-                          const x = -width / 2;
-                          const y = -height / 2;
-                          const borderRadius = 34;
-                          const keyShape = group.addShape('rect', {
-                            attrs: {
-                              x,
-                              y,
-                              width,
-                              height,
-                              fill: 'white',
-                              stroke: '#CED4D9',
-                              radius: borderRadius
-                            }
-                          });
-                          //注册文本信息
-                          const name = model.name ? model.name : this.name;
-                          group.addShape('text', {
-                            attrs: {
-                              text: name,
-                              x: x + 32,
-                              y: y + 35,
-                              textAlign: 'center',
-                              textBaseline: 'middle',
-                              fill: 'rgba(0,0,0,0.65)'
-                            }
-                          });
+              return keyShape
+            },
+            // 设置锚点
+            anchor: [
+              [0.5, 0],
+              [0.5, 1], // 下边边的中点
+            ],
+          }}
+        />
+        <RegisterNode
+          name="round"
+          config={{
+            draw(item) {
+              const group = item.getGraphicGroup()
+              const model = item.getModel()
+              const width = 68
+              const height = 68
+              const x = -width / 2
+              const y = -height / 2
+              const borderRadius = 34
+              const keyShape = group.addShape('rect', {
+                attrs: {
+                  x,
+                  y,
+                  width,
+                  height,
+                  fill: 'white',
+                  stroke: '#CED4D9',
+                  radius: borderRadius,
+                },
+              })
+              //注册文本信息
+              const name = model.name ? model.name : this.name
+              group.addShape('text', {
+                attrs: {
+                  text: name,
+                  x: x + 32,
+                  y: y + 35,
+                  textAlign: 'center',
+                  textBaseline: 'middle',
+                  fill: 'rgba(0,0,0,0.65)',
+                },
+              })
 
-                          //注册注释信息
-                          if(model.checkDis) {
-                            //注释注册
-                            group.addShape('rect', {
-                              attrs: {
-                                x,
-                                y:y-50,
-                                width : 80,
-                                height : 34,
-                                fill: 'white',
-                                stroke: '#1890FF',
-                              }
-                            });
-                            const note = model.note ? model.note : this.note;
-                            group.addShape('text', {
-                              attrs: {
-                                text: note,
-                                x: x + 32,
-                                y: y - 30,
-                                textAlign: 'center',
-                                textBaseline: 'middle',
-                                fill: 'rgba(0,0,0,0.65)'
-                              }
-                            });
-                          }
+              //注册注释信息
+              if (model.checkDis) {
+                //注释注册
+                group.addShape('rect', {
+                  attrs: {
+                    x,
+                    y: y - 50,
+                    width: 80,
+                    height: 34,
+                    fill: 'white',
+                    stroke: '#1890FF',
+                  },
+                })
+                const note = model.note ? model.note : this.note
+                group.addShape('text', {
+                  attrs: {
+                    text: note,
+                    x: x + 32,
+                    y: y - 30,
+                    textAlign: 'center',
+                    textBaseline: 'middle',
+                    fill: 'rgba(0,0,0,0.65)',
+                  },
+                })
+              }
 
-                          return keyShape;
-                        },
-                        // 设置锚点
-                        anchor: [
-                          [ 0.5, 0 ],
-                          [ 0.5, 1 ] // 下边边的中点
-                        ]
-                      }} />
-        <Card bordered={false} title="操作节点" type="inner" headStyle={{ backgroundColor:'#e5e5e5'}}>
+              return keyShape
+            },
+            // 设置锚点
+            anchor: [
+              [0.5, 0],
+              [0.5, 1], // 下边边的中点
+            ],
+          }}
+        />
+        <Card
+          bordered={false}
+          title="操作节点"
+          type="inner"
+          headStyle={{ backgroundColor: '#e5e5e5' }}
+        >
           <Item
             type="node"
             size="40*40"
             shape="square"
             model={{
               color: '#1890FF',
-              name: '根节点',
-              note: '根节点',
-              checkDis: true,
-              itemType:'square',
-              failureRateQ: '',
-              invalidRate: '',
-              failureTime: '',
-              dCrf: '',
-              dClf: '',
-              referenceFailureRateq: ''
-
+              name: 'F000',
+              note: '根节点注释',
+              checkDis: isHideScreen,
+              itemType: 'square',
+              failureRateQ: 0,
+              invalidRate: 0,
+              failureTime: 5000,
+              dCrf: 0,
+              dClf: 0,
+              referenceFailureRateq: 0,
+              invalidRateValueIsModifiedByUser: false,
+              smallFailureRateQValueType: false,
             }}
             src="/square.png"
           />
           <Item
             type="node"
-            size="80*48"
+            size="60*28"
             shape="rectangle"
             model={{
               color: '#1890FF',
-              name: '常规节点',
-              note: '注释输入',
-              checkDis: true,
-              itemType:'rectangle',
-              failureRateQ: '',
-              invalidRate: '',
-              failureTime: '',
-              dCrf: '',
-              dClf: '',
-              referenceFailureRateq: ''
+              name: 'C000', //center
+              note: '中间节点注释',
+              checkDis: isHideScreen,
+              itemType: 'rectangle',
+              failureRateQ: 0,
+              invalidRate: 0,
+              failureTime: 5000,
+              dCrf: 0,
+              dClf: 0,
+              referenceFailureRateq: 0,
+              invalidRateValueIsModifiedByUser: false,
+              smallFailureRateQValueType: false,
             }}
-            src="https://gw.alipayobjects.com/zos/rmsportal/wHcJakkCXDrUUlNkNzSy.svg"
+            src="/rectangle.png"
+            className={styles.rectangle}
           />
           <Item
             type="node"
@@ -379,16 +401,18 @@ class EditorItemPanel extends React.Component {
             shape="round"
             model={{
               color: '#FA8C16',
-              name: '叶子节点',
-              note: '节点注释',
-              checkDis: true,
-              itemType:'round',
-              failureRateQ: '',
-              invalidRate: '',
-              failureTime: '',
-              dCrf: '',
-              dClf: '',
-              referenceFailureRateq: ''
+              name: 'E000',
+              note: '叶子节点注释',
+              checkDis: isHideScreen,
+              itemType: 'round',
+              failureRateQ: 0,
+              invalidRate: 0,
+              failureTime: 5000,
+              dCrf: 0,
+              dClf: 0,
+              referenceFailureRateq: 0,
+              invalidRateValueIsModifiedByUser: false,
+              smallFailureRateQValueType: false,
             }}
             src="/round.png"
           />
@@ -399,7 +423,7 @@ class EditorItemPanel extends React.Component {
             model={{
               name: 'orGate',
               color: '#1890FF',
-              itemType:'orGate'
+              itemType: 'orGate',
             }}
             src="/versus.png"
           />
@@ -408,9 +432,9 @@ class EditorItemPanel extends React.Component {
             size="80*72"
             shape="andGate"
             model={{
-              name:'andGate',
+              name: 'andGate',
               color: '#13C2C2',
-              itemType:'andGate'
+              itemType: 'andGate',
             }}
             src="/or.png"
           />
@@ -421,14 +445,14 @@ class EditorItemPanel extends React.Component {
             model={{
               name: 'nonGate',
               color: '#722ED1',
-              itemType:'nonGate'
+              itemType: 'nonGate',
             }}
             src="/non.png"
           />
         </Card>
       </ItemPanel>
-    );
+    )
   }
 }
 
-export default EditorItemPanel;
+export default EditorItemPanel

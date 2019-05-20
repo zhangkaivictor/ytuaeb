@@ -1,11 +1,9 @@
 /* global document */
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
-import moment from 'moment'
 import { FilterItem } from 'components'
 import { Trans, withI18n } from '@lingui/react'
 import { Form, Button, Row, Col, DatePicker, Input, Cascader } from 'antd'
-import city from 'utils/city'
 const ColProps = {
   xs: 24,
   sm: 12,
@@ -22,7 +20,6 @@ const TwoColProps = {
 @withI18n()
 @Form.create()
 class Filter extends PureComponent {
-
   render() {
     const { onAdd } = this.props
 

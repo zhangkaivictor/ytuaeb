@@ -71,6 +71,10 @@ let database = [
     icon: 'area-chart',
     route: '/project/FTA',
   },
+  {
+    id: '4',
+    route: '/project/FTA/onAnalysis',
+  },
 ]
 
 export default {
@@ -158,6 +162,7 @@ export default {
 
           let isAdmin = queryInfo.list.roles[0]
           let user = {}
+          //此处设置登录用户信息（username等）
           if (isAdmin == 'Administrator') {
             user = {
               id: 0,
@@ -165,14 +170,16 @@ export default {
                 role: 'admin',
                 visit: [],
               },
+              username: queryInfo.list.realName,
             }
           } else {
             user = {
               id: 1,
               permissions: {
                 role: 'guest',
-                visit: ['1', '21', '7', '6', '61', '62', '63'],
+                visit: ['1', '21', '7', '6', '61', '62', '63', '4'],
               },
+              username: queryInfo.list.realName,
             }
           }
           const { permissions } = user
@@ -291,6 +298,12 @@ export default {
           ],
         },
       })
+      if (queryLayout(config.layouts) !== 'public') {
+        router.push({
+          pathname: '/',
+        })
+      }
+      window.localStorage.clear()
       if (queryLayout(config.layouts) !== 'public') {
         router.push({
           pathname: '/',

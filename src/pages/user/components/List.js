@@ -19,16 +19,15 @@ class List extends PureComponent {
       onchangeItem(record)
     }
   }
-  changeStatus = (value) =>{
-    if(value == "正常") {
-      return "1"
-    }else {
-      return "2"
+  changeStatus = value => {
+    if (value == '正常') {
+      return '1'
+    } else {
+      return '2'
     }
   }
   render() {
     const { onDeleteItem, onEditItem, i18n, ...tableProps } = this.props
-
     const columns = [
       {
         title: <Trans>Email</Trans>,
@@ -39,7 +38,7 @@ class List extends PureComponent {
         title: <Trans>Name</Trans>,
         dataIndex: 'realName',
         key: 'realName',
-        render: (text, record) => <Link to={`user/${record.id}`}>{text}</Link>,
+        // render: (text, record) => <Link to={`user/${record.id}`}>{text}</Link>,
       },
       {
         title: <Trans>Phone</Trans>,
@@ -50,7 +49,7 @@ class List extends PureComponent {
         title: <Trans>Status</Trans>,
         dataIndex: 'status',
         key: 'status',
-        render: ( dataIndex ) => dataIndex == '1' ? '正常':'冻结'
+        render: dataIndex => (dataIndex == '1' ? '正常' : '冻结'),
       },
       {
         title: <Trans>Note</Trans>,
@@ -76,15 +75,14 @@ class List extends PureComponent {
             <DropOption
               onMenuClick={e => this.handleMenuClick(record, e)}
               menuOptions={[
-                { key: '1', name: "修改信息" },
-                { key: '2', name: "修改密码" },
+                { key: '1', name: '修改信息' },
+                { key: '2', name: '修改密码' },
               ]}
             />
           )
         },
       },
     ]
-
     return (
       <Table
         {...tableProps}

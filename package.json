@@ -13,6 +13,7 @@
     "babel-core": "7.0.0-bridge.0",
     "bootstrap": "^4.3.1",
     "classnames": "^2.2.6",
+    "core-js": "^2.1.1",
     "d3-shape": "^1.2.2",
     "draftjs-to-html": "^0.8.4",
     "draftjs-to-markdown": "^0.5.1",
@@ -44,8 +45,10 @@
     "react-highcharts": "^16.0.2",
     "react-perfect-scrollbar": "^1.4.2",
     "recharts": "^1.3.6",
+    "rxjs": "^6.4.0",
     "store": "^2.0.12",
-    "ztree": "^3.5.24"
+    "ztree": "^3.5.24",
+    "toggle-selection": "^1.0.6"
   },
   "devDependencies": {
     "@lingui/babel-preset-react": "^2.7.1",

@@ -8,7 +8,7 @@ import {
   NumberCard,
   Quote,
   Sales,
-  Weather,
+  // Weather,
   RecentSales,
   Comments,
   Completed,
@@ -82,10 +82,10 @@ class Dashboard extends PureComponent {
                     background: Color.blue,
                   }}
                 >
-                  <Weather
-                    {...weather}
-                    loading={loading.effects['dashboard/queryWeather']}
-                  />
+                  {/*<Weather*/}
+                  {/*/!*{...weather}*!/*/}
+                  {/*loading={loading.effects['dashboard/queryWeather']}*/}
+                  {/*/>*/}
                 </Card>
               </Col>
               <Col lg={24} md={12}>
