@@ -68,11 +68,27 @@ export default modelExtend(pageModel, {
     addEdge(state, { payload }) {
       console.log(payload)
       //禁止指向根节点
+      let canAddEdge = true
       if (
         state.StructurePane.structureTreeRoot &&
         state.StructurePane.structureTreeRoot.paneId == payload.addModel.target
       ) {
         alert('根节点')
+        canAddEdge = false
+      }
+      //防止闭环
+      let node = state.StructurePane.structureNodes.find(
+        structure => structure.paneId == payload.addModel.source
+      )
+      let allAboveNodes = node
+        .allAboveNodes()
+        .map(structure => structure.paneId)
+      console.log(allAboveNodes)
+      if (allAboveNodes.indexOf(payload.addModel.target) >= 0) {
+        alert('闭环')
+        canAddEdge = false
+      }
+      if (!canAddEdge) {
         let nodeData = Object.assign(
           Object.create(Object.getPrototypeOf(state.nodeData)),
           state.nodeData
@@ -82,8 +98,7 @@ export default modelExtend(pageModel, {
           nodeData: nodeData,
         }
       }
-      //防止闭环
-      // if()
+      //添加关系
       let parentNode = state.StructurePane.structureNodes.find(
         node => node.paneId == payload.addModel.source
       )
