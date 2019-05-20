@@ -17,15 +17,42 @@ class FmeaPage extends React.Component {
 
   // }
   panelAction(e) {
-    switch (e.type) {
-      case 'node':
-        this.props.dispatch({ type: 'FMEA/addNode', payload: e })
-        break
-      case 'edge':
-        this.props.dispatch({ type: 'FMEA/addEdge', payload: e })
-        break
-      default:
-        return
+    console.log(e)
+    if (e.name == 'add') {
+      switch (e.type) {
+        case 'node':
+          this.props.dispatch({ type: 'FMEA/addNode', payload: e })
+          break
+        case 'edge':
+          this.props.dispatch({ type: 'FMEA/addEdge', payload: e })
+          break
+        default:
+          return
+      }
+    } else if ((e.name = 'delete')) {
+      console.log(e.itemIds)
+      // console.log(this.props.FMEA.nodeData.nodes.findIndex(node=>node.id==e.itemIds[0]))
+      // console.log(this.props.FMEA.nodeData.edges.findIndex(edge=>edge.id==e.itemIds[0]))
+      if (
+        e.itemIds &&
+        this.props.FMEA.nodeData.nodes.findIndex(
+          node => node.id == e.itemIds[0]
+        ) >= 0
+      ) {
+        this.props.dispatch({
+          type: 'FMEA/deleteNode',
+          payload: this.props.FMEA.nodeData.nodes.findIndex(
+            node => node.id == e.itemIds[0]
+          ),
+        })
+      } else if (e.itemIds) {
+        this.props.dispatch({
+          type: 'FMEA/deleteEdge',
+          payload: this.props.FMEA.nodeData.edges.findIndex(
+            edge => edge.id == e.itemIds[0]
+          ),
+        })
+      }
     }
   }
   //选择结构
@@ -102,49 +129,84 @@ class FmeaPage extends React.Component {
     //     dispatch({ type: 'FMEA/triggerType', payload: { type: 0 } })
     //   }
     // }
+    const getChildLebal = arr => {}
+
     let viewData = null
     const getViewData = () => {
       console.log(this.props.FMEA)
-      if (this.props.FMEA.actionType == 1) {
-        console.log(this.props.FMEA.selectedFun)
-        viewData = {
-          roots: [
-            {
-              label: this.props.FMEA.selectedFun.name,
-              side: 'left',
-              children: this.props.FMEA.selectedFun.dependentFunctionSet.map(
-                fun => {
-                  return {
-                    label: fun.name,
-                  }
-                }
-              ),
-            },
-          ],
-        }
-      } else if (this.props.FMEA.actionType == 2) {
-        console.log(this.props.FMEA.selectedFail)
-        viewData = {
-          roots: [
-            {
-              label: this.props.FMEA.selectedFail.name,
-              side: 'left',
-              children: this.props.FMEA.selectedFail.dependentFailureSet.map(
-                fail => {
-                  return {
-                    label: fail.name,
-                  }
-                }
-              ),
-            },
-          ],
-        }
+      if (this.props.FMEA.selectedStructure === null) {
+        return
+      }
+      if (
+        this.props.FMEA.actionType == 1 &&
+        this.props.FMEA.selectedFun !== null
+      ) {
+        let treeData = this.props.FMEA.StructurePane.GetStructureFunctionDepTree(
+          this.props.FMEA.selectedStructure.id,
+          this.props.FMEA.selectedFun.id
+        )
+        viewData = treeData
+          ? {
+              roots: [
+                {
+                  label:
+                    this.props.FMEA.selectedStructure.name +
+                    '--' +
+                    this.props.FMEA.selectedFun.name,
+                  children: this.props.FMEA.StructurePane.GetStructureFunctionDepTree(
+                    this.props.FMEA.selectedStructure.id,
+                    this.props.FMEA.selectedFun.id
+                  ).leftChilds.concat(
+                    this.props.FMEA.StructurePane.GetStructureFunctionDepTree(
+                      this.props.FMEA.selectedStructure.id,
+                      this.props.FMEA.selectedFun.id
+                    ).rightChilds
+                  ),
+                },
+              ],
+            }
+          : null
+      } else if (
+        this.props.FMEA.actionType == 2 &&
+        this.props.FMEA.selectedFail !== null
+      ) {
+        let treeData = this.props.FMEA.StructurePane.GetFunctionFailureDepTree(
+          this.props.FMEA.selectedStructure.id,
+          this.props.FMEA.selectedFun.id,
+          this.props.FMEA.selectedFail.id
+        )
+        viewData = treeData
+          ? {
+              roots: [
+                {
+                  label:
+                    this.props.FMEA.selectedStructure.name +
+                    '--' +
+                    this.props.FMEA.selectedFun.name +
+                    '--' +
+                    this.props.FMEA.selectedFail.name,
+                  children: this.props.FMEA.StructurePane.GetFunctionFailureDepTree(
+                    this.props.FMEA.selectedStructure.id,
+                    this.props.FMEA.selectedFun.id,
+                    this.props.FMEA.selectedFail.id
+                  ).leftChilds.concat(
+                    this.props.FMEA.StructurePane.GetFunctionFailureDepTree(
+                      this.props.FMEA.selectedStructure.id,
+                      this.props.FMEA.selectedFun.id,
+                      this.props.FMEA.selectedFail.id
+                    ).rightChilds
+                  ),
+                },
+              ],
+            }
+          : null
       }
     }
     getViewData()
+    console.log(viewData)
     return (
       <div className={styles.structurePage}>
-        <Row>
+        <Row type="flex">
           <Col span={18} className={styles.structure}>
             <StructurePage
               panelAction={e => {
@@ -153,6 +215,7 @@ class FmeaPage extends React.Component {
               nodeClick={e => {
                 this.nodeClick(e)
               }}
+              {...this.props}
             />
           </Col>
           <Col span={6} className={styles.set}>
@@ -163,7 +226,7 @@ class FmeaPage extends React.Component {
           <Col span={24} className={styles.view}>
             {viewData != null && (
               <GGEditor>
-                <Mind style={{ width: 500, height: 250 }} data={viewData} />
+                <Mind style={{ height: 300 }} data={viewData} />
               </GGEditor>
             )}
           </Col>
