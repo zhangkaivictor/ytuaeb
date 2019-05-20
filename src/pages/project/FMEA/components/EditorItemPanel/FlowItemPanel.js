@@ -17,7 +17,7 @@ const FlowItemPanel = () => {
           }}
           src="/chip_CPU.png"
         />
-        <Item
+        {/* <Item
           type="node"
           size="80*48"
           shape="flow-rect"
@@ -26,7 +26,7 @@ const FlowItemPanel = () => {
             label: '服务编排-连接线',
           }}
           src="/connect.png"
-        />
+        /> */}
         <Item
           type="node"
           size="80*72"
@@ -53,20 +53,21 @@ const FlowItemPanel = () => {
           shape="flow-capsule"
           model={{
             color: '#722ED1',
-            label: '电流传感器',
+            label: '齿轮',
           }}
-          src="/electric_sensor.png"
+          src="/gear.png"
         />
-        <Item
+        {/* <Item
           type="node"
           size="80*48"
           shape="flow-capsule"
           model={{
             color: '#722ED1',
-            label: '齿轮',
+            label: '电流传感器',
           }}
-          src="/gear.png"
+          src="/electric_sensor.png"
         />
+        
         <Item
           type="node"
           size="80*48"
@@ -76,7 +77,7 @@ const FlowItemPanel = () => {
             label: '压力传感器',
           }}
           src="/pressure_sensor.png"
-        />
+        /> */}
       </Card>
     </ItemPanel>
   )
