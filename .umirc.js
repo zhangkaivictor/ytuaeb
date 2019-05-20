@@ -12,45 +12,42 @@ export default {
       {
         dva: { immer: true },
         antd: true,
-        dynamicImport: {
-          webpackChunkName: true,
-          loadingComponent: './components/Loader/Loader',
-        },
+        dynamicImport: false,
+        //   {
+        //   webpackChunkName: true,
+        //   loadingComponent: './components/Loader/Loader',
+        // }
         routes: {
           exclude: [
             /model\.(j|t)sx?$/,
             /service\.(j|t)sx?$/,
             /models\//,
-            /components\//,
             /services\//,
-            /chart\/Container\.js$/,
-            /chart\/ECharts\/.+Component\.js$/,
-            /chart\/ECharts\/.+ComPonent\.js$/,
-            /chart\/ECharts\/theme\/.+\.js$/,
-            /chart\/highCharts\/.+Component\.js$/,
-            /chart\/highCharts\/mapdata\/.+\.js$/,
-            /chart\/Recharts\/.+Component\.js$/,
-            /chart\/Recharts\/Container\.js$/,
+            /components\//,
+            // /chart\/Container\.js$/,
+            // /chart\/ECharts\/.+Component\.js$/,
+            // /chart\/ECharts\/.+ComPonent\.js$/,
+            // /chart\/ECharts\/theme\/.+\.js$/,
+            // /chart\/highCharts\/.+Component\.js$/,
+            // /chart\/highCharts\/mapdata\/.+\.js$/,
+            // /chart\/Recharts\/.+Component\.js$/,
+            // /chart\/Recharts\/Container\.js$/,
           ],
           update: routes => {
             if (!i18n) return routes
-
             const newRoutes = []
             for (const item of routes[0].routes) {
               newRoutes.push(item)
               if (item.path) {
                 newRoutes.push(
                   Object.assign({}, item, {
-                    path:
-                      `/:lang(${i18n.languages
-                        .map(item => item.key)
-                        .join('|')})` + item.path,
+                    path:item.path,
                   })
                 )
               }
             }
             routes[0].routes = newRoutes
-
+            // console.log(newRoutes);
             return routes
           },
         },
@@ -66,6 +63,8 @@ export default {
       },
     ],
   ],
+  // 路由配置
+  // routes: pageRoutes,
   // Theme for antd
   // https://ant.design/docs/react/customize-theme
   theme: './config/theme.config.js',
@@ -99,7 +98,6 @@ export default {
       'lodash',
     ],
   ],
-  // exportStatic: {},
-  // base: 'html/',
-  publicPath: "./"
+  // publicPath: "./",
+  exportStatic: { },
 }

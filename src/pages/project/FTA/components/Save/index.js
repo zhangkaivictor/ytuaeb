@@ -2,7 +2,7 @@ import React from "react";
 import { Row, Col, Button } from 'antd';
 import { withPropsAPI } from "gg-editor";
 
-const hash = ["name", "failureRateQ", "invalidRate", "failureTime", "dCrf", "dClf", "referenceFailureRateq"];
+const hash = ["name", "failureRateQ", "invalidRate", "failureTime", "dCrf", "dClf", "referenceFailureRateq","smallFailureRateQValueType","invalidRateValueIsModifiedByUser"];
 const itemType = ["andGate","orGate","nonGate"];
 const attrData = (arr) => {
   let data = [];

@@ -28,7 +28,6 @@ class List extends PureComponent {
   }
   render() {
     const { onDeleteItem, onEditItem, i18n, ...tableProps } = this.props
-
     const columns = [
       {
         title: <Trans>Email</Trans>,
@@ -39,7 +38,7 @@ class List extends PureComponent {
         title: <Trans>Name</Trans>,
         dataIndex: 'realName',
         key: 'realName',
-        render: (text, record) => <Link to={`user/${record.id}`}>{text}</Link>,
+        // render: (text, record) => <Link to={`user/${record.id}`}>{text}</Link>,
       },
       {
         title: <Trans>Phone</Trans>,
@@ -84,7 +83,6 @@ class List extends PureComponent {
         },
       },
     ]
-
     return (
       <Table
         {...tableProps}

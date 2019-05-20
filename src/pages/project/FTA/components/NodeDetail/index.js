@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'dva'
-import { Card, Form, Input } from 'antd';
+import { Card, Form, Input,Checkbox,Switch } from 'antd';
 import { withPropsAPI } from 'gg-editor';
 import styles from './index.less'
 
@@ -14,33 +14,27 @@ const inlineFormItemLayout = {
     sm: { span: 18 },
   },
 };
-const tenlineFormItemLayout = {
-  labelCol: {
-    sm: { span: 10},
-  },
-  wrapperCol: {
-    sm: { span: 14 },
-  },
-};
-const eightlineFormItemLayout = {
-  labelCol: {
-    sm: { span: 8},
-  },
-  wrapperCol: {
-    sm: { span: 16 },
-  },
-};
-const onlineFormItemLayout = {
-  labelCol: {
-    sm: { span: 18},
-  },
-  wrapperCol: {
-    sm: { span: 6 },
-  },
-};
 
 @connect(({ FTA, loading }) => ({ FTA, loading }))
 class NodeDetail extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      Qchecked: false,
+      qchecked: false,
+    };
+  }
+
+  componentWillMount() {
+    const { propsAPI } = this.props;
+    const { getSelected, update, executeCommand } = propsAPI;
+    const { nodes } = propsAPI.save();
+
+    const item = getSelected()[0];
+    const { smallFailureRateQValueType,invalidRateValueIsModifiedByUser } = item.getModel();
+    this.setState({Qchecked : invalidRateValueIsModifiedByUser})
+    this.setState({qchecked : smallFailureRateQValueType})
+  }
   handleSubmit = (e) => {
     e.preventDefault();
 
@@ -54,6 +48,9 @@ class NodeDetail extends React.Component {
       }
 
       const item = getSelected()[0];
+      const itemsModel = item.getModel();
+      itemsModel.invalidRateValueIsModifiedByUser = this.state.Qchecked;
+      itemsModel.smallFailureRateQValueType = this.state.qchecked;
 
       if (!item) {
         return;
@@ -66,48 +63,29 @@ class NodeDetail extends React.Component {
 
       for (let i=0; i <= nodes.length-1; i++){
         if(item.model.name == nodes[i].name){
-            let nextId = nodes[i].id;
-            let nextItem = find(nextId);
-            executeCommand(() => {
-              update(nextItem, {
-                ...values,
-              });
+          let nextItem = find(nodes[i].id);
+          executeCommand(() => {
+            update(nextItem, {
+              ...values,
+              id:nodes[i].id,
             });
+          });
         }
       }
 
     });
   }
-
-  componentWillMount() {
-    const { propsAPI } = this.props;
-    const { getSelected, update, executeCommand } = propsAPI;
-    const { nodes } = propsAPI.save();
-
-    const item = getSelected()[0];
-
-    const { name, failureRateQ } = item.getModel();
-    if(failureRateQ == ""){
-      nodes.some(itemNode => {
-        if(itemNode.name == name && itemNode.failureRateQ != ""){
-          executeCommand(() => {
-            update(item, {
-              "failureRateQ":itemNode.failureRateQ,
-              "invalidRate":itemNode.invalidRate,
-              "failureTime":itemNode.failureTime,
-              "dCrf":itemNode.dCrf,
-              "dClf":itemNode.dClf,
-              "referenceFailureRateq":itemNode.referenceFailureRateq
-            });
-          });
-        }
-      })
-    }
-
+  onChangeQ = (e) => {
+    let checked = `${e.target.checked}`;
+    this.setState({Qchecked : JSON.parse(checked)})
+  }
+  onChangeq = (e) => {
+    let checked = `${e.target.checked}`;
+    this.setState({qchecked : JSON.parse(checked)})
   }
 
   render() {
-    const { form, propsAPI } = this.props;
+    const { form, propsAPI, isHideScreen } = this.props;
     const { getFieldDecorator } = form;
     const { getSelected } = propsAPI;
 
@@ -117,9 +95,8 @@ class NodeDetail extends React.Component {
     if (!item) {
       return null;
     }
-
-    const { name, note, shape, failureRateQ, invalidRate, failureTime, dCrf, dClf, referenceFailureRateq} = item.getModel();
-
+    const { name, note, id, shape, failureRateQ, invalidRate, failureTime,
+      dCrf, dClf, referenceFailureRateq,invalidRateValueIsModifiedByUser,smallFailureRateQValueType} = item.getModel();
     if(itemType.indexOf(shape)>=0){
       return null;
     }else {
@@ -127,7 +104,18 @@ class NodeDetail extends React.Component {
         <Card type="inner" title="节点属性" bordered={false} headStyle={{ backgroundColor:'#e5e5e5'}}>
           <Form onSubmit={this.handleSubmit}>
             <Item
-              label="标签"
+              label="ID"
+              {...inlineFormItemLayout}
+              className={styles.mapType}
+            >
+              {
+                getFieldDecorator('id', {
+                  initialValue: id,
+                })(<Input onBlur={this.handleSubmit} disabled/>)
+              }
+            </Item>
+            <Item
+              label="name"
               {...inlineFormItemLayout}
               className={styles.mapType}
             >
@@ -138,7 +126,7 @@ class NodeDetail extends React.Component {
               }
             </Item>
             <Item
-              label="注释"
+              label="note"
               {...inlineFormItemLayout}
               className={styles.mapType}
             >
@@ -147,23 +135,22 @@ class NodeDetail extends React.Component {
                   initialValue: note,
                 })(<Input onBlur={this.handleSubmit} />)
               }
-
             </Item>
             <Item
-              label="失效概率"
-              {...tenlineFormItemLayout}
+              label="Q"
+              {...inlineFormItemLayout}
               className={styles.mapType}
             >
               {
                 getFieldDecorator('failureRateQ', {
                   initialValue: failureRateQ,
-                })(<Input onBlur={this.handleSubmit} />)
+                })(<Input onBlur={this.handleSubmit} addonAfter={(<Checkbox checked={this.state.Qchecked} onChange={this.onChangeQ.bind(this)} onBlur={this.handleSubmit}/>)} disabled={!this.state.Qchecked}/>)
               }
 
             </Item>
             <Item
-              label="失效率"
-              {...eightlineFormItemLayout}
+              label="λ"
+              {...inlineFormItemLayout}
               className={styles.mapType}
             >
               {
@@ -174,7 +161,7 @@ class NodeDetail extends React.Component {
 
             </Item>
             <Item
-              label="时间"
+              label="T"
               {...inlineFormItemLayout}
               className={styles.mapType}
             >
@@ -186,8 +173,8 @@ class NodeDetail extends React.Component {
 
             </Item>
             <Item
-              label="单点故障覆盖率"
-              {...onlineFormItemLayout}
+              label="dCrf"
+              {...inlineFormItemLayout}
               className={styles.mapType}
             >
               {
@@ -198,8 +185,8 @@ class NodeDetail extends React.Component {
 
             </Item>
             <Item
-              label="潜伏故障覆盖率"
-              {...onlineFormItemLayout}
+              label="dClf"
+              {...inlineFormItemLayout}
               className={styles.mapType}
             >
               {
@@ -209,7 +196,19 @@ class NodeDetail extends React.Component {
               }
 
             </Item>
-
+            <Item
+              label="q"
+              {...inlineFormItemLayout}
+              className={styles.mapType}
+            >
+              {
+                getFieldDecorator('referenceFailureRateq', {
+                  initialValue: referenceFailureRateq,
+                })(
+                  <Input addonAfter={(<Checkbox checked={this.state.qchecked} onChange={this.onChangeq.bind(this)} onBlur={this.handleSubmit}/>)} onBlur={this.handleSubmit} disabled={!this.state.qchecked}/>
+                )
+              }
+            </Item>
           </Form>
         </Card>
       );

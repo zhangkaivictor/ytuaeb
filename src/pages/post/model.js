@@ -16,8 +16,7 @@ export default modelExtend(pageModel, {
               status: 2,
               ...location.query,
             },
-          })
-
+          });
         }
       })
     },
@@ -33,16 +32,20 @@ export default modelExtend(pageModel, {
       }
       const data = yield call(queryPostTypeList, payload, headers)
       if (data.success) {
-        yield put({
-          type: 'querySuccess',
-          payload: {
-            list: data.list,
-            pagination: {
-              current: Number(payload.page) || 1,
-              pageSize: Number(payload.pageSize) || 10,
+        const usersData = yield call(queryUserList, {}, headers)
+        if (usersData.success) {
+          yield put({
+            type: 'querySuccess',
+            payload: {
+              list: data.list,
+              pagination: {
+                current: Number(payload.page) || 1,
+                pageSize: Number(payload.pageSize) || 10,
+              },
+              userList: usersData.list
             },
-          },
-        })
+          })
+        }
       } else {
         throw data
       }
@@ -60,13 +63,11 @@ export default modelExtend(pageModel, {
         throw data
       }
     },
-
     * update({ payload }, { select, call, put }) {
       const headers = {
         'Authorization': window.localStorage.getItem('token')
       };
-      const id = yield select(({ user }) => user.currentItem.id)
-      const newUser = { ...payload, id }
+      const newUser = payload;
       const data = yield call(updatePost, newUser, headers)
       if (data.success) {
         yield put({ type: 'hideModal' })

@@ -9,20 +9,20 @@ import {
   DetailPanel,
 } from 'gg-editor';
 import NodeDetail from '../NodeDetail';
-import EdgeDetail from '../EdgeDetail';
 import GroupDetail from '../GroupDetail';
 import styles from './index.less';
 
 class FlowDetailPanel extends React.Component {
   render() {
+    const { isHideScreen } = this.props;
+    const nodePanelProps = {
+      isHideScreen:isHideScreen
+    }
     return (
       <DetailPanel className={styles.detailPanel}>
         <NodePanel>
-          <NodeDetail />
+          <NodeDetail {...nodePanelProps}/>
         </NodePanel>
-        <EdgePanel>
-          <EdgeDetail />
-        </EdgePanel>
         <GroupPanel>
           <GroupDetail />
         </GroupPanel>

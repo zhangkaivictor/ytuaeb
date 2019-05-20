@@ -19,6 +19,7 @@ const api = {
   createPostFtaMap:'POST /api/FTAProjects/AddTree',
   getFtaMap:'/api/FTAProjects/GetTree',
   getAnalyzeTree:'POST /api/FTAProjects/AnalyzeTree',
+  getTreeReport:'/api/FTAProjects/GetTreeReport',
 
 
   queryDashboard: '/dashboard',

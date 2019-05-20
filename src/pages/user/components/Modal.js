@@ -12,9 +12,9 @@ const handleChange = (value) => {
 
 const changeStatus = (value) =>{
   if(value == "正常") {
-    return 1
+    return 1;
   }else {
-    return 2
+    return 2;
   }
 }
 
@@ -42,11 +42,17 @@ class UserModal extends PureComponent {
         ...getFieldsValue(),
         key: item.key,
       }
+
       if(this.props.title == '创建用户'){
         data.status = changeStatus(data.status);
-        data.Roles = ['user']
+        data.status = parseInt(data.status);
+        data.roles = ['user']
+        console.log(data.status)
+        onOk(data);
+      }else{
+        data.status = parseInt(data.status);
+        onOk(data);
       }
-      onOk(data)
     })
   }
 

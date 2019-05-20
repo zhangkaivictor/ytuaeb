@@ -142,10 +142,10 @@ class PrimaryLayout extends PureComponent {
               <Bread routeList={newRouteList} />
               {hasPermission ? children : <Error />}
             </Content>
-            <BackTop
-              className={styles.backTop}
-              target={() => document.querySelector('#primaryLayout>div')}
-            />
+            {/*<BackTop*/}
+              {/*className={styles.backTop}*/}
+              {/*target={() => document.querySelector('#primaryLayout>div')}*/}
+            {/*/>*/}
             <GlobalFooter
               className={styles.footer}
               copyright={config.copyright}

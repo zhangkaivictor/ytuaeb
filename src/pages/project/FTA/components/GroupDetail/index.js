@@ -42,7 +42,6 @@ class GroupDetail extends React.Component {
     const { getFieldDecorator } = form;
     const { getSelected } = propsAPI;
 
-    console.log(this.props);
     const item = getSelected()[0];
 
     if (!item) {

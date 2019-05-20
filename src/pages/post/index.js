@@ -23,14 +23,15 @@ const EnumPostStatus = {
 class Post extends PureComponent {
   render() {
     const { post, loading, location, i18n, dispatch } = this.props
-    console.log( this.props);
     const {
       list,
       pagination,
       currentItem,
       modalVisible,
       modalType,
-      selectedRowKeys } = post
+      selectedRowKeys,
+      userList,
+    } = post
     const { query, pathname } = location
     const listProps = {
       pagination,
@@ -83,10 +84,11 @@ class Post extends PureComponent {
       maskClosable: false,
       confirmLoading: loading.effects[`user/${modalType}`],
       title: `${
-        modalType === 'create' ? i18n.t`Create User` : (modalType === 'update' ? i18n.t`Update User`: '修改密码')
+        modalType === 'create' ? "创建项目" : "更新项目"
         }`,
       wrapClassName: 'vertical-center-modal',
       userData: list,
+      userNameList: userList,
       onOk(data) {
         dispatch({
           type: `post/${modalType}`,

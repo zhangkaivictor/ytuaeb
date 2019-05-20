@@ -10,7 +10,6 @@ import config from 'config'
 import styles from './Header.less'
 
 const { SubMenu } = Menu
-
 @withI18n()
 class Header extends PureComponent {
   handleClickMenu = e => {
@@ -27,16 +26,18 @@ class Header extends PureComponent {
       onCollapseChange,
       onAllNotificationsRead,
     } = this.props
-
+    // const name = window.localStorage.getItem('username')
+    // console.log(name)
     const rightContent = [
       <Menu key="user" mode="horizontal" onClick={this.handleClickMenu}>
         <SubMenu
           title={
             <Fragment>
               <span style={{ color: '#999', marginRight: 4 }}>
-                <Trans>Hi,</Trans>
+                <Trans>Hi,
+                  <span style={{ color: 'red',fontWeight:'800'}}>{window.localStorage.getItem('username')}</span>
+                  </Trans>
               </span>
-              <span>{username}</span>
               <Avatar style={{ marginLeft: 8 }} src={avatar} />
             </Fragment>
           }

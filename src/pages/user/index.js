@@ -9,7 +9,15 @@ import { stringify } from 'qs'
 import List from './components/List'
 import Filter from './components/Filter'
 import Modal from './components/Modal'
-
+const findAdminFn = (arr) => {
+  let newArr = [];
+  for (let i = 0; i <= arr.length - 1; i++) {
+    if (!arr[i].roles.includes("Administrator")) {
+      newArr.push(arr[i]);
+    }
+  }
+  return newArr
+}
 @withI18n()
 @connect(({ user, loading }) => ({ user, loading }))
 class User extends PureComponent {
@@ -50,15 +58,9 @@ class User extends PureComponent {
     }
 
     const listProps = {
-      dataSource: list,
+      dataSource: findAdminFn(list),
       loading: loading.effects['user/query'],
       pagination,
-      onChange(page) {
-        handleRefresh({
-          page: page.current,
-          pageSize: page.pageSize,
-        })
-      },
       onchangeItem(item) {
         dispatch({
           type: 'user/showModal',
@@ -87,6 +89,15 @@ class User extends PureComponent {
             },
           })
         },
+      },
+      onChange(page) {
+        router.push({
+          pathname,
+          search: stringify({
+            page: page.current,
+            pageSize: page.pageSize,
+          }),
+        })
       },
     }
 

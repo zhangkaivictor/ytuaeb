@@ -5,18 +5,23 @@ import styles from './index.less';
 
 @connect(({ FTA, loading }) => ({ FTA, loading }))
 class FlowMap extends React.Component{
-
   render() {
-    const { data } = this.props;
-    let mapData = {};
-    if(data != null){
-      mapData = JSON.parse(data)
+    const { FTA, isHideScreen } = this.props;
+    let data = FTA.list.content;
+    var mapData = {};
+    if(data != null && data != undefined){
+      mapData = eval('(' + data + ')');
+      // mapData = JSON.parse(data)
       delete mapData.attributes;
+      mapData.nodes.forEach(item => {
+       item.checkDis = isHideScreen
+      })
     }else {
       mapData = {}
     }
+    // console.log(mapData.nodes);
     return (
-      <Flow className={styles.flow} style={{height: 650 }} grid data={mapData} />
+      <Flow className={styles.flow} style={{ height:750 }} grid data={ mapData } />
     )
   }
 }

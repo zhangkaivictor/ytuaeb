@@ -1,11 +1,12 @@
 import React from 'react';
 import { Card } from 'antd';
-import { ItemPanel, Item, RegisterNode } from 'gg-editor';
+import { ItemPanel, Item, RegisterNode, RegisterEdge } from 'gg-editor';
 import styles from './index.less';
 
 class EditorItemPanel extends React.Component {
-
   render() {
+    const { isHideScreen } =this.props;
+    // console.log(isHideScreen)
     return (
       <ItemPanel className={styles.itemPanel}>
         <RegisterNode name='andGate'
@@ -220,8 +221,8 @@ class EditorItemPanel extends React.Component {
                           group.addShape('text', {
                             attrs: {
                               text: name,
-                              x: x+30,
-                              y: y+20,
+                              x: x+40,
+                              y: y+22,
                               textAlign: 'center',
                               textBaseline: 'middle',
                               fill: 'rgba(0,0,0,0.65)'
@@ -340,38 +341,42 @@ class EditorItemPanel extends React.Component {
             shape="square"
             model={{
               color: '#1890FF',
-              name: '根节点',
-              note: '根节点',
-              checkDis: true,
+              name: 'F000',
+              note: '根节点注释',
+              checkDis: isHideScreen,
               itemType:'square',
-              failureRateQ: '',
-              invalidRate: '',
-              failureTime: '',
-              dCrf: '',
-              dClf: '',
-              referenceFailureRateq: ''
-
+              failureRateQ: 0,
+              invalidRate: 0,
+              failureTime:5000,
+              dCrf: 0,
+              dClf: 0,
+              referenceFailureRateq: 0,
+              invalidRateValueIsModifiedByUser: false,
+              smallFailureRateQValueType: false
             }}
             src="/square.png"
           />
           <Item
             type="node"
-            size="80*48"
+            size="60*28"
             shape="rectangle"
             model={{
               color: '#1890FF',
-              name: '常规节点',
-              note: '注释输入',
-              checkDis: true,
+              name: 'C000',//center
+              note: '中间节点注释',
+              checkDis: isHideScreen,
               itemType:'rectangle',
-              failureRateQ: '',
-              invalidRate: '',
-              failureTime: '',
-              dCrf: '',
-              dClf: '',
-              referenceFailureRateq: ''
+              failureRateQ: 0,
+              invalidRate: 0,
+              failureTime:5000,
+              dCrf: 0,
+              dClf: 0,
+              referenceFailureRateq: 0,
+              invalidRateValueIsModifiedByUser: false,
+              smallFailureRateQValueType: false
             }}
-            src="https://gw.alipayobjects.com/zos/rmsportal/wHcJakkCXDrUUlNkNzSy.svg"
+            src="/rectangle.png"
+            className={styles.rectangle}
           />
           <Item
             type="node"
@@ -379,16 +384,18 @@ class EditorItemPanel extends React.Component {
             shape="round"
             model={{
               color: '#FA8C16',
-              name: '叶子节点',
-              note: '节点注释',
-              checkDis: true,
+              name: 'E000',
+              note: '叶子节点注释',
+              checkDis: isHideScreen,
               itemType:'round',
-              failureRateQ: '',
-              invalidRate: '',
-              failureTime: '',
-              dCrf: '',
-              dClf: '',
-              referenceFailureRateq: ''
+              failureRateQ: 0,
+              invalidRate: 0,
+              failureTime:5000,
+              dCrf: 0,
+              dClf: 0,
+              referenceFailureRateq: 0,
+              invalidRateValueIsModifiedByUser: false,
+              smallFailureRateQValueType: false
             }}
             src="/round.png"
           />

@@ -8,6 +8,7 @@ export default {
 
   effects: {
     *login({ payload }, { put, call, select }) {
+      window.localStorage.setItem('username',payload.username);
       const data = 'username=' + payload.username + '&password='+ payload.password +'&grant_type=password';
       const headers = {
         'Accept':'application/json',
@@ -23,7 +24,7 @@ export default {
           'contentType': 'application/json'
         }
         const shqUser = yield call(loginUser, {'email':payload.username}, headers)
-        window.localStorage.setItem('username',payload.username);
+        // window.localStorage.setItem('username',payload.username);
         //const { locationQuery } = yield select(_ => _.app)
         if (shqUser.success && shqUser.list.status == 1) {
           //const { from } = locationQuery

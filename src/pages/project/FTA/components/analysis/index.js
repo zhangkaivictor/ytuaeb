@@ -1,9 +1,10 @@
 import React from "react";
+import { router } from 'utils'
 import { withPropsAPI } from "gg-editor";
 import { Row, Col, Button } from 'antd';
 
 
-const hash = ["name", "failureRateQ", "invalidRate", "failureTime", "dCrf", "dClf", "referenceFailureRateq"];
+const hash = ["name", "failureRateQ", "invalidRate", "failureTime", "dCrf", "dClf", "referenceFailureRateq","smallFailureRateQValueType","invalidRateValueIsModifiedByUser"];
 const itemType = ["andGate","orGate","nonGate"];
 const attrData = (arr) => {
   let data = [];
@@ -53,7 +54,6 @@ const findHash = (arr) => {
 class Analysis extends React.Component {
 
   handleClick = () => {
-    console.log(this.props);
     const { onOk, propsAPI } = this.props;
     let saveData = propsAPI.save();
 
@@ -65,7 +65,6 @@ class Analysis extends React.Component {
       let attributes = findHash(deepClone(attrData(nodes)));
       saveData.attributes = attributes;
     }
-    console.log(saveData);
     let data = {
       Content: JSON.stringify(saveData),
     }
