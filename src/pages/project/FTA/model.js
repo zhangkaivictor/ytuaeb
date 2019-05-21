@@ -1,8 +1,8 @@
 import modelExtend from 'dva-model-extend'
 import { createPostFtaMap, getFtaMap, getAnalyzeTree, getTreeReport } from 'api'
-import { pathMatchRegexp,router } from 'utils'
+import { pathMatchRegexp, router } from 'utils'
 import { pageModel } from 'utils/model'
-import { message }from 'antd'
+import { message } from 'antd'
 
 export default modelExtend(pageModel, {
   namespace: 'FTA',
@@ -18,11 +18,11 @@ export default modelExtend(pageModel, {
                 projectId: location.query.projectId,
               },
             })
-          }else {
+          } else {
             router.push({
               pathname: '/post',
             })
-            message.info('目前没有项目，请新建！！！');
+            message.info('目前没有项目，请新建！！！')
           }
         }
       })
@@ -30,7 +30,7 @@ export default modelExtend(pageModel, {
   },
 
   effects: {
-    * createQuery({ payload = {} }, { call, put }) {
+    *createQuery({ payload = {} }, { call, put }) {
       const headers = {
         Authorization: window.localStorage.getItem('token'),
       }
@@ -47,7 +47,7 @@ export default modelExtend(pageModel, {
         throw data
       }
     },
-    * getTree({ payload = {} }, { call, put }) {
+    *getTree({ payload = {} }, { call, put }) {
       const headers = {
         Authorization: window.localStorage.getItem('token'),
       }
@@ -64,13 +64,17 @@ export default modelExtend(pageModel, {
         throw data
       }
     },
-    * getMapAnalyzeTree({ payload = {} }, { call, put }) {
+    *getMapAnalyzeTree({ payload = {} }, { call, put }) {
       const headers = {
         Authorization: window.localStorage.getItem('token'),
       }
       const data = yield call(getAnalyzeTree, payload, headers)
       if (data.success) {
-        const ftaMapData = yield call(getFtaMap, { projectId: payload.ProjectId }, headers)
+        const ftaMapData = yield call(
+          getFtaMap,
+          { projectId: payload.ProjectId },
+          headers
+        )
         if (data.list.analysisStatus == 'Ok') {
           yield put({
             type: 'querySuccess',
@@ -87,7 +91,7 @@ export default modelExtend(pageModel, {
         throw data
       }
     },
-    * getMapTreeReport({ payload = {} }, { call, put }) {
+    *getMapTreeReport({ payload = {} }, { call, put }) {
       const headers = {
         Authorization: window.localStorage.getItem('token'),
       }
@@ -100,12 +104,12 @@ export default modelExtend(pageModel, {
           type: 'querySuccess',
           payload: {
             treeReportList: data.list,
-            list: ftaMapData.list
+            list: ftaMapData.list,
           },
         })
         router.push({
           pathname: '/project/FTA/onAnalysis',
-          query:payload,
+          query: payload,
         })
       } else {
         throw data

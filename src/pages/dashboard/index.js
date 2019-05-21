@@ -83,8 +83,8 @@ class Dashboard extends PureComponent {
                   }}
                 >
                   {/*<Weather*/}
-                    {/*/!*{...weather}*!/*/}
-                    {/*loading={loading.effects['dashboard/queryWeather']}*/}
+                  {/*/!*{...weather}*!/*/}
+                  {/*loading={loading.effects['dashboard/queryWeather']}*/}
                   {/*/>*/}
                 </Card>
               </Col>

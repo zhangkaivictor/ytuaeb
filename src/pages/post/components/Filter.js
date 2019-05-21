@@ -20,7 +20,6 @@ const TwoColProps = {
 @withI18n()
 @Form.create()
 class Filter extends PureComponent {
-
   render() {
     const { onAdd } = this.props
 

@@ -1,93 +1,93 @@
-import React from "react";
-import { Row, Col, Button } from 'antd';
-import { withPropsAPI } from "gg-editor";
+import React from 'react'
+import { Row, Col, Button } from 'antd'
+import { withPropsAPI } from 'gg-editor'
 
 class Full extends React.Component {
   state = {
     //检测全屏状态
-    isFullScreen: false
-  };
+    isFullScreen: false,
+  }
 
-  componentDidMount(){
-    this.watchFullScreen();
+  componentDidMount() {
+    this.watchFullScreen()
   }
 
   fullScreen = () => {
-    console.log('fullscreen:',this.state.isFullScreen);
+    console.log('fullscreen:', this.state.isFullScreen)
 
     if (!this.state.isFullScreen) {
-      this.requestFullScreen();
+      this.requestFullScreen()
     } else {
-      this.exitFullscreen();
+      this.exitFullscreen()
     }
-  };
+  }
 
   //进入全屏
   requestFullScreen = () => {
     console.log('requestFullScreen')
-    var de = document.documentElement;
+    var de = document.documentElement
     if (de.requestFullscreen) {
-      de.requestFullscreen();
+      de.requestFullscreen()
     } else if (de.mozRequestFullScreen) {
-      de.mozRequestFullScreen();
+      de.mozRequestFullScreen()
     } else if (de.webkitRequestFullScreen) {
-      de.webkitRequestFullScreen();
+      de.webkitRequestFullScreen()
     }
-  };
+  }
   //退出全屏
   exitFullscreen = () => {
     console.log('exitFullscreen')
-    var de = document;
+    var de = document
     if (de.exitFullscreen) {
-      de.exitFullscreen();
+      de.exitFullscreen()
     } else if (de.mozCancelFullScreen) {
-      de.mozCancelFullScreen();
+      de.mozCancelFullScreen()
     } else if (de.webkitCancelFullScreen) {
-      de.webkitCancelFullScreen();
+      de.webkitCancelFullScreen()
     }
-  };
+  }
 
   //监听fullscreenchange事件
   watchFullScreen = () => {
-    const _self = this;
+    const _self = this
     document.addEventListener(
-      "fullscreenchange",
+      'fullscreenchange',
       function() {
         _self.setState({
-          isFullScreen: document.fullscreen
-        });
+          isFullScreen: document.fullscreen,
+        })
       },
       false
-    );
+    )
 
     document.addEventListener(
-      "mozfullscreenchange",
+      'mozfullscreenchange',
       function() {
         _self.setState({
-          isFullScreen: document.mozFullScreen
-        });
+          isFullScreen: document.mozFullScreen,
+        })
       },
       false
-    );
+    )
 
     document.addEventListener(
-      "webkitfullscreenchange",
+      'webkitfullscreenchange',
       function() {
         _self.setState({
-          isFullScreen: document.webkitIsFullScreen
-        });
+          isFullScreen: document.webkitIsFullScreen,
+        })
       },
       false
-    );
-  };
+    )
+  }
   render() {
-    const { isFullScreen } = this.state;
+    const { isFullScreen } = this.state
     return (
       <Button onClick={this.fullScreen}>
-        {isFullScreen?"退出全屏":"全屏"}
+        {isFullScreen ? '退出全屏' : '全屏'}
       </Button>
-    );
+    )
   }
 }
 
-export default withPropsAPI(Full);
+export default withPropsAPI(Full)

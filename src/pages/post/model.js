@@ -1,5 +1,11 @@
 import modelExtend from 'dva-model-extend'
-import { queryPostList, createPost, updatePost, queryUserList, queryPostTypeList } from 'api'
+import {
+  queryPostList,
+  createPost,
+  updatePost,
+  queryUserList,
+  queryPostTypeList,
+} from 'api'
 import { pathMatchRegexp } from 'utils'
 import { pageModel } from 'utils/model'
 
@@ -16,19 +22,19 @@ export default modelExtend(pageModel, {
               status: 2,
               ...location.query,
             },
-          });
+          })
         }
       })
     },
   },
 
   effects: {
-    * query({ payload = {} }, { call, put }) {
+    *query({ payload = {} }, { call, put }) {
       const headers = {
-        'Authorization': window.localStorage.getItem('token')
-      };
-      if(payload.type == undefined){
-        payload.type = "FTAProject"
+        Authorization: window.localStorage.getItem('token'),
+      }
+      if (payload.type == undefined) {
+        payload.type = 'FTAProject'
       }
       const data = yield call(queryPostTypeList, payload, headers)
       if (data.success) {
@@ -42,7 +48,7 @@ export default modelExtend(pageModel, {
                 current: Number(payload.page) || 1,
                 pageSize: Number(payload.pageSize) || 10,
               },
-              userList: usersData.list
+              userList: usersData.list,
             },
           })
         }
@@ -51,10 +57,10 @@ export default modelExtend(pageModel, {
       }
     },
 
-    * create({ payload }, { call, put }) {
+    *create({ payload }, { call, put }) {
       const headers = {
-        'Authorization': window.localStorage.getItem('token')
-      };
+        Authorization: window.localStorage.getItem('token'),
+      }
       const data = yield call(createPost, payload, headers)
       if (data.success) {
         yield put({ type: 'hideModal' })
@@ -63,28 +69,27 @@ export default modelExtend(pageModel, {
         throw data
       }
     },
-    * update({ payload }, { select, call, put }) {
+    *update({ payload }, { select, call, put }) {
       const headers = {
-        'Authorization': window.localStorage.getItem('token')
-      };
-      const newUser = payload;
+        Authorization: window.localStorage.getItem('token'),
+      }
+      const newUser = payload
       const data = yield call(updatePost, newUser, headers)
       if (data.success) {
         yield put({ type: 'hideModal' })
       } else {
         throw data
       }
-    }
+    },
+  },
+
+  reducers: {
+    showModal(state, { payload }) {
+      return { ...state, ...payload, modalVisible: true }
     },
 
-    reducers: {
-      showModal(state, { payload }) {
-        return { ...state, ...payload, modalVisible: true }
-      },
-
-      hideModal(state) {
-        return { ...state, modalVisible: false }
-      },
-    }
-
+    hideModal(state) {
+      return { ...state, modalVisible: false }
+    },
+  },
 })

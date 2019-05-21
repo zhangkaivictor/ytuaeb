@@ -17,16 +17,24 @@ class onAnalysis extends PureComponent {
       router.push({
         pathname: '/project/FTA',
         query: {
-          projectId :location.query.projectId
+          projectId: location.query.projectId,
         },
       })
-      return;
+      return
     } else {
       const { FTA } = this.props
       const { treeReportList } = FTA
-      const { tableP1, tableP2, topEventNames,
-        singlePointEventNames, minimalCutSetNames, baseEventNames,
-        singlePointFaultMeasure, randomFaultMeasure, dualPointEventNames, latentFaultMeasure,
+      const {
+        tableP1,
+        tableP2,
+        topEventNames,
+        singlePointEventNames,
+        minimalCutSetNames,
+        baseEventNames,
+        singlePointFaultMeasure,
+        randomFaultMeasure,
+        dualPointEventNames,
+        latentFaultMeasure,
         safeEventNames,
       } = treeReportList
       const columns = [
@@ -97,34 +105,44 @@ class onAnalysis extends PureComponent {
           dataIndex: 'failureValue',
         },
       ]
-      let topTable = [{
-        type:topEventNames,
-        name:"顶事件"
-      },{
-        type:baseEventNames,
-        name:"底事件"
-      },{
-        type:minimalCutSetNames,
-        name:"最小割集"
-      },{
-        type:singlePointEventNames,
-        name:"单点事件"
-      },{
-        type:dualPointEventNames,
-        name:"双点事件"
-      },{
-        type:safeEventNames,
-        name:"安全事件"
-      },{
-        type:singlePointFaultMeasure,
-        name:"单点故障度量"
-      },{
-        type:latentFaultMeasure,
-        name:"潜伏故障度量"
-      },{
-        type:randomFaultMeasure,
-        name:"随机故障度量"
-      }]
+      let topTable = [
+        {
+          type: topEventNames,
+          name: '顶事件',
+        },
+        {
+          type: baseEventNames,
+          name: '底事件',
+        },
+        {
+          type: minimalCutSetNames,
+          name: '最小割集',
+        },
+        {
+          type: singlePointEventNames,
+          name: '单点事件',
+        },
+        {
+          type: dualPointEventNames,
+          name: '双点事件',
+        },
+        {
+          type: safeEventNames,
+          name: '安全事件',
+        },
+        {
+          type: singlePointFaultMeasure,
+          name: '单点故障度量',
+        },
+        {
+          type: latentFaultMeasure,
+          name: '潜伏故障度量',
+        },
+        {
+          type: randomFaultMeasure,
+          name: '随机故障度量',
+        },
+      ]
       return (
         <div>
           <Table

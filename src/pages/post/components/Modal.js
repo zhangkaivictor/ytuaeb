@@ -8,23 +8,29 @@ const FormItem = Form.Item
 
 const guid = () => {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-    let r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8)
+    let r = (Math.random() * 16) | 0,
+      v = c == 'x' ? r : (r & 0x3) | 0x8
     return v.toString(16)
   })
 }
-const usersListFn = (all,currentlyUser,createdReal) => {
+const usersListFn = (all, currentlyUser, createdReal) => {
   let data = []
   for (let i = 0; i <= all.length - 1; i++) {
     let dataList = {}
     dataList.realName = all[i].realName
     dataList.emailAddress = all[i].emailAddress
-    if (!all[i].roles.includes("Administrator") && all[i].emailAddress != currentlyUser && all[i].status == 1 && all[i].realName !=createdReal) {
+    if (
+      !all[i].roles.includes('Administrator') &&
+      all[i].emailAddress != currentlyUser &&
+      all[i].status == 1 &&
+      all[i].realName != createdReal
+    ) {
       data.push(dataList)
     }
   }
   return data
 }
-const selectedOptionsListFn = (all) => {
+const selectedOptionsListFn = all => {
   let data = []
   if (all.length > 0) {
     for (let i = 0; i <= all.length - 1; i++) {
@@ -35,7 +41,7 @@ const selectedOptionsListFn = (all) => {
   }
   return data
 }
-const readOptionsListFn = (all) => {
+const readOptionsListFn = all => {
   let data = []
   if (all.length > 0) {
     for (let i = 0; i <= all.length - 1; i++) {
@@ -55,21 +61,21 @@ const formItemLayout = {
     span: 14,
   },
 }
-const arrDup =(bigArr,arr1,arr2)=>{
-  let arrNameList = [];
-  let newBigArr = [];
-  arr1.forEach(item =>{
+const arrDup = (bigArr, arr1, arr2) => {
+  let arrNameList = []
+  let newBigArr = []
+  arr1.forEach(item => {
     arrNameList.push(item.realName)
   })
-  arr2.forEach(item =>{
+  arr2.forEach(item => {
     arrNameList.push(item.realName)
   })
-  bigArr.forEach(item =>{
-    if(arrNameList.indexOf(item.realName) < 0){
+  bigArr.forEach(item => {
+    if (arrNameList.indexOf(item.realName) < 0) {
       newBigArr.push(item)
     }
   })
-  return newBigArr;
+  return newBigArr
 }
 
 @withI18n()
@@ -105,170 +111,186 @@ class UserModal extends PureComponent {
           data.type = 'FTAProject'
         }
       }
-      let newCreateRead = data.usersPrivileges.readOptions;
-      let newCreateWrite = data.usersPrivileges.selectedOptions;
+      let newCreateRead = data.usersPrivileges.readOptions
+      let newCreateWrite = data.usersPrivileges.selectedOptions
       data.usersPrivileges = newCreateRead.concat(newCreateWrite)
       onOk(data)
     })
   }
 
   render() {
-    const { item = {}, onOk, form, i18n, userData, userNameList, ...modalProps } = this.props
+    const {
+      item = {},
+      onOk,
+      form,
+      i18n,
+      userData,
+      userNameList,
+      ...modalProps
+    } = this.props
     const { getFieldDecorator } = form
     const owner = window.localStorage.getItem('username')
-    let userList;
-    let usersPrivileges = item.usersPrivileges;
+    let userList
+    let usersPrivileges = item.usersPrivileges
     if (modalProps.title == '创建项目') {
       const addRemoveProps = {
-        options: usersListFn(userNameList,owner),
+        options: usersListFn(userNameList, owner),
         selectedOptions: [],
         readOptions: [],
       }
-      userList = <Form layout="horizontal">
-        <FormItem label={'项目名称'} hasFeedback {...formItemLayout}>
-          {getFieldDecorator('name', {
-            initialValue: item.name,
-            rules: [
-              {
-                required: true,
-                message: '项目名不能为空',
-              },
-            ],
-          })(<Input/>)}
-        </FormItem>
-        <FormItem label={'所有者'} hasFeedback {...formItemLayout}>
-          {getFieldDecorator('owner', {
-            initialValue: owner,
-            rules: [
-              {
-                required: true,
-              },
-            ],
-          })(<Input disabled/>)}
-        </FormItem>
-        <FormItem label={'创建时间'} hasFeedback {...formItemLayout}>
-          {getFieldDecorator('varData', {
-            initialValue: new Date().toLocaleString(),
-            rules: [
-              {
-                required: true,
-              },
-            ],
-          })(<Input disabled/>)}
-        </FormItem>
-        <FormItem label={'标签'} hasFeedback {...formItemLayout}>
-          {getFieldDecorator('tag', {
-            initialValue: item.tag,
-            rules: [
-              {
-                required: false,
-              },
-            ],
-          })(<Input/>)}
-        </FormItem>
-        <FormItem label={i18n.t`Note`} hasFeedback {...formItemLayout}>
-          {getFieldDecorator('description', {
-            initialValue: item.description,
-            rules: [
-              {
-                required: false,
-              },
-            ],
-          })(<Input/>)}
-        </FormItem>
-        <FormItem label={'项目参与者'} hasFeedback {...formItemLayout}>
-          {getFieldDecorator('usersPrivileges', {
-            initialValue: addRemoveProps,
-          })(<PartnerLists {...addRemoveProps}/>)}
-        </FormItem>
-      </Form>
+      userList = (
+        <Form layout="horizontal">
+          <FormItem label={'项目名称'} hasFeedback {...formItemLayout}>
+            {getFieldDecorator('name', {
+              initialValue: item.name,
+              rules: [
+                {
+                  required: true,
+                  message: '项目名不能为空',
+                },
+              ],
+            })(<Input />)}
+          </FormItem>
+          <FormItem label={'所有者'} hasFeedback {...formItemLayout}>
+            {getFieldDecorator('owner', {
+              initialValue: owner,
+              rules: [
+                {
+                  required: true,
+                },
+              ],
+            })(<Input disabled />)}
+          </FormItem>
+          <FormItem label={'创建时间'} hasFeedback {...formItemLayout}>
+            {getFieldDecorator('varData', {
+              initialValue: new Date().toLocaleString(),
+              rules: [
+                {
+                  required: true,
+                },
+              ],
+            })(<Input disabled />)}
+          </FormItem>
+          <FormItem label={'标签'} hasFeedback {...formItemLayout}>
+            {getFieldDecorator('tag', {
+              initialValue: item.tag,
+              rules: [
+                {
+                  required: false,
+                },
+              ],
+            })(<Input />)}
+          </FormItem>
+          <FormItem label={i18n.t`Note`} hasFeedback {...formItemLayout}>
+            {getFieldDecorator('description', {
+              initialValue: item.description,
+              rules: [
+                {
+                  required: false,
+                },
+              ],
+            })(<Input />)}
+          </FormItem>
+          <FormItem label={'项目参与者'} hasFeedback {...formItemLayout}>
+            {getFieldDecorator('usersPrivileges', {
+              initialValue: addRemoveProps,
+            })(<PartnerLists {...addRemoveProps} />)}
+          </FormItem>
+        </Form>
+      )
     } else if (modalProps.title == '更新项目') {
-      let createdReal = item.createdBy.realName;
+      let createdReal = item.createdBy.realName
       const addRemoveProps = {
-        options: arrDup(usersListFn(userNameList,owner,createdReal),selectedOptionsListFn(usersPrivileges),readOptionsListFn(usersPrivileges)),
+        options: arrDup(
+          usersListFn(userNameList, owner, createdReal),
+          selectedOptionsListFn(usersPrivileges),
+          readOptionsListFn(usersPrivileges)
+        ),
         selectedOptions: selectedOptionsListFn(usersPrivileges),
         readOptions: readOptionsListFn(usersPrivileges),
       }
-      let lastModified = item.lastModifiedBy.realName;
-      userList = <Form layout="horizontal">
-        <FormItem label={'ID'} hasFeedback {...formItemLayout}>
-          {getFieldDecorator('ID', {
-            initialValue: item.id,
-            rules: [
-              {
-                required: true,
-              },
-            ],
-          })(<Input disabled/>)}
-        </FormItem>
-        <FormItem label={'项目名称'} hasFeedback {...formItemLayout}>
-          {getFieldDecorator('name', {
-            initialValue: item.name,
-            rules: [
-              {
-                required: true,
-                message: i18n.t`The input is not valid E-mail!`,
-              },
-            ],
-          })(<Input disabled/>)}
-        </FormItem>
-        <FormItem label={'所有者'} hasFeedback {...formItemLayout}>
-          {getFieldDecorator('realName', {
-            initialValue: item.createdBy.realName,
-            rules: [
-              {
-                required: true,
-              },
-            ],
-          })(<Input disabled/>)}
-        </FormItem>
-        <FormItem label={'创建时间'} hasFeedback {...formItemLayout}>
-          {getFieldDecorator('createdTime', {
-            initialValue: item.createdTime,
-            rules: [
-              {
-                required: true,
-              },
-            ],
-          })(<Input disabled/>)}
-        </FormItem>
-        <FormItem label={'修改者'} hasFeedback {...formItemLayout}>
-          {getFieldDecorator('lastModified', {
-            initialValue: lastModified,
-            rules: [
-              {
-                required: true,
-              },
-            ],
-          })(<Input disabled/>)}
-        </FormItem>
+      let lastModified = item.lastModifiedBy.realName
+      userList = (
+        <Form layout="horizontal">
+          <FormItem label={'ID'} hasFeedback {...formItemLayout}>
+            {getFieldDecorator('ID', {
+              initialValue: item.id,
+              rules: [
+                {
+                  required: true,
+                },
+              ],
+            })(<Input disabled />)}
+          </FormItem>
+          <FormItem label={'项目名称'} hasFeedback {...formItemLayout}>
+            {getFieldDecorator('name', {
+              initialValue: item.name,
+              rules: [
+                {
+                  required: true,
+                  message: i18n.t`The input is not valid E-mail!`,
+                },
+              ],
+            })(<Input disabled />)}
+          </FormItem>
+          <FormItem label={'所有者'} hasFeedback {...formItemLayout}>
+            {getFieldDecorator('realName', {
+              initialValue: item.createdBy.realName,
+              rules: [
+                {
+                  required: true,
+                },
+              ],
+            })(<Input disabled />)}
+          </FormItem>
+          <FormItem label={'创建时间'} hasFeedback {...formItemLayout}>
+            {getFieldDecorator('createdTime', {
+              initialValue: item.createdTime,
+              rules: [
+                {
+                  required: true,
+                },
+              ],
+            })(<Input disabled />)}
+          </FormItem>
+          <FormItem label={'修改者'} hasFeedback {...formItemLayout}>
+            {getFieldDecorator('lastModified', {
+              initialValue: lastModified,
+              rules: [
+                {
+                  required: true,
+                },
+              ],
+            })(<Input disabled />)}
+          </FormItem>
 
-        <FormItem label={'标签'} hasFeedback {...formItemLayout}>
-          {getFieldDecorator('tag', {
-            initialValue: item.tag,
-            rules: [
-              {
-                required: false,
-              },
-            ],
-          })(<Input/>)}
-        </FormItem>
-        <FormItem label={i18n.t`Note`} hasFeedback {...formItemLayout}>
-          {getFieldDecorator('description', {
-            initialValue: item.description,
-            rules: [
-              {
-                required: false,
-              },
-            ],
-          })(<Input/>)}
-        </FormItem>
-        <FormItem label={'项目参与者'} hasFeedback {...formItemLayout}>
-          {getFieldDecorator('usersPrivileges', {
-            initialValue: addRemoveProps,
-          })(<PartnerLists {...addRemoveProps}/>)}
-        </FormItem>
-      </Form>
+          <FormItem label={'标签'} hasFeedback {...formItemLayout}>
+            {getFieldDecorator('tag', {
+              initialValue: item.tag,
+              rules: [
+                {
+                  required: false,
+                },
+              ],
+            })(<Input />)}
+          </FormItem>
+          <FormItem label={i18n.t`Note`} hasFeedback {...formItemLayout}>
+            {getFieldDecorator('description', {
+              initialValue: item.description,
+              rules: [
+                {
+                  required: false,
+                },
+              ],
+            })(<Input />)}
+          </FormItem>
+          <FormItem label={'项目参与者'} hasFeedback {...formItemLayout}>
+            {getFieldDecorator('usersPrivileges', {
+              initialValue: addRemoveProps,
+            })(<PartnerLists {...addRemoveProps} />)}
+          </FormItem>
+        </Form>
+      )
     }
     return (
       <Modal {...modalProps} onOk={this.handleOk}>

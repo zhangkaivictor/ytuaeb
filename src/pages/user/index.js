@@ -9,11 +9,11 @@ import { stringify } from 'qs'
 import List from './components/List'
 import Filter from './components/Filter'
 import Modal from './components/Modal'
-const findAdminFn = (arr) => {
-  let newArr = [];
+const findAdminFn = arr => {
+  let newArr = []
   for (let i = 0; i <= arr.length - 1; i++) {
-    if (!arr[i].roles.includes("Administrator")) {
-      newArr.push(arr[i]);
+    if (!arr[i].roles.includes('Administrator')) {
+      newArr.push(arr[i])
     }
   }
   return newArr
@@ -39,7 +39,11 @@ class User extends PureComponent {
       maskClosable: false,
       confirmLoading: loading.effects[`user/${modalType}`],
       title: `${
-        modalType === 'create' ? i18n.t`Create User` : (modalType === 'update' ? i18n.t`Update User`: '修改密码')
+        modalType === 'create'
+          ? i18n.t`Create User`
+          : modalType === 'update'
+          ? i18n.t`Update User`
+          : '修改密码'
       }`,
       wrapClassName: 'vertical-center-modal',
       onOk(data) {
@@ -122,21 +126,25 @@ class User extends PureComponent {
     }
 
     const handleRefresh = newQuery => {
-      if(newQuery != undefined && newQuery.name != "" && newQuery.name != undefined){
-        let searchDate = [];
-        listProps.dataSource.map(( item, index ) => {
-          if(item.realName.indexOf(newQuery.name)>=0){
-            searchDate.push(item);
+      if (
+        newQuery != undefined &&
+        newQuery.name != '' &&
+        newQuery.name != undefined
+      ) {
+        let searchDate = []
+        listProps.dataSource.map((item, index) => {
+          if (item.realName.indexOf(newQuery.name) >= 0) {
+            searchDate.push(item)
           }
         })
         dispatch({
           type: 'user/search',
           payload: {
             searchDate,
-            ...newQuery
+            ...newQuery,
           },
         })
-      }else {
+      } else {
         router.push({
           pathname,
           search: stringify(

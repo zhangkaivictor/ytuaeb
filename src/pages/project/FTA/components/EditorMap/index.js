@@ -1,29 +1,34 @@
-import React from "react";
+import React from 'react'
 import { connect } from 'dva'
-import { Flow, withPropsAPI } from "gg-editor";
-import styles from './index.less';
+import { Flow, withPropsAPI } from 'gg-editor'
+import styles from './index.less'
 
 @connect(({ FTA, loading }) => ({ FTA, loading }))
-class FlowMap extends React.Component{
+class FlowMap extends React.Component {
   render() {
-    const { FTA, isHideScreen } = this.props;
-    let data = FTA.list.content;
-    var mapData = {};
-    if(data != null && data != undefined){
-      mapData = eval('(' + data + ')');
+    const { FTA, isHideScreen } = this.props
+    let data = FTA.list.content
+    var mapData = {}
+    if (data != null && data != undefined) {
+      mapData = eval('(' + data + ')')
       // mapData = JSON.parse(data)
-      delete mapData.attributes;
+      delete mapData.attributes
       mapData.nodes.forEach(item => {
-       item.checkDis = isHideScreen
+        item.checkDis = isHideScreen
       })
-    }else {
+    } else {
       mapData = {}
     }
     // console.log(mapData.nodes);
     return (
-      <Flow className={styles.flow} style={{ height:750 }} grid data={ mapData } />
+      <Flow
+        className={styles.flow}
+        style={{ height: 750 }}
+        grid
+        data={mapData}
+      />
     )
   }
 }
 
-export default withPropsAPI(FlowMap);
+export default withPropsAPI(FlowMap)

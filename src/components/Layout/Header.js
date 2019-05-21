@@ -34,9 +34,12 @@ class Header extends PureComponent {
           title={
             <Fragment>
               <span style={{ color: '#999', marginRight: 4 }}>
-                <Trans>Hi,
-                  <span style={{ color: 'red',fontWeight:'800'}}>{window.localStorage.getItem('username')}</span>
-                  </Trans>
+                <Trans>
+                  Hi,
+                  <span style={{ color: 'red', fontWeight: '800' }}>
+                    {window.localStorage.getItem('username')}
+                  </span>
+                </Trans>
               </span>
               <Avatar style={{ marginLeft: 8 }} src={avatar} />
             </Fragment>
@@ -65,16 +68,16 @@ class Header extends PureComponent {
           mode="horizontal"
         >
           {/*<SubMenu title={<Avatar size="small" src={currentLanguage.flag} />}>*/}
-            {/*{languages.map(item => (*/}
-              {/*<Menu.Item key={item.key}>*/}
-                {/*<Avatar*/}
-                  {/*size="small"*/}
-                  {/*style={{ marginRight: 8 }}*/}
-                  {/*src={item.flag}*/}
-                {/*/>*/}
-                {/*{item.title}*/}
-              {/*</Menu.Item>*/}
-            {/*))}*/}
+          {/*{languages.map(item => (*/}
+          {/*<Menu.Item key={item.key}>*/}
+          {/*<Avatar*/}
+          {/*size="small"*/}
+          {/*style={{ marginRight: 8 }}*/}
+          {/*src={item.flag}*/}
+          {/*/>*/}
+          {/*{item.title}*/}
+          {/*</Menu.Item>*/}
+          {/*))}*/}
           {/*</SubMenu>*/}
         </Menu>
       )
@@ -123,8 +126,7 @@ class Header extends PureComponent {
             ) : null}
           </div>
         }
-      >
-      </Popover>
+      />
     )
 
     return (

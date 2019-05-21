@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'dva'
-import { Tabs,Button } from 'antd'
+import { Tabs, Button } from 'antd'
 import { router } from 'utils'
 import { stringify } from 'qs'
 import { withI18n } from '@lingui/react'
@@ -15,7 +15,7 @@ const { TabPane } = Tabs
 const EnumPostStatus = {
   PROJECT: 1,
   FMEA: 2,
-  FTA:3
+  FTA: 3,
 }
 
 @withI18n()
@@ -78,14 +78,12 @@ class Post extends PureComponent {
       },
     }
     const modalProps = {
-      start: query.status === undefined ? "3" : query.status,
+      start: query.status === undefined ? '3' : query.status,
       item: modalType === 'create' ? {} : currentItem,
       visible: modalVisible,
       maskClosable: false,
       confirmLoading: loading.effects[`user/${modalType}`],
-      title: `${
-        modalType === 'create' ? "创建项目" : "更新项目"
-        }`,
+      title: `${modalType === 'create' ? '创建项目' : '更新项目'}`,
       wrapClassName: 'vertical-center-modal',
       userData: list,
       userNameList: userList,
@@ -109,12 +107,12 @@ class Post extends PureComponent {
       },
     }
 
-    const postType = ['WorkProject','FMEAProject','FTAProject']
+    const postType = ['WorkProject', 'FMEAProject', 'FTAProject']
     const handleTabClick = key => {
       router.push({
         pathname,
         search: stringify({
-          type: postType[key-1],
+          type: postType[key - 1],
           status: key,
         }),
       })
@@ -140,30 +138,24 @@ class Post extends PureComponent {
     }
     return (
       <Page inner>
-        <Filter {...filterProps}/>
+        <Filter {...filterProps} />
         <Tabs
           activeKey={
-            query.status === String(EnumPostStatus.PROJECT) ? String(EnumPostStatus.PROJECT) :
-              (query.status === String(EnumPostStatus.FMEA) ? String(EnumPostStatus.FMEA):String(EnumPostStatus.FTA))
+            query.status === String(EnumPostStatus.PROJECT)
+              ? String(EnumPostStatus.PROJECT)
+              : query.status === String(EnumPostStatus.FMEA)
+              ? String(EnumPostStatus.FMEA)
+              : String(EnumPostStatus.FTA)
           }
           onTabClick={handleTabClick}
         >
-          <TabPane
-            tab={i18n.t`Publised`}
-            key={String(EnumPostStatus.PROJECT)}
-          >
+          <TabPane tab={i18n.t`Publised`} key={String(EnumPostStatus.PROJECT)}>
             <List {...listProps} />
           </TabPane>
-          <TabPane
-            tab={i18n.t`Unpublished`}
-            key={String(EnumPostStatus.FMEA)}
-          >
+          <TabPane tab={i18n.t`Unpublished`} key={String(EnumPostStatus.FMEA)}>
             <List {...listProps} />
           </TabPane>
-          <TabPane
-            tab={i18n.t`FTA`}
-            key={String(EnumPostStatus.FTA)}
-          >
+          <TabPane tab={i18n.t`FTA`} key={String(EnumPostStatus.FTA)}>
             <List {...listProps} />
           </TabPane>
         </Tabs>

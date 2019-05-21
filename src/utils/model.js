@@ -25,7 +25,13 @@ export const pageModel = modelExtend(model, {
 
   reducers: {
     querySuccess(state, { payload }) {
-      const { list, pagination, userList, analyzeList, treeReportList } = payload
+      const {
+        list,
+        pagination,
+        userList,
+        analyzeList,
+        treeReportList,
+      } = payload
       return {
         ...state,
         list,

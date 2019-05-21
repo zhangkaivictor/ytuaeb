@@ -1,9 +1,9 @@
-import React from 'react';
-import { Card, Form, Input, Select } from 'antd';
-import { withPropsAPI, RegisterEdge } from 'gg-editor';
+import React from 'react'
+import { Card, Form, Input, Select } from 'antd'
+import { withPropsAPI, RegisterEdge } from 'gg-editor'
 
-const { Item } = Form;
-const { Option } = Select;
+const { Item } = Form
+const { Option } = Select
 
 const inlineFormItemLayout = {
   labelCol: {
@@ -12,32 +12,32 @@ const inlineFormItemLayout = {
   wrapperCol: {
     sm: { span: 18 },
   },
-};
+}
 
 class EdgeDetail extends React.Component {
   handleSubmit = () => {
-    const { form, propsAPI } = this.props;
-    const { getSelected, executeCommand, update } = propsAPI;
+    const { form, propsAPI } = this.props
+    const { getSelected, executeCommand, update } = propsAPI
 
     setTimeout(() => {
       form.validateFieldsAndScroll((err, values) => {
         if (err) {
-          return;
+          return
         }
 
-        const item = getSelected()[0];
+        const item = getSelected()[0]
 
         if (!item) {
-          return;
+          return
         }
 
         executeCommand(() => {
           update(item, {
             ...values,
-          });
-        });
-      });
-    }, 0);
+          })
+        })
+      })
+    }, 0)
   }
 
   renderShapeSelect() {
@@ -47,49 +47,54 @@ class EdgeDetail extends React.Component {
         <Option value="flow-polyline">图折线</Option>
         <Option value="flow-polyline-round">圆角折线</Option>
       </Select>
-    );
+    )
   }
 
   render() {
-    const { form, propsAPI } = this.props;
-    const { getFieldDecorator } = form;
-    const { getSelected } = propsAPI;
+    const { form, propsAPI } = this.props
+    const { getFieldDecorator } = form
+    const { getSelected } = propsAPI
 
-    const item = getSelected()[0];
+    const item = getSelected()[0]
 
     if (!item) {
-      return null;
+      return null
     }
 
-    const { label = '', shape = 'flow-polyline' } = item.getModel();
+    const { label = '', shape = 'flow-polyline' } = item.getModel()
 
     return (
-      <Card type="inner" title="边线属性" bordered={false} headStyle={{ backgroundColor:'#e5e5e5'}}>
+      <Card
+        type="inner"
+        title="边线属性"
+        bordered={false}
+        headStyle={{ backgroundColor: '#e5e5e5' }}
+      >
         {/*<Form onSubmit={this.handleSubmit}>*/}
-          {/*<Item*/}
-            {/*label="标签"*/}
-            {/*{...inlineFormItemLayout}*/}
-          {/*>*/}
-            {/*{*/}
-              {/*getFieldDecorator('label', {*/}
-                {/*initialValue: label,*/}
-              {/*})(<Input onBlur={this.handleSubmit} />)*/}
-            {/*}*/}
-          {/*</Item>*/}
-          {/*<Item*/}
-            {/*label="图形"*/}
-            {/*{...inlineFormItemLayout}*/}
-          {/*>*/}
-            {/*{*/}
-              {/*getFieldDecorator('shape', {*/}
-                {/*initialValue: shape,*/}
-              {/*})(this.renderShapeSelect())*/}
-            {/*}*/}
-          {/*</Item>*/}
+        {/*<Item*/}
+        {/*label="标签"*/}
+        {/*{...inlineFormItemLayout}*/}
+        {/*>*/}
+        {/*{*/}
+        {/*getFieldDecorator('label', {*/}
+        {/*initialValue: label,*/}
+        {/*})(<Input onBlur={this.handleSubmit} />)*/}
+        {/*}*/}
+        {/*</Item>*/}
+        {/*<Item*/}
+        {/*label="图形"*/}
+        {/*{...inlineFormItemLayout}*/}
+        {/*>*/}
+        {/*{*/}
+        {/*getFieldDecorator('shape', {*/}
+        {/*initialValue: shape,*/}
+        {/*})(this.renderShapeSelect())*/}
+        {/*}*/}
+        {/*</Item>*/}
         {/*</Form>*/}
       </Card>
-    );
+    )
   }
 }
 
-export default Form.create()(withPropsAPI(EdgeDetail));
+export default Form.create()(withPropsAPI(EdgeDetail))
