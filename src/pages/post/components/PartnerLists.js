@@ -30,7 +30,6 @@ class PartnerLists extends React.Component {
       if (!isSide) {
         optionName['privilege'] = 2
         selectedOptions.push(optionName)
-
         for(let i=0; i<=options.length-1; i++){
           if(options[i].realName == optionName.realName){
            options.splice(i,1);
