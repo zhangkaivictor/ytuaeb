@@ -32,11 +32,7 @@ class PartnerLists extends React.Component {
         selectedOptions.push(optionName)
         for(let i=0; i<=options.length-1; i++){
           if(options[i].realName == optionName.realName){
-            if(i==0){
-              options.splice(i,i+1);
-            }else {
-              options.splice(i,i);
-            }
+           options.splice(i,1);
           }
         }
       //
@@ -48,11 +44,7 @@ class PartnerLists extends React.Component {
         readOptions.push(optionName)
         for(let i=0; i<=options.length-1; i++){
           if(options[i].realName== optionName.realName){
-            if(i==0){
-              options.splice(i,i+1);
-            }else {
-              options.splice(i,i);
-            }
+            options.splice(i,1);
           }
         }
       //
@@ -69,11 +61,8 @@ class PartnerLists extends React.Component {
         options.push(writeReadOptions)
         for(let i=0; i<=selectedOptions.length-1; i++){
           if(selectedOptions[i].realName == writeReadOptions.realName){
-            if(i==0){
-              selectedOptions.splice(i,i+1);
-            }else {
-              selectedOptions.splice(i,i);
-            }
+            selectedOptions.splice(i,1);
+
           }
         }
       }
@@ -88,11 +77,7 @@ class PartnerLists extends React.Component {
       options.push(onlyReadOptions)
       for(let i=0; i<=readOptions.length-1; i++){
         if(readOptions[i].realName == onlyReadOptions.realName){
-          if(i==0){
-            readOptions.splice(i,i+1);
-          }else {
-            readOptions.splice(i,i);
-          }
+          readOptions.splice(i,1);
         }
       }
     }

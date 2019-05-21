@@ -6,6 +6,7 @@ import { DropOption } from 'components'
 import { Trans, withI18n } from '@lingui/react'
 import { Ellipsis } from 'ant-design-pro'
 import styles from './onAnalysis.less'
+
 @withI18n()
 @connect(({ FTA }) => ({ FTA }))
 class onAnalysis extends PureComponent {
@@ -43,7 +44,7 @@ class onAnalysis extends PureComponent {
         },
         {
           title: '单点故障',
-          dataIndex: 'dualPointEvent',
+          dataIndex: 'singlePointEvent',
         },
 
         {
@@ -56,7 +57,7 @@ class onAnalysis extends PureComponent {
         },
         {
           title: '可探测双点故障',
-          dataIndex: 'singlePointEvent',
+          dataIndex: 'dualPointEvent',
         },
         {
           title: '安全故障',
@@ -76,20 +77,20 @@ class onAnalysis extends PureComponent {
       const columns2 = [
         {
           title: '故障类型',
-          dataIndex: 'failureName',
+          // dataIndex: 'failureName',
         },
         {
           title: '失效率',
           dataIndex: 'invalidValue',
         },
         {
-          title: '事件编号',
-          dataIndex: 'nodeName',
+          title: '事件ID',
+          dataIndex: 'nodeId',
         },
 
         {
           title: '事件名',
-          dataIndex: 'eventName',
+          dataIndex: 'nodeName',
         },
         {
           title: '故障率',

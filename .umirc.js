@@ -21,7 +21,7 @@ export default {
           exclude: [
             /model\.(j|t)sx?$/,
             /service\.(j|t)sx?$/,
-            /models\//,
+            // /models\//,
             /services\//,
             /components\//,
             // /chart\/Container\.js$/,
@@ -33,23 +33,23 @@ export default {
             // /chart\/Recharts\/.+Component\.js$/,
             // /chart\/Recharts\/Container\.js$/,
           ],
-          update: routes => {
-            if (!i18n) return routes
-            const newRoutes = []
-            for (const item of routes[0].routes) {
-              newRoutes.push(item)
-              if (item.path) {
-                newRoutes.push(
-                  Object.assign({}, item, {
-                    path:item.path,
-                  })
-                )
-              }
-            }
-            routes[0].routes = newRoutes
-            // console.log(newRoutes);
-            return routes
-          },
+          // update: routes => {
+          //   if (!i18n) return routes
+          //   const newRoutes = []
+          //   for (const item of routes[0].routes) {
+          //     newRoutes.push(item)
+          //     if (item.path) {
+          //       newRoutes.push(
+          //         Object.assign({}, item, {
+          //           path:item.path,
+          //         })
+          //       )
+          //     }
+          //   }
+          //   routes[0].routes = newRoutes
+          //   // console.log(newRoutes);
+          //   return routes
+          // },
         },
         dll: {
           include: ['dva', 'dva/router', 'dva/saga', 'dva/fetch', 'antd/es'],

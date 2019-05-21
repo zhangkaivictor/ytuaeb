@@ -13,12 +13,18 @@ const attrData = (arr) => {
       data.push(arr[i])
     }
   }
-  let arrHash = {};
-  data = data.reduce((preVal, curVal) => {
-    arrHash[curVal.name] ? '' : arrHash[curVal.name] = true && preVal.push(curVal);
-    return preVal
-  }, [])
-
+  function removeRepeat(arr, key){
+    for(let i = 0; i < arr.length; i++) {
+      for(let j = i+1; j < arr.length; j++) {
+        if(arr[i][key] == arr[j][key]){
+          arr.splice(j, 1);
+          j = j-1;  // 关键，因为splice()删除元素之后，会使得数组长度减小，此时如果没有j=j-1的话，会导致相同id项在重复两次以上之后无法进行去重，且会错误删除id没有重复的项。
+        }
+      }
+    }
+    return arr;
+  }
+  data = removeRepeat(data,'name');
   return data;
 }
 const deepClone = (obj) => {
