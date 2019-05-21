@@ -21,8 +21,6 @@ const attrData = arr => {
       data.push(arr[i])
     }
   }
-<<<<<<< HEAD
-
   function removeRepeat(arr, key){
     for(let i = 0; i < arr.length; i++) {
       for(let j = i+1; j < arr.length; j++) {
@@ -36,19 +34,6 @@ const attrData = arr => {
   }
   data = removeRepeat(data,'name');
   return data;
-=======
-  let arrHash = {}
-  data = data.reduce((preVal, curVal) => {
-    //arrHash[curVal.name] ? '' : (arrHash[curVal.name] = true && preVal.push(curVal));
-    if (arrHash[curVal.name]) {
-    } else if (arrHash[curVal.name]) {
-      preVal.push(curVal)
-    }
-    return preVal
-  }, [])
-
-  return data
->>>>>>> cea2071e64ccbb2e050a6de2c6d0eb5128baf1c4
 }
 const deepClone = obj => {
   let objClone = Array.isArray(obj) ? [] : {}
