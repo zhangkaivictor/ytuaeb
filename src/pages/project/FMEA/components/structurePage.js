@@ -57,12 +57,13 @@ class StructurePage extends React.Component {
           </Col>
         </Row>
         <Row type="flex" className={styles.editorBd}>
-          <Col span={4} className={styles.editorSidebar}>
+          <Col span={3} className={styles.editorSidebar}>
             <FlowItemPanel />
           </Col>
-          <Col span={20} className={styles.editorContent}>
+          <Col span={21} className={styles.editorContent}>
             <Flow
               className={styles.flow}
+              style={{ height: 450 }}
               onNodeClick={e => {
                 this.props.nodeClick(e)
               }}
