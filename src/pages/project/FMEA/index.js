@@ -4,6 +4,7 @@ import styles from './index.less'
 import GGEditor, { Flow, Mind } from 'gg-editor'
 import StructurePage from './components/structurePage'
 import TreePage from './components/treePage'
+import ViewPage from './components/viewPage'
 import AddModal from './components/Modal'
 import { connect } from 'dva'
 
@@ -223,13 +224,7 @@ class FmeaPage extends React.Component {
           </Col>
         </Row>
         <Row>
-          <Col span={24} className={styles.view}>
-            {viewData != null && (
-              <GGEditor>
-                <Mind style={{ height: 300 }} data={viewData} />
-              </GGEditor>
-            )}
-          </Col>
+          <ViewPage {...this.props} />
         </Row>
         {createModalVisible && <AddModal {...modalProps} />}
       </div>

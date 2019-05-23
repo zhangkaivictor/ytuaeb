@@ -1182,10 +1182,10 @@ StructurePane.prototype.GetStructureFunctionDepTree = function(
       r.label = depFunction.name
       r.side = 'left'
       r.structureNodeId = depFunction.structureNodeId
-      r.Childs = []
+      r.children = []
       childs.push(r)
 
-      recurse(depFunction, r.Childs)
+      recurse(depFunction, r.children)
     }
   })(fs, result.leftChilds)
 
@@ -1206,12 +1206,12 @@ StructurePane.prototype.GetStructureFunctionDepTree = function(
       r.Id = depFunction.id
       r.Name = depFunction.name
       r.structureNodeId = depFunction.structureNodeId
-      r.Childs = []
+      r.children = []
       r.side = 'right'
       r.label = depFunction.name
       childs.push(r)
 
-      recurse(depFunction, r.Childs)
+      recurse(depFunction, r.children)
     }
   })(fs, result.rightChilds)
 
