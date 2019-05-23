@@ -21,7 +21,7 @@ export default {
           exclude: [
             /model\.(j|t)sx?$/,
             /service\.(j|t)sx?$/,
-            // /models\//,
+            /models\//,
             /services\//,
             /components\//,
             // /chart\/Container\.js$/,

@@ -111,7 +111,7 @@ class FlowPage extends React.Component {
           <Col span={2} className={styles.editorSidebar}>
             <EditorItemPanel {...editorItemProps} />
           </Col>
-          <Col span={20} className={styles.editorContent}>
+          <Col span={18} className={styles.editorContent}>
             <FlowMap {...flowMapProps} />
           </Col>
           <Col span={4} className={styles.editorSidebar}>

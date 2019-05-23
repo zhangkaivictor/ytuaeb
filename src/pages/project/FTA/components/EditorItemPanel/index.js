@@ -14,7 +14,6 @@ class EditorItemPanel extends React.Component {
           config={{
             draw(item) {
               const group = item.getGraphicGroup()
-              const model = item.getModel()
               const width = 64
               const height = 60
               const x = -width / 2
@@ -28,7 +27,7 @@ class EditorItemPanel extends React.Component {
                   height,
                   radius: borderRadius,
                   fill: 'white',
-                  stroke: '#CED4D9',
+                  stroke: '#1890FF',
                 },
               })
               group.addShape('image', {
@@ -54,7 +53,6 @@ class EditorItemPanel extends React.Component {
           config={{
             draw(item) {
               const group = item.getGraphicGroup()
-              const model = item.getModel()
               const width = 64
               const height = 60
               const x = -width / 2
@@ -68,7 +66,7 @@ class EditorItemPanel extends React.Component {
                   height,
                   radius: borderRadius,
                   fill: 'white',
-                  stroke: '#CED4D9',
+                  stroke: '#1890FF',
                 },
               })
               group.addShape('image', {
@@ -94,7 +92,6 @@ class EditorItemPanel extends React.Component {
           config={{
             draw(item) {
               const group = item.getGraphicGroup()
-              const model = item.getModel()
               const width = 64
               const height = 60
               const x = -width / 2
@@ -108,7 +105,7 @@ class EditorItemPanel extends React.Component {
                   height,
                   radius: borderRadius,
                   fill: 'white',
-                  stroke: '#CED4D9',
+                  stroke: '#1890FF',
                 },
               })
               //logo注册
@@ -158,7 +155,7 @@ class EditorItemPanel extends React.Component {
                 attrs: {
                   text: name,
                   x: x + 30,
-                  y: y + 20,
+                  y: y + 30,
                   textAlign: 'center',
                   textBaseline: 'middle',
                   fill: 'rgba(0,0,0,0.65)',
@@ -170,13 +167,14 @@ class EditorItemPanel extends React.Component {
                 //注释注册
                 group.addShape('rect', {
                   attrs: {
-                    x,
-                    y: y - 70,
-                    width,
-                    height,
+                    x: x - 10,
+                    y: y - 40,
+                    width: 90,
+                    height: 34,
                     fill: 'white',
-                    stroke: '#FF00FF',
+                    stroke: '#1890FF',
                     radius: borderRadius,
+                    overFlow:'hidden',
                   },
                 })
                 const note = model.note ? model.note : this.note
@@ -184,7 +182,7 @@ class EditorItemPanel extends React.Component {
                   attrs: {
                     text: note,
                     x: x + 32,
-                    y: y - 40,
+                    y: y - 20,
                     width,
                     height,
                     textAlign: 'center',
@@ -193,7 +191,6 @@ class EditorItemPanel extends React.Component {
                   },
                 })
               }
-
               return keyShape
             },
             // 设置锚点
@@ -222,7 +219,7 @@ class EditorItemPanel extends React.Component {
                   height,
                   radius: borderRadius,
                   fill: 'white',
-                  stroke: '#CED4D9',
+                  stroke: '#1890FF',
                 },
               })
               //注册文本信息
@@ -231,7 +228,7 @@ class EditorItemPanel extends React.Component {
                 attrs: {
                   text: name,
                   x: x + 40,
-                  y: y + 22,
+                  y: y + 24,
                   textAlign: 'center',
                   textBaseline: 'middle',
                   fill: 'rgba(0,0,0,0.65)',
@@ -245,18 +242,19 @@ class EditorItemPanel extends React.Component {
                   attrs: {
                     x,
                     y: y - 60,
-                    width,
-                    height,
+                    width: 90,
+                    height: 34,
                     fill: 'white',
                     stroke: '#1890FF',
                     radius: borderRadius,
+                    overFlow:'hidden',
                   },
                 })
                 const note = model.note ? model.note : this.note
                 group.addShape('text', {
                   attrs: {
                     text: note,
-                    x: x + 32,
+                    x: x + 40,
                     y: y - 40,
                     width,
                     height,
@@ -294,7 +292,7 @@ class EditorItemPanel extends React.Component {
                   width,
                   height,
                   fill: 'white',
-                  stroke: '#CED4D9',
+                  stroke: '#1890FF',
                   radius: borderRadius,
                 },
               })
@@ -316,19 +314,20 @@ class EditorItemPanel extends React.Component {
                 //注释注册
                 group.addShape('rect', {
                   attrs: {
-                    x,
+                    x: x - 5,
                     y: y - 50,
-                    width: 80,
+                    width: 90,
                     height: 34,
                     fill: 'white',
                     stroke: '#1890FF',
+                    overFlow:'hidden',
                   },
                 })
                 const note = model.note ? model.note : this.note
                 group.addShape('text', {
                   attrs: {
                     text: note,
-                    x: x + 32,
+                    x: x + 40,
                     y: y - 30,
                     textAlign: 'center',
                     textBaseline: 'middle',
@@ -367,7 +366,7 @@ class EditorItemPanel extends React.Component {
               failureTime: 5000,
               dCrf: 0,
               dClf: 0,
-              referenceFailureRateq: 0,
+              smallFailureRateQ: 0,
               invalidRateValueIsModifiedByUser: false,
               smallFailureRateQValueType: false,
             }}
@@ -388,7 +387,7 @@ class EditorItemPanel extends React.Component {
               failureTime: 5000,
               dCrf: 0,
               dClf: 0,
-              referenceFailureRateq: 0,
+              smallFailureRateQ: 0,
               invalidRateValueIsModifiedByUser: false,
               smallFailureRateQValueType: false,
             }}
@@ -400,7 +399,7 @@ class EditorItemPanel extends React.Component {
             size="68*68"
             shape="round"
             model={{
-              color: '#FA8C16',
+              color: '#1890FF',
               name: 'E000',
               note: '叶子节点注释',
               checkDis: isHideScreen,
@@ -410,7 +409,7 @@ class EditorItemPanel extends React.Component {
               failureTime: 5000,
               dCrf: 0,
               dClf: 0,
-              referenceFailureRateq: 0,
+              smallFailureRateQ: 0,
               invalidRateValueIsModifiedByUser: false,
               smallFailureRateQValueType: false,
             }}
@@ -433,7 +432,7 @@ class EditorItemPanel extends React.Component {
             shape="andGate"
             model={{
               name: 'andGate',
-              color: '#13C2C2',
+              color: '#1890FF',
               itemType: 'andGate',
             }}
             src="/or.png"
@@ -444,7 +443,7 @@ class EditorItemPanel extends React.Component {
             shape="nonGate"
             model={{
               name: 'nonGate',
-              color: '#722ED1',
+              color: '#1890FF',
               itemType: 'nonGate',
             }}
             src="/non.png"

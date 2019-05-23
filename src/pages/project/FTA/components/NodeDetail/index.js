@@ -14,14 +14,19 @@ const inlineFormItemLayout = {
     sm: { span: 18 },
   },
 }
+const toNonExponential = (num) =>{
+  let m = num.toExponential().match(/\d(?:\.(\d*))?e([+-]\d+)/);
+  return num.toFixed(Math.max(0, (m[1] || '').length - m[2]));
+}
 
 @connect(({ FTA, loading }) => ({ FTA, loading }))
 class NodeDetail extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      Qchecked: false,
+      invalidRateChecked: false,
       qchecked: false,
+      display_name: 'none',
     }
   }
 
@@ -32,15 +37,19 @@ class NodeDetail extends React.Component {
 
     const item = getSelected()[0]
     const {
+      shape,
       smallFailureRateQValueType,
       invalidRateValueIsModifiedByUser,
     } = item.getModel()
-    this.setState({ Qchecked: invalidRateValueIsModifiedByUser })
+    this.setState({ invalidRateChecked: invalidRateValueIsModifiedByUser })
     this.setState({ qchecked: smallFailureRateQValueType })
+    if (shape == 'round') {
+      this.setState({ display_name: 'block' })
+    }
   }
+
   handleSubmit = e => {
     e.preventDefault()
-
     const { form, propsAPI } = this.props
     const { getSelected, executeCommand, find, update } = propsAPI
     const { nodes } = propsAPI.save()
@@ -52,7 +61,7 @@ class NodeDetail extends React.Component {
 
       const item = getSelected()[0]
       const itemsModel = item.getModel()
-      itemsModel.invalidRateValueIsModifiedByUser = this.state.Qchecked
+      itemsModel.invalidRateValueIsModifiedByUser = this.state.invalidRateChecked
       itemsModel.smallFailureRateQValueType = this.state.qchecked
 
       if (!item) {
@@ -79,7 +88,7 @@ class NodeDetail extends React.Component {
   }
   onChangeQ = e => {
     let checked = `${e.target.checked}`
-    this.setState({ Qchecked: JSON.parse(checked) })
+    this.setState({ invalidRateChecked: JSON.parse(checked) })
   }
   onChangeq = e => {
     let checked = `${e.target.checked}`
@@ -97,7 +106,7 @@ class NodeDetail extends React.Component {
     if (!item) {
       return null
     }
-    const {
+    let {
       name,
       note,
       id,
@@ -107,10 +116,24 @@ class NodeDetail extends React.Component {
       failureTime,
       dCrf,
       dClf,
-      referenceFailureRateq,
+      smallFailureRateQ,
       invalidRateValueIsModifiedByUser,
       smallFailureRateQValueType,
-    } = item.getModel()
+    } = item.getModel();
+    // console.log(item.getModel());
+    if (shape == 'round') {
+      if(!this.state.qchecked){
+        failureRateQ = Number(invalidRate)*Number(failureTime)*0.0000000001;
+        smallFailureRateQ = Number(invalidRate)*(1-Number(dCrf))*Number(failureTime);
+      }
+    }else {
+      if(this.state.invalidRateChecked){
+        failureRateQ = Number(invalidRate)*Number(failureTime)*0.0000000001;
+      }else {
+        failureRateQ = smallFailureRateQ;
+        invalidRate = failureRateQ /Number(failureTime);
+      }
+    }
     if (itemType.indexOf(shape) >= 0) {
       return null
     } else {
@@ -129,7 +152,7 @@ class NodeDetail extends React.Component {
             >
               {getFieldDecorator('id', {
                 initialValue: id,
-              })(<Input onBlur={this.handleSubmit} disabled />)}
+              })(<Input onBlur={this.handleSubmit} disabled/>)}
             </Item>
             <Item
               label="name"
@@ -138,7 +161,7 @@ class NodeDetail extends React.Component {
             >
               {getFieldDecorator('name', {
                 initialValue: name,
-              })(<Input onBlur={this.handleSubmit} />)}
+              })(<Input onBlur={this.handleSubmit}/>)}
             </Item>
             <Item
               label="note"
@@ -147,7 +170,7 @@ class NodeDetail extends React.Component {
             >
               {getFieldDecorator('note', {
                 initialValue: note,
-              })(<Input onBlur={this.handleSubmit} />)}
+              })(<Input onBlur={this.handleSubmit}/>)}
             </Item>
             <Item
               label="Q"
@@ -159,15 +182,8 @@ class NodeDetail extends React.Component {
               })(
                 <Input
                   onBlur={this.handleSubmit}
-                  addonAfter={
-                    <Checkbox
-                      checked={this.state.Qchecked}
-                      onChange={this.onChangeQ.bind(this)}
-                      onBlur={this.handleSubmit}
-                    />
-                  }
-                  disabled={!this.state.Qchecked}
-                />
+                  disabled={true}
+                />,
               )}
             </Item>
             <Item
@@ -177,7 +193,15 @@ class NodeDetail extends React.Component {
             >
               {getFieldDecorator('invalidRate', {
                 initialValue: invalidRate,
-              })(<Input onBlur={this.handleSubmit} />)}
+              })(<Input onBlur={this.handleSubmit}
+                        addonAfter={
+                          <Checkbox
+                            checked={this.state.invalidRateChecked}
+                            onChange={this.onChangeQ.bind(this)}
+                            onBlur={this.handleSubmit}
+                          />
+                        }
+                        disabled={!this.state.invalidRateChecked}/>)}
             </Item>
             <Item
               label="T"
@@ -186,33 +210,35 @@ class NodeDetail extends React.Component {
             >
               {getFieldDecorator('failureTime', {
                 initialValue: failureTime,
-              })(<Input onBlur={this.handleSubmit} />)}
+              })(<Input onBlur={this.handleSubmit}/>)}
             </Item>
             <Item
               label="dCrf"
               {...inlineFormItemLayout}
               className={styles.mapType}
+              style={{ display: this.state.display_name }}
             >
               {getFieldDecorator('dCrf', {
                 initialValue: dCrf,
-              })(<Input onBlur={this.handleSubmit} />)}
+              })(<Input onBlur={this.handleSubmit}/>)}
             </Item>
             <Item
               label="dClf"
               {...inlineFormItemLayout}
               className={styles.mapType}
+              style={{ display: this.state.display_name }}
             >
               {getFieldDecorator('dClf', {
                 initialValue: dClf,
-              })(<Input onBlur={this.handleSubmit} />)}
+              })(<Input onBlur={this.handleSubmit}/>)}
             </Item>
             <Item
               label="q"
               {...inlineFormItemLayout}
               className={styles.mapType}
             >
-              {getFieldDecorator('referenceFailureRateq', {
-                initialValue: referenceFailureRateq,
+              {getFieldDecorator('smallFailureRateQ', {
+                initialValue: smallFailureRateQ,
               })(
                 <Input
                   addonAfter={
@@ -224,7 +250,7 @@ class NodeDetail extends React.Component {
                   }
                   onBlur={this.handleSubmit}
                   disabled={!this.state.qchecked}
-                />
+                />,
               )}
             </Item>
           </Form>

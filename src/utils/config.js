@@ -10,7 +10,7 @@ module.exports = {
     {
       name: 'primary',
       include: [/.*/],
-      exlude: [/(\/)*\/login/],
+      exclude: [/(\/)*\/login/],
     },
   ],
 
@@ -33,7 +33,3 @@ module.exports = {
   },
 }
 
-// const obj = {
-//   age:10
-// }
-// console(obj.age);

@@ -9,7 +9,7 @@ const hash = [
   'failureTime',
   'dCrf',
   'dClf',
-  'referenceFailureRateq',
+  'smallFailureRateQ',
   'smallFailureRateQValueType',
   'invalidRateValueIsModifiedByUser',
 ]

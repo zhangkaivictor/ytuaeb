@@ -37,7 +37,7 @@ export function arrayToTree(
   array,
   id = 'id',
   parentId = 'pid',
-  children = 'children'
+  children = 'children',
 ) {
   const result = []
   const hash = {}
@@ -75,7 +75,7 @@ export const langFromPath = curry(
       }
     }
     return defaultLanguage
-  }
+  },
 )(languages)(defaultLanguage)
 
 export const deLangPrefix = curry(
@@ -96,7 +96,7 @@ export const deLangPrefix = curry(
     }
 
     return pathname
-  }
+  },
 )(languages)
 
 /**
@@ -125,12 +125,12 @@ const myRouter = { ...umiRouter }
 
 myRouter.push = flow(
   routerAddLangPrefix,
-  umiRouter.push
+  umiRouter.push,
 )
 
 myRouter.replace = flow(
   routerAddLangPrefix,
-  myRouter.replace
+  myRouter.replace,
 )
 
 export const router = myRouter
@@ -203,40 +203,41 @@ export function queryAncestors(array, current, parentId, id = 'id') {
  */
 export function queryLayout(layouts, pathname) {
   let result = 'public'
+  if (pathname != '/') {
+    const isMatch = regepx => {
+      return regepx instanceof RegExp
+        ? regepx.test(pathname)
+        : pathMatchRegexp(regepx, pathname)
+    }
 
-  const isMatch = regepx => {
-    return regepx instanceof RegExp
-      ? regepx.test(pathname)
-      : pathMatchRegexp(regepx, pathname)
-  }
-
-  for (const item of layouts) {
-    let include = false
-    let exlude = false
-    if (item.include) {
-      for (const regepx of item.include) {
-        if (isMatch(regepx)) {
-          include = true
-          break
+    for (const item of layouts) {
+      let include = false
+      let exclude = false
+      if (item.include) {
+        for (const regepx of item.include) {
+          if (isMatch(regepx)) {
+            include = true
+            break
+          }
         }
       }
-    }
 
-    if (include && item.exlude) {
-      for (const regepx of item.exlude) {
-        if (isMatch(regepx)) {
-          exlude = true
-          break
+      if (include && item.exclude) {
+        for (const regepx of item.exclude) {
+          if (isMatch(regepx)) {
+            exclude = true
+            break
+          }
         }
       }
-    }
 
-    if (include && !exlude) {
-      result = item.name
-      break
+      if (include && !exclude) {
+        result = item.name
+        break
+      }
+
     }
   }
-
   return result
 }
 
@@ -249,7 +250,7 @@ export function setLocale(language) {
     umiRouter.push({
       pathname: `/${language}${deLangPrefix(window.location.pathname)}${
         window.location.search
-      }`,
+        }`,
     })
   }
 }

@@ -298,15 +298,10 @@ export default {
           ],
         },
       })
-      if (queryLayout(config.layouts) !== 'public') {
-        router.push({
-          pathname: '/',
-        })
-      }
       window.localStorage.clear()
       if (queryLayout(config.layouts) !== 'public') {
         router.push({
-          pathname: '/',
+          pathname: '/login',
         })
       }
     },
