@@ -25,9 +25,7 @@ class Header extends PureComponent {
       notifications,
       onCollapseChange,
       onAllNotificationsRead,
-    } = this.props
-    // const name = window.localStorage.getItem('username')
-    // console.log(name)
+    } = this.props;
     const rightContent = [
       <Menu key="user" mode="horizontal" onClick={this.handleClickMenu}>
         <SubMenu
@@ -36,10 +34,10 @@ class Header extends PureComponent {
               <span style={{ color: '#999', marginRight: 4 }}>
                 <Trans>
                   Hi,
-                  <span style={{ color: 'red', fontWeight: '800' }}>
-                    {window.localStorage.getItem('username')}
-                  </span>
                 </Trans>
+                <span style={{ color: 'red', fontWeight: '800' }}>
+                    {username}
+                  </span>
               </span>
               <Avatar style={{ marginLeft: 8 }} src={avatar} />
             </Fragment>
@@ -158,6 +156,7 @@ class Header extends PureComponent {
 Header.propTypes = {
   fixed: PropTypes.bool,
   user: PropTypes.object,
+  userName: PropTypes.string,
   menus: PropTypes.array,
   collapsed: PropTypes.bool,
   onSignOut: PropTypes.func,
