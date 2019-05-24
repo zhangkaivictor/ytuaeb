@@ -10,6 +10,65 @@ import styles from './onAnalysis.less'
 @withI18n()
 @connect(({ FTA }) => ({ FTA }))
 class onAnalysis extends PureComponent {
+  renderFailureNameContent = (value, row, index) => {
+    const { FTA } = this.props
+    const { treeReportList } = FTA
+    let { tableP2 } = treeReportList;
+    const obj = {
+      children: value,
+      props: {},
+    }
+    let tableList = [];
+    for(let i=0; i<=tableP2.length-1; i++){
+      if(tableP2[i].failureName == value){
+        tableList.push(i);
+      }
+    }
+    if (tableList.length === 1) {
+      obj.props.rowSpan = 1
+    }else {
+      if (index === tableList[0]) {
+        obj.props.rowSpan = tableList[tableList.length-1] -tableList[0]+1;
+      }else {
+        for(let j=1; j<=tableList.length-1; j++){
+          if (index === tableList[j]) {
+            obj.props.rowSpan = 0
+          }
+        }
+      }
+    }
+    return obj
+  }
+
+  renderInvalidValueContent = (value, row, index) => {
+    const { FTA } = this.props
+    const { treeReportList } = FTA
+    let { tableP2 } = treeReportList;
+    const obj = {
+      children: value,
+      props: {},
+    }
+    let tableList = [];
+    for(let i=0; i<=tableP2.length-1; i++){
+      if(tableP2[i].invalidValue == value){
+        tableList.push(i);
+      }
+    }
+    if (tableList.length === 1) {
+      obj.props.rowSpan = 1
+    }else {
+      if (index === tableList[0]) {
+        obj.props.rowSpan = tableList[tableList.length-1] -tableList[0]+1;
+      }else {
+        for(let j=1; j<=tableList.length-1; j++){
+          if (index === tableList[j]) {
+            obj.props.rowSpan = 0
+          }
+        }
+      }
+    }
+    return obj
+  }
   render() {
     const { FTA, location } = this.props
     console.log(FTA)
@@ -52,24 +111,24 @@ class onAnalysis extends PureComponent {
         },
         {
           title: '单点故障',
-          dataIndex: 'singlePointEvent',
+          dataIndex: 'singlePointFault',
         },
 
         {
           title: '残余故障',
-          dataIndex: 'nodeFailureProbability',
+          dataIndex: 'residualFaults',
         },
         {
           title: '潜伏故障',
-          dataIndex: 'safeEvent',
+          dataIndex: 'latentFault',
         },
         {
           title: '可探测双点故障',
-          dataIndex: 'dualPointEvent',
+          dataIndex: 'detectedDualPointFault',
         },
         {
           title: '安全故障',
-          dataIndex: 'topEvent',
+          dataIndex: 'safeFault',
         },
       ]
       const columnsTop = [
@@ -85,11 +144,13 @@ class onAnalysis extends PureComponent {
       const columns2 = [
         {
           title: '故障类型',
-          // dataIndex: 'failureName',
+          dataIndex: 'failureName',
+          render: this.renderFailureNameContent,
         },
         {
           title: '失效率',
           dataIndex: 'invalidValue',
+          render: this.renderInvalidValueContent,
         },
         {
           title: '事件ID',
