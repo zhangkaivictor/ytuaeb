@@ -2,7 +2,7 @@ module.exports = {
   siteName: 'SAIC MOTOR',
   copyright: 'Copyright © 2018 SAIC Motor Corporation Limited',
   logoPath: '/logo-small.ico',
-  apiPrefix: 'http://40.121.23.71',
+  apiPrefix: 'http://40.121.23.71/backend',
   fixedHeader: true, // sticky primary layout header
 
   /* Layout configuration, specify which layout to use for route. */
@@ -32,4 +32,3 @@ module.exports = {
     defaultLanguage: 'zh',
   },
 }
-

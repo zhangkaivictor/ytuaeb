@@ -116,20 +116,6 @@ class FmeaPage extends React.Component {
         }
       },
     }
-    // const treeProps = {
-    //   ...this.props,
-    //   treeClick(e, treeId, treeNode) {
-    //     console.log(treeNode)
-    //     if (treeNode.type == 'fun') {
-    //       dispatch({ type: 'FMEA/triggerType', payload: { id: treeNode.id, type: 1 } })
-    //     } else {
-    //       dispatch({ type: 'FMEA/triggerType', payload: { id: treeNode.id, type: 2 } })
-    //     }
-    //   },
-    //   structureClick() {
-    //     dispatch({ type: 'FMEA/triggerType', payload: { type: 0 } })
-    //   }
-    // }
     const getChildLebal = arr => {}
 
     let viewData = null

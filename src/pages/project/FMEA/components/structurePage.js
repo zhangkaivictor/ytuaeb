@@ -5,12 +5,17 @@ import { FlowContextMenu } from '../components/EditorContextMenu'
 import { FlowToolbar } from '../components/EditorToolbar'
 import { FlowItemPanel } from '../components/EditorItemPanel'
 import styles from './structurePage.less'
+import { Button } from 'antd'
 
 class StructurePage extends React.Component {
   componentDidMount() {
     const { propsAPI } = this.props
     console.log(this.props)
     // console.log(this.props.propsAPI.read());
+  }
+  handleClick() {
+    console.log('save')
+    console.log(this.props)
   }
   render() {
     let data = {
@@ -52,9 +57,19 @@ class StructurePage extends React.Component {
         }}
       >
         <Row type="flex" className={styles.editorHd}>
-          <Col span={24}>
+          <Col span={20}>
             <FlowToolbar />
           </Col>
+          <Col span={4}>
+            <Button
+              onClick={e => {
+                this.handleClick(e)
+              }}
+            >
+              保存
+            </Button>
+          </Col>
+          {/* <Col span={4}><Button onClick=this.handleClick(e)>保存</Button></Col> */}
         </Row>
         <Row type="flex" className={styles.editorBd}>
           <Col span={3} className={styles.editorSidebar}>
