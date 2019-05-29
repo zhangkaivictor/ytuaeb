@@ -6,7 +6,9 @@ import { FlowToolbar } from '../components/EditorToolbar'
 import { FlowItemPanel } from '../components/EditorItemPanel'
 import styles from './structurePage.less'
 import { Button } from 'antd'
-
+import { FMEAObjectToJSONString } from './structure'
+import router from 'umi/router'
+import Redirect from 'umi/redirect'
 class StructurePage extends React.Component {
   componentDidMount() {
     const { propsAPI } = this.props
@@ -15,7 +17,8 @@ class StructurePage extends React.Component {
   }
   handleClick() {
     console.log('save')
-    console.log(this.props)
+    console.log(FMEAObjectToJSONString(this.props.FMEA.StructurePane))
+    // router.push('/ccc');
   }
   render() {
     let data = {
@@ -69,6 +72,7 @@ class StructurePage extends React.Component {
               保存
             </Button>
           </Col>
+          {/* <Redirect to={'/video'} /> */}
           {/* <Col span={4}><Button onClick=this.handleClick(e)>保存</Button></Col> */}
         </Row>
         <Row type="flex" className={styles.editorBd}>

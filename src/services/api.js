@@ -22,6 +22,9 @@ const api = {
   getTreeReport: '/api/FTAProjects/GetTreeReport',
 
   queryDashboard: '/dashboard',
+  //FMEA
+  getFmeaData: '/api/FMEAProjects/GetTree',
+  postFmeaData: 'POST /api/FMEAProjects/AddTree',
 }
 
 export default api

@@ -1304,4 +1304,10 @@ StructurePane.prototype.SetStructureTreeRootById = function(structureNodeId) {
     throw 'Not found the root node in the StructurePane!'
   }
 }
-export { StructurePane, StructureFunction, FunctionFailure, StructureNode }
+export {
+  StructurePane,
+  StructureFunction,
+  FunctionFailure,
+  StructureNode,
+  FMEAObjectToJSONString,
+}

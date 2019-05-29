@@ -1,5 +1,5 @@
 import modelExtend from 'dva-model-extend'
-import { createPostFtaMap, getFtaMap, getAnalyzeTree } from 'api'
+import { getFmeaData, postFmeaData } from 'api'
 import { pathMatchRegexp } from 'utils'
 import { pageModel } from 'utils/model'
 import {
@@ -7,6 +7,7 @@ import {
   StructureFunction,
   FunctionFailure,
   StructureNode,
+  FMEAObjectToJSONString,
 } from './components/structure'
 import { cloneDeep, isString, flow, curry } from 'lodash'
 
@@ -29,7 +30,32 @@ export default modelExtend(pageModel, {
     actionType: -1,
   },
   subscriptions: {},
-  effects: {},
+  effects: {
+    *postFmea({ payload = {} }, { call, put }) {
+      const headers = {
+        Authorization: window.localStorage.getItem('token'),
+      }
+      const data = yield call(postFmeaData, payload, headers)
+      console.log(data)
+      if (data.success) {
+        // yield put({
+        //   type: 'querySuccess',
+        //   payload: {
+        //     list: data.list,
+        //   },
+        // })
+      } else {
+        throw data
+      }
+    },
+    *gettFmea({ payload = {} }, { call, put }) {
+      const headers = {
+        Authorization: window.localStorage.getItem('token'),
+      }
+      const data = yield call(getFmeaData, payload, headers)
+      console.log(data)
+    },
+  },
   reducers: {
     print(state, { payload: id }) {
       console.log(state.structure, id)
