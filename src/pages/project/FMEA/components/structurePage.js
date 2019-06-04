@@ -1,5 +1,5 @@
 import React from 'react'
-import { Row, Col } from 'antd'
+import { Row, Col, message } from 'antd'
 import GGEditor, { Flow, withPropsAPI } from 'gg-editor'
 import { FlowContextMenu } from '../components/EditorContextMenu'
 import { FlowToolbar } from '../components/EditorToolbar'
@@ -7,8 +7,14 @@ import { FlowItemPanel } from '../components/EditorItemPanel'
 import styles from './structurePage.less'
 import { Button } from 'antd'
 import { FMEAObjectToJSONString } from './structure'
-import router from 'umi/router'
-import Redirect from 'umi/redirect'
+
+const guid = () => {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+    let r = (Math.random() * 16) | 0,
+      v = c == 'x' ? r : (r & 0x3) | 0x8
+    return v.toString(16)
+  })
+}
 class StructurePage extends React.Component {
   componentDidMount() {
     const { propsAPI } = this.props
@@ -16,9 +22,33 @@ class StructurePage extends React.Component {
     // console.log(this.props.propsAPI.read());
   }
   handleClick() {
-    console.log('save')
     console.log(FMEAObjectToJSONString(this.props.FMEA.StructurePane))
-    // router.push('/ccc');
+    let data = {}
+    data.id = guid()
+    if (FMEAObjectToJSONString(this.props.FMEA.StructurePane) != 'null') {
+      data.content = FMEAObjectToJSONString(this.props.FMEA.StructurePane)
+      this.props.save(data)
+    } else {
+      message.info('没有可保存的信息')
+    }
+  }
+  nodeDrag(e) {
+    console.log(e, this.props)
+    if (e.action === 'update') {
+      //更新nodeData
+      let nodes = this.props.FMEA.nodeData.nodes
+      let node = this.props.FMEA.nodeData.nodes.map(node => {
+        if (node.id == e.originModel.id) {
+          return Object.assign(node, e.updateModel)
+        } else {
+          return node
+        }
+      })
+      const { dispatch } = this.props
+      dispatch({ type: 'FMEA/updateNode', payload: node })
+      //更新structureNode
+      //findStructureNodeById
+    }
   }
   render() {
     let data = {
@@ -86,6 +116,7 @@ class StructurePage extends React.Component {
               onNodeClick={e => {
                 this.props.nodeClick(e)
               }}
+              onAfterChange={e => this.nodeDrag(e)}
               data={this.props.FMEA.nodeData}
             />
           </Col>

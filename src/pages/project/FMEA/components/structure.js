@@ -158,7 +158,7 @@ StructureFunction.prototype.removeFailureById = function(failureId) {
 /*
 	定义结构树形点类
 */
-function StructureNode(name) {
+function StructureNode(name, x, y, shape) {
   this.id = GenerateId()
   this.name = name
   this.description = ''
@@ -166,9 +166,9 @@ function StructureNode(name) {
   this.uri = ''
   this.html = ''
 
-  this.shape = ''
-  this.x = 0
-  this.y = 0
+  this.shape = shape
+  this.x = x
+  this.y = y
 
   this.parent = null
   this.children = []
@@ -1310,4 +1310,5 @@ export {
   FunctionFailure,
   StructureNode,
   FMEAObjectToJSONString,
+  ConvertJsonToStructurePane,
 }

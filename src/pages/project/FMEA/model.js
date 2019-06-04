@@ -1,15 +1,16 @@
 import modelExtend from 'dva-model-extend'
 import { getFmeaData, postFmeaData } from 'api'
-import { pathMatchRegexp } from 'utils'
+import { pathMatchRegexp, router } from 'utils'
 import { pageModel } from 'utils/model'
+import { message } from 'antd'
 import {
   StructurePane,
   StructureFunction,
   FunctionFailure,
   StructureNode,
   FMEAObjectToJSONString,
+  ConvertJsonToStructurePane,
 } from './components/structure'
-import { cloneDeep, isString, flow, curry } from 'lodash'
 
 // import { st} from
 export default modelExtend(pageModel, {
@@ -29,12 +30,36 @@ export default modelExtend(pageModel, {
     selectedFail: null,
     actionType: -1,
   },
-  subscriptions: {},
+  subscriptions: {
+    setup({ dispatch, history }) {
+      history.listen(location => {
+        // let content = "{"id":"138653589","projectName":"fmea","description":"","structureTreeRoot":{"id":"1073308239","name":"芯片，CPU","description":"","uri":"","html":"","shape":"","x":88.8125,"y":72,"parent":null,"children":[],"FunctionSet":[],"paneId":"681e3670"},"structureNodes":[{"id":"1073308239","name":"芯片，CPU","description":"","uri":"","html":"","shape":"","x":88.8125,"y":72,"parent":null,"children":[],"FunctionSet":[],"paneId":"681e3670"},{"id":"1003809898","name":"电机","description":"","uri":"","html":"","shape":"","x":92.8125,"y":206,"parent":"1073308239","children":[],"FunctionSet":[],"paneId":"43748557"}],"None":{"id":-1,"name":"NA","description":"","structureNodeId":" - 1","dependentFunctionSet":[],"FailureSet":[],"functionId":" - 1","dependentFailureSet":[],"detectionSet":[],"preCautionSet":[]}}";
+        // console.log(JSON.parse(content))
+        if (pathMatchRegexp('/project/FMEA', location.pathname)) {
+          console.log(location)
+          if (location.query.projectId != undefined) {
+            dispatch({
+              type: 'getFmea',
+              payload: {
+                projectId: location.query.projectId,
+              },
+            })
+          } else {
+            router.push({
+              pathname: '/post',
+            })
+            message.info('目前没有项目，请新建！！！')
+          }
+        }
+      })
+    },
+  },
   effects: {
     *postFmea({ payload = {} }, { call, put }) {
       const headers = {
         Authorization: window.localStorage.getItem('token'),
       }
+      console.log(payload)
       const data = yield call(postFmeaData, payload, headers)
       console.log(data)
       if (data.success) {
@@ -48,15 +73,76 @@ export default modelExtend(pageModel, {
         throw data
       }
     },
-    *gettFmea({ payload = {} }, { call, put }) {
+    *getFmea({ payload = {} }, { call, put }) {
+      console.log(payload)
       const headers = {
         Authorization: window.localStorage.getItem('token'),
       }
       const data = yield call(getFmeaData, payload, headers)
       console.log(data)
+      if (data.success) {
+        console.log('ll')
+        yield put({
+          type: 'queryFmeaSuccess',
+          payload: {
+            list: data.list.content,
+          },
+        })
+      }
     },
   },
   reducers: {
+    //获取结构对象
+    queryFmeaSuccess(state, { payload }) {
+      console.log(state, payload, 'l')
+      if (!payload.list) {
+        return {
+          ...state,
+          nodeData: {
+            nodes: [],
+            edges: [],
+          },
+          StructurePane: null,
+        }
+      }
+      let structurePaneObj = ConvertJsonToStructurePane(payload.list)
+      let nodeData = {
+        nodes: [],
+        edges: [],
+      }
+      structurePaneObj.structureNodes.forEach(structure => {
+        nodeData.nodes.push({
+          type: 'node',
+          size: '70*70',
+          shape: structure.shape,
+          // color: '#FA8C16',
+          label: structure.name,
+          x: structure.x,
+          y: structure.y,
+          id: structure.paneId,
+          structureId: structure.id,
+          // index: 0,
+        })
+        if (structure.children.length > 0) {
+          structure.children.forEach(child => {
+            nodeData.edges.push({
+              source: structure.paneId,
+              // sourceAnchor: 2,
+              target: child.paneId,
+              // targetAnchor: 0,
+              // id: '7989ac70',
+              // index: 1,
+            })
+          })
+        }
+      })
+      console.log(nodeData)
+      return {
+        ...state,
+        nodeData: nodeData,
+        StructurePane: ConvertJsonToStructurePane(payload.list),
+      }
+    },
     print(state, { payload: id }) {
       console.log(state.structure, id)
     },
@@ -69,7 +155,8 @@ export default modelExtend(pageModel, {
       let node = new StructureNode(
         payload.addModel.label,
         payload.addModel.x,
-        payload.addModel.y
+        payload.addModel.y,
+        payload.addModel.shape
       )
       let nodesList = StructurePaneObj.structureNodes.concat(
         Object.assign(node, { paneId: payload.addModel.id })
@@ -114,6 +201,17 @@ export default modelExtend(pageModel, {
         alert('闭环')
         canAddEdge = false
       }
+      //防止重复
+      let edges = state.nodeData.edges
+      edges.forEach(edge => {
+        if (
+          edge.source == payload.addModel.source &&
+          edge.target == payload.addModel.target
+        ) {
+          alert('重复')
+          canAddEdge = false
+        }
+      })
       if (!canAddEdge) {
         let nodeData = Object.assign(
           Object.create(Object.getPrototypeOf(state.nodeData)),
@@ -140,6 +238,31 @@ export default modelExtend(pageModel, {
             edges: state.nodeData.edges.concat(payload.addModel),
           },
         }
+      }
+    },
+    //更新节点位置
+    updateNode(state, { payload }) {
+      console.log(payload)
+      let StructurePaneObj = state.StructurePane
+      let nodesList = StructurePaneObj.structureNodes.map(structureNode => {
+        payload.forEach(paneNode => {
+          if (paneNode.id == structureNode.paneId) {
+            console.log(paneNode)
+            structureNode.x = paneNode.x
+            structureNode.y = paneNode.y
+          }
+        })
+        return structureNode
+      })
+      console.log(nodesList)
+      return {
+        ...state,
+        StructurePane: Object.assign(
+          Object.create(Object.getPrototypeOf(StructurePaneObj)),
+          StructurePaneObj,
+          { structureNodes: nodesList }
+        ),
+        nodeData: Object.assign({}, state.nodeData, { nodes: payload }),
       }
     },
     //移除节点

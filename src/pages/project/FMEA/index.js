@@ -17,8 +17,23 @@ class FmeaPage extends React.Component {
   // componentDidMount() {
 
   // }
+  saveFmea(data) {
+    const { dispatch, location } = this.props
+    const { query } = location
+    if (query.projectId != undefined) {
+      data.projectId = query.projectId
+      console.log(data)
+      dispatch({
+        type: `FMEA/postFmea`,
+        payload: data,
+      })
+    } else {
+      alert('无法保存，请移步至项目管理新建项目！！！')
+    }
+  }
   panelAction(e) {
     console.log(e)
+
     if (e.name == 'add') {
       switch (e.type) {
         case 'node':
@@ -202,6 +217,7 @@ class FmeaPage extends React.Component {
               nodeClick={e => {
                 this.nodeClick(e)
               }}
+              save={e => this.saveFmea(e)}
               {...this.props}
             />
           </Col>

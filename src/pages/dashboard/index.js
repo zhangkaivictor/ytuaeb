@@ -134,9 +134,9 @@ class Dashboard extends PureComponent {
           </Col>
           <Col lg={8} md={24}>
             <Card bordered={false} {...bodyStyle}>
-              <ScrollBar>
+              {/* <ScrollBar>
                 <Cpu {...cpu} />
-              </ScrollBar>
+              </ScrollBar> */}
             </Card>
           </Col>
           <Col lg={8} md={24}>

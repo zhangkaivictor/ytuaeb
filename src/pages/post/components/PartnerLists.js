@@ -30,9 +30,9 @@ class PartnerLists extends React.Component {
       if (!isSide) {
         optionName['privilege'] = 2
         selectedOptions.push(optionName)
-        for(let i=0; i<=options.length-1; i++){
-          if(options[i].realName == optionName.realName){
-           options.splice(i,1);
+        for (let i = 0; i <= options.length - 1; i++) {
+          if (options[i].realName == optionName.realName) {
+            options.splice(i, 1)
           }
         }
         //
@@ -42,9 +42,9 @@ class PartnerLists extends React.Component {
       if (!isSide) {
         optionName['privilege'] = 1
         readOptions.push(optionName)
-        for(let i=0; i<=options.length-1; i++){
-          if(options[i].realName== optionName.realName){
-            options.splice(i,1);
+        for (let i = 0; i <= options.length - 1; i++) {
+          if (options[i].realName == optionName.realName) {
+            options.splice(i, 1)
           }
         }
         //
@@ -53,30 +53,30 @@ class PartnerLists extends React.Component {
     this.setState({ options })
   }
 
-  handleDeselect = (writeReadOptions) => {
+  handleDeselect = writeReadOptions => {
     let { options, selectedOptions } = this.props
-      let isSide = delPartner(options, writeReadOptions)
-      if (!isSide) {
-        writeReadOptions['privilege'] = 0;
-        options.push(writeReadOptions)
-        for(let i=0; i<=selectedOptions.length-1; i++){
-          if(selectedOptions[i].realName == writeReadOptions.realName){
-            selectedOptions.splice(i,1);
-          }
+    let isSide = delPartner(options, writeReadOptions)
+    if (!isSide) {
+      writeReadOptions['privilege'] = 0
+      options.push(writeReadOptions)
+      for (let i = 0; i <= selectedOptions.length - 1; i++) {
+        if (selectedOptions[i].realName == writeReadOptions.realName) {
+          selectedOptions.splice(i, 1)
         }
       }
-    this.setState({ writeReadOptions });
+    }
+    this.setState({ writeReadOptions })
   }
 
-  readDeselect = (onlyReadOptions) => {
+  readDeselect = onlyReadOptions => {
     let { options, readOptions } = this.props
     let isSide = delPartner(options, onlyReadOptions)
     if (!isSide) {
       onlyReadOptions['privilege'] = 0
       options.push(onlyReadOptions)
-      for(let i=0; i<=readOptions.length-1; i++){
-        if(readOptions[i].realName == onlyReadOptions.realName){
-          readOptions.splice(i,1);
+      for (let i = 0; i <= readOptions.length - 1; i++) {
+        if (readOptions[i].realName == onlyReadOptions.realName) {
+          readOptions.splice(i, 1)
         }
       }
     }
@@ -100,6 +100,7 @@ class PartnerLists extends React.Component {
                     onCancel={this.handleSelect.bind(this, 2, option)}
                     okText="读写"
                     cancelText="只读"
+                    key={option.emailAddress}
                   >
                     <option
                       value={option.realName}
@@ -125,6 +126,7 @@ class PartnerLists extends React.Component {
                     onConfirm={this.handleDeselect.bind(this, option)}
                     okText="删除"
                     cancelText="取消"
+                    key={option.emailAddress}
                   >
                     <option
                       value={option.realName}
@@ -150,6 +152,7 @@ class PartnerLists extends React.Component {
                     onConfirm={this.readDeselect.bind(this, option)}
                     okText="删除"
                     cancelText="取消"
+                    key={option.emailAddress}
                   >
                     <option
                       value={option.realName}

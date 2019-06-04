@@ -31,7 +31,7 @@ class Filter extends PureComponent {
           md={{ span: 24 }}
           sm={{ span: 24 }}
         >
-          <Row type="flex" align="right" justify="space-between">
+          <Row type="flex" align="middle" justify="space-between">
             <Button type="ghost" onClick={onAdd}>
               <Trans>Create</Trans>
             </Button>
