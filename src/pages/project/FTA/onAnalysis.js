@@ -13,24 +13,24 @@ class onAnalysis extends PureComponent {
   renderFailureNameContent = (value, row, index) => {
     const { FTA } = this.props
     const { treeReportList } = FTA
-    let { tableP2 } = treeReportList;
+    let { tableP2 } = treeReportList
     const obj = {
       children: value,
       props: {},
     }
-    let tableList = [];
-    for(let i=0; i<=tableP2.length-1; i++){
-      if(tableP2[i].failureName == value){
-        tableList.push(i);
+    let tableList = []
+    for (let i = 0; i <= tableP2.length - 1; i++) {
+      if (tableP2[i].failureName == value) {
+        tableList.push(i)
       }
     }
     if (tableList.length === 1) {
       obj.props.rowSpan = 1
-    }else {
+    } else {
       if (index === tableList[0]) {
-        obj.props.rowSpan = tableList[tableList.length-1] -tableList[0]+1;
-      }else {
-        for(let j=1; j<=tableList.length-1; j++){
+        obj.props.rowSpan = tableList[tableList.length - 1] - tableList[0] + 1
+      } else {
+        for (let j = 1; j <= tableList.length - 1; j++) {
           if (index === tableList[j]) {
             obj.props.rowSpan = 0
           }
@@ -43,24 +43,24 @@ class onAnalysis extends PureComponent {
   renderInvalidValueContent = (value, row, index) => {
     const { FTA } = this.props
     const { treeReportList } = FTA
-    let { tableP2 } = treeReportList;
+    let { tableP2 } = treeReportList
     const obj = {
       children: value,
       props: {},
     }
-    let tableList = [];
-    for(let i=0; i<=tableP2.length-1; i++){
-      if(tableP2[i].invalidValue == value){
-        tableList.push(i);
+    let tableList = []
+    for (let i = 0; i <= tableP2.length - 1; i++) {
+      if (tableP2[i].failureName == tableP2[index].failureName) {
+        tableList.push(i)
       }
     }
     if (tableList.length === 1) {
       obj.props.rowSpan = 1
-    }else {
+    } else {
       if (index === tableList[0]) {
-        obj.props.rowSpan = tableList[tableList.length-1] -tableList[0]+1;
-      }else {
-        for(let j=1; j<=tableList.length-1; j++){
+        obj.props.rowSpan = tableList[tableList.length - 1] - tableList[0] + 1
+      } else {
+        for (let j = 1; j <= tableList.length - 1; j++) {
           if (index === tableList[j]) {
             obj.props.rowSpan = 0
           }
@@ -79,7 +79,7 @@ class onAnalysis extends PureComponent {
           projectId: location.query.projectId,
         },
       })
-      return
+      // return
     } else {
       const { FTA } = this.props
       const { treeReportList } = FTA
