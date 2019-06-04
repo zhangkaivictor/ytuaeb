@@ -328,7 +328,7 @@ export default modelExtend(pageModel, {
     addFunction(state, { payload }) {
       if (!state.selectedStructure) {
         alert('请选择结构')
-        return
+        return state
       }
       let fun = new StructureFunction(payload.data.name)
       let structureNodeObj = Object.assign(
@@ -512,7 +512,7 @@ export default modelExtend(pageModel, {
         }
       } else {
         console.log(state.selectedStructure)
-
+        return state
         // console.log(state.selectedStructure.findFunctionById(payload.id).name)
       }
     },

@@ -6,6 +6,7 @@ import StructurePage from './components/structurePage'
 import TreePage from './components/treePage'
 import ViewPage from './components/viewPage'
 import AddModal from './components/Modal'
+import DependEditModal from './components/dependEditModal'
 import { connect } from 'dva'
 
 @connect(({ FMEA }) => ({ FMEA }))
@@ -22,7 +23,6 @@ class FmeaPage extends React.Component {
     const { query } = location
     if (query.projectId != undefined) {
       data.projectId = query.projectId
-      console.log(data)
       dispatch({
         type: `FMEA/postFmea`,
         payload: data,
@@ -32,8 +32,6 @@ class FmeaPage extends React.Component {
     }
   }
   panelAction(e) {
-    console.log(e)
-
     if (e.name == 'add') {
       switch (e.type) {
         case 'node':
@@ -84,7 +82,6 @@ class FmeaPage extends React.Component {
       createModalVisible,
       createModalItem,
     } = FMEA
-    console.log(createModalVisible, this.props)
     const modalProps = {
       type: createModalType,
       visible: createModalVisible,
@@ -99,7 +96,6 @@ class FmeaPage extends React.Component {
         })
       },
       onOk(data) {
-        console.log(data)
         if (createModalType == 0) {
           dispatch({
             type: 'FMEA/addFunction',
@@ -131,11 +127,8 @@ class FmeaPage extends React.Component {
         }
       },
     }
-    const getChildLebal = arr => {}
-
     let viewData = null
     const getViewData = () => {
-      console.log(this.props.FMEA)
       if (this.props.FMEA.selectedStructure === null) {
         return
       }
@@ -229,6 +222,7 @@ class FmeaPage extends React.Component {
           <ViewPage {...this.props} />
         </Row>
         {createModalVisible && <AddModal {...modalProps} />}
+        <DependEditModal />
       </div>
     )
   }

@@ -97,7 +97,14 @@ class TreePage extends React.Component {
         lh = []
       } else {
         lh = leafs.map(leaf => {
-          return <TreeNode title={leaf.name} key={leaf.id} />
+          return (
+            <TreeNode
+              title={leaf.name}
+              key={leaf.id}
+              className={styles.funNode}
+              style={{ color: 'red' }}
+            />
+          )
         })
       }
       console.log(lh)
@@ -109,7 +116,7 @@ class TreePage extends React.Component {
     ) {
       funList = FMEA.selectedStructure.FunctionSet.map(fun => {
         return (
-          <TreeNode title={fun.name} key={fun.id}>
+          <TreeNode title={fun.name} key={fun.id} style={{ color: 'green' }}>
             {getLeafHtml(fun.FailureSet)}
             {/* {[]} */}
           </TreeNode>
@@ -148,7 +155,12 @@ class TreePage extends React.Component {
                 {/* <span>添加功能</span> */}
                 {/* </div> */}
               </div>
-              <Tree showLine defaultExpandAll onSelect={this.onSelect}>
+              <Tree
+                showLine
+                defaultExpandAll={true}
+                showLine
+                onSelect={this.onSelect}
+              >
                 {funList}
               </Tree>
             </div>
