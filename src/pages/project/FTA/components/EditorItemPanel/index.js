@@ -138,6 +138,7 @@ class EditorItemPanel extends React.Component {
               const x = -width / 2
               const y = -height / 2
               const borderRadius = 4
+              const color = model.color ? model.color : '#1890FF'
               const keyShape = group.addShape('rect', {
                 attrs: {
                   x,
@@ -145,8 +146,8 @@ class EditorItemPanel extends React.Component {
                   width,
                   height,
                   radius: borderRadius,
-                  fill: 'white',
-                  stroke: '#1890FF',
+                  fill: color,
+                  stroke: color,
                 },
               })
               //注册文本信息
@@ -174,7 +175,7 @@ class EditorItemPanel extends React.Component {
                     fill: 'white',
                     stroke: '#1890FF',
                     radius: borderRadius,
-                    overFlow:'hidden',
+                    overFlow: 'hidden',
                   },
                 })
                 const note = model.note ? model.note : this.note
@@ -211,6 +212,7 @@ class EditorItemPanel extends React.Component {
               const x = -width / 2
               const y = -height / 2
               const borderRadius = 4
+              const color = model.color ? model.color : '#1890FF'
               const keyShape = group.addShape('rect', {
                 attrs: {
                   x,
@@ -218,8 +220,8 @@ class EditorItemPanel extends React.Component {
                   width,
                   height,
                   radius: borderRadius,
-                  fill: 'white',
-                  stroke: '#1890FF',
+                  fill: color,
+                  stroke: color,
                 },
               })
               //注册文本信息
@@ -247,7 +249,7 @@ class EditorItemPanel extends React.Component {
                     fill: 'white',
                     stroke: '#1890FF',
                     radius: borderRadius,
-                    overFlow:'hidden',
+                    overFlow: 'hidden',
                   },
                 })
                 const note = model.note ? model.note : this.note
@@ -285,14 +287,16 @@ class EditorItemPanel extends React.Component {
               const x = -width / 2
               const y = -height / 2
               const borderRadius = 34
+              const color = model.color ? model.color : '#1890FF'
+              console.log(color)
               const keyShape = group.addShape('rect', {
                 attrs: {
                   x,
                   y,
                   width,
                   height,
-                  fill: 'white',
-                  stroke: '#1890FF',
+                  fill: '#' + color,
+                  stroke: '#' + color,
                   radius: borderRadius,
                 },
               })
@@ -320,7 +324,7 @@ class EditorItemPanel extends React.Component {
                     height: 34,
                     fill: 'white',
                     stroke: '#1890FF',
-                    overFlow:'hidden',
+                    overFlow: 'hidden',
                   },
                 })
                 const note = model.note ? model.note : this.note

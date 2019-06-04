@@ -21,12 +21,7 @@ class FlowMap extends React.Component {
     }
     // console.log(mapData.nodes);
     return (
-      <Flow
-        className={styles.flow}
-        style={{ height: 750 }}
-        grid
-        data={mapData}
-      />
+      <Flow className={styles.flow} style={{ height: 750 }} data={mapData} />
     )
   }
 }
