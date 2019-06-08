@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Tree, Icon, Button } from 'antd'
+import { Tree, Icon, Button, Checkbox } from 'antd'
 import styles from './treePage.less'
 const { TreeNode } = Tree
 
@@ -86,7 +86,18 @@ class TreePage extends React.Component {
   //显示按钮
   getBtnDisplay() {
     console.log(this.props)
-    return this.state.FMEA.actionType
+    return this.prpos.FMEA.actionType
+  }
+  //设置根结构
+  rootChange(e) {
+    console.log(e)
+    console.log(this.props)
+    console.log(this.props.FMEA.selectedStructure)
+    if (e.target.checked) {
+      this.props.dispatch({ type: 'FMEA/setRootNode' })
+    } else {
+      this.props.dispatch({ type: 'FMEA/cancelRootNode' })
+    }
   }
   render() {
     const { FMEA } = this.props
@@ -123,6 +134,29 @@ class TreePage extends React.Component {
         )
       })
     }
+
+    let rootStructureSetAble = true
+    let rootStructureChecked = false
+    if (
+      this.props.FMEA.StructurePane &&
+      this.props.FMEA.StructurePane.structureTreeRoot != null
+    ) {
+      if (
+        this.props.FMEA.selectedStructure &&
+        this.props.FMEA.StructurePane.structureTreeRoot.id ==
+          this.props.FMEA.selectedStructure.id
+      ) {
+        rootStructureSetAble = true
+        rootStructureChecked = true
+      } else {
+        rootStructureSetAble = false
+        rootStructureChecked = false
+      }
+    }
+
+    // if(this.props.FMEA.selectedStructure&&(this.props.FMEA.selectedStructure.id==this.props.FMEA.StructurePane.structureTreeRoot.id)){
+    //   rootStructureSetAble=true
+    // }
     return (
       <div className={styles.treePage}>
         {FMEA.selectedStructure && (
@@ -132,13 +166,22 @@ class TreePage extends React.Component {
               <Icon type="appstore" theme="filled" />
               <span>{this.props.FMEA.selectedStructure.name}</span>
               {/* <Button type="dashed" onClick={e => this.setRoot(e)}> */}
-              <Button
+              <div>
+                <Checkbox
+                  checked={rootStructureChecked}
+                  disabled={!rootStructureSetAble}
+                  onChange={e => this.rootChange(e)}
+                >
+                  {'设为根节点'}
+                </Checkbox>
+              </div>
+              {/* <Button
                 type="danger"
                 className={styles.rootBtn}
                 onClick={e => this.setRoot(e)}
               >
-                设为根节点
-              </Button>
+                
+              </Button> */}
             </div>
           </div>
         )}

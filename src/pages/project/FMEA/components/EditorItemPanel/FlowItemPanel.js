@@ -12,6 +12,7 @@ const FlowItemPanel = () => {
           draw(item) {
             const group = item.getGraphicGroup()
             const model = item.getModel()
+            console.log(model)
             const width = 45
             const height = 45
             const x = -width / 2
@@ -24,8 +25,8 @@ const FlowItemPanel = () => {
                 width,
                 height,
                 radius: borderRadius,
-                fill: 'white',
-                stroke: '#CED4D9',
+                stroke: model.root ? 'red' : '',
+                fill: model.root ? 'red' : '',
               },
             })
             group.addShape('image', {
@@ -38,6 +39,24 @@ const FlowItemPanel = () => {
               },
             })
             return keyShape
+          },
+          setState(name, value, item) {
+            console.log(name, value.item)
+            const group = item.getContainer()
+            const shape = group.get('children')[0] // 顺序根据 draw 时确定
+            if (name === 'selected') {
+              if (value) {
+                shape.attr('fill', 'red')
+              } else {
+                shape.attr('fill', 'red')
+              }
+            }
+          },
+          update(cfg, node) {
+            console.log(cfg, node)
+          },
+          afterUpdate(cfg, node) {
+            console.log(cfg, node)
           },
           // 设置锚点
           anchor: [
@@ -66,8 +85,8 @@ const FlowItemPanel = () => {
                 width,
                 height,
                 radius: borderRadius,
-                fill: 'white',
-                stroke: '#CED4D9',
+                stroke: model.root ? 'red' : '',
+                fill: model.root ? 'red' : '',
               },
             })
             group.addShape('image', {
@@ -108,8 +127,8 @@ const FlowItemPanel = () => {
                 width,
                 height,
                 radius: borderRadius,
-                fill: 'white',
-                stroke: '#CED4D9',
+                stroke: model.root ? 'red' : '',
+                fill: model.root ? 'red' : '',
               },
             })
             group.addShape('image', {
@@ -150,8 +169,8 @@ const FlowItemPanel = () => {
                 width,
                 height,
                 radius: borderRadius,
-                fill: 'white',
-                stroke: '#CED4D9',
+                stroke: model.root ? 'red' : '',
+                fill: model.root ? 'red' : '',
               },
             })
             group.addShape('image', {
@@ -192,8 +211,8 @@ const FlowItemPanel = () => {
                 width,
                 height,
                 radius: borderRadius,
-                fill: 'white',
-                stroke: '#CED4D9',
+                stroke: model.root ? 'red' : '',
+                fill: model.root ? 'red' : '',
               },
             })
             group.addShape('image', {
@@ -234,8 +253,8 @@ const FlowItemPanel = () => {
                 width,
                 height,
                 radius: borderRadius,
-                fill: 'white',
-                stroke: '#CED4D9',
+                stroke: model.root ? 'red' : '',
+                fill: model.root ? 'red' : '',
               },
             })
             group.addShape('image', {

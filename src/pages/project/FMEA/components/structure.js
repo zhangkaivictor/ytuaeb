@@ -289,19 +289,23 @@ StructureNode.prototype.removeChildById = function(id) {
 StructureNode.prototype.allAboveNodes = function() {
   var ndArray = []
   var parent = this.parent
+  var rootNode = this
+  var layer = 1
   while (parent != null) {
-    var grandParent = parent.parent
-    if (grandParent != null) {
-      for (var i = 0, length = grandParent.children.length; i < length; i++) {
-        ndArray.push(grandParent.children[i])
-      }
-    } else {
-      ndArray.push(parent)
-    }
-
-    parent = grandParent
+    rootNode = parent
+    parent = parent.parent
+    layer++
   }
-
+  console.log(rootNode)
+  var startLayer = 1
+  ;(function recurse(currentNode, currentLayer) {
+    if (currentLayer < layer) {
+      ndArray.push(currentNode)
+      for (var i = 0, length = currentNode.children.length; i < length; i++) {
+        recurse(currentNode.children[i], currentLayer + 1)
+      }
+    }
+  })(rootNode, startLayer)
   return ndArray
 }
 
@@ -454,7 +458,6 @@ StructurePane.prototype.GetStructureFunctionDepTree = function(
   var fs = sfArray.find(item => {
     return item.structureNodeId === structureNodeId && item.id === functionId
   })
-
   var result = {}
   result.Id = functionId
   result.Name = fs.name
@@ -504,7 +507,7 @@ StructurePane.prototype.GetStructureFunctionDepTree = function(
       recurse(depFunction, r.Childs)
     }
   })(fs, result.rightChilds)
-
+  console.log(result)
   return result
 }
 
@@ -719,14 +722,14 @@ StructurePane.prototype.UpdateFunctionFailureSValue = function(
         recurse(depFailure)
       }
       /*
-        	var existBigger = depFailure.dependentFailureSet.find(df => {return df.sValue > currentFailure.sValue;});
-        	if(existBigger == undefined)
-        	{
-        		depFailure.sValue = currentFailure.sValue;
-        		result.push(depFailure);
-
-        		recurse(depFailure);
-        	}*/
+            var existBigger = depFailure.dependentFailureSet.find(df => {return df.sValue > currentFailure.sValue;});
+            if(existBigger == undefined)
+            {
+              depFailure.sValue = currentFailure.sValue;
+              result.push(depFailure);
+  
+              recurse(depFailure);
+            }*/
     }
   })(ff)
 
@@ -1252,12 +1255,12 @@ StructurePane.prototype.GetFunctionFailureDepTree = function(
       r.Name = depFailure.name
       r.structureNodeId = depFailure.structureNodeId
       r.functionId = depFailure.functionId
-      r.Childs = []
+      r.children = []
       r.side = 'left'
       r.label = depFailure.name
       childs.push(r)
 
-      recurse(depFailure, r.Childs)
+      recurse(depFailure, r.children)
     }
   })(fs, result.leftChilds)
 
@@ -1280,12 +1283,12 @@ StructurePane.prototype.GetFunctionFailureDepTree = function(
       r.Name = depFailure.name
       r.structureNodeId = depFailure.structureNodeId
       r.functionId = depFailure.functionId
-      r.Childs = []
+      r.children = []
       r.side = 'right'
       r.label = depFailure.name
       childs.push(r)
 
-      recurse(depFailure, r.Childs)
+      recurse(depFailure, r.children)
     }
   })(fs, result.rightChilds)
 

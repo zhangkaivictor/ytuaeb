@@ -18,11 +18,10 @@ const guid = () => {
 class StructurePage extends React.Component {
   componentDidMount() {
     const { propsAPI } = this.props
-    console.log(this.props)
-    // console.log(this.props.propsAPI.read());
+    const { getSelected } = propsAPI
+    console.log(propsAPI)
   }
   handleClick() {
-    console.log(FMEAObjectToJSONString(this.props.FMEA.StructurePane))
     let data = {}
     data.id = guid()
     if (FMEAObjectToJSONString(this.props.FMEA.StructurePane) != 'null') {
@@ -36,7 +35,6 @@ class StructurePage extends React.Component {
     console.log(e, this.props)
     if (e.action === 'update') {
       //更新nodeData
-      let nodes = this.props.FMEA.nodeData.nodes
       let node = this.props.FMEA.nodeData.nodes.map(node => {
         if (node.id == e.originModel.id) {
           return Object.assign(node, e.updateModel)
@@ -50,7 +48,23 @@ class StructurePage extends React.Component {
       //findStructureNodeById
     }
   }
+  onMouseEnter(e) {
+    // console.log(this.props,e)
+    // return false
+    console.log(e)
+  }
+  onSelected(e) {
+    // console.log(this.props,e)
+    // return false
+    console.log(e)
+    const item = e.item
+    // if (item.hasState('active')) {
+    //   graph.setItemState(item, 'active', false);
+    //   return;
+    // }
+  }
   render() {
+    console.log(this.props.propsAPI)
     let data = {
       // nodes: [{
       //   type: 'node',
@@ -118,6 +132,8 @@ class StructurePage extends React.Component {
               }}
               onAfterChange={e => this.nodeDrag(e)}
               data={this.props.FMEA.nodeData}
+              onMouseLeave={e => this.onMouseEnter(e)}
+              onAfterItemSelected={e => this.onSelected(e)}
             />
           </Col>
         </Row>

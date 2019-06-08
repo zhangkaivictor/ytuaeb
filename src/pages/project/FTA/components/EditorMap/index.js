@@ -15,11 +15,17 @@ class FlowMap extends React.Component {
       delete mapData.attributes
       mapData.nodes.forEach(item => {
         item.checkDis = isHideScreen
+        //添加style
+        // item.style={
+        //   stroke: `#${item.color?item.color:''}`,
+        //   fill:  `#${item.color?item.color:''}`
+        // }
       })
     } else {
       mapData = {}
     }
-    // console.log(mapData.nodes);
+    console.log(mapData)
+
     return (
       <Flow className={styles.flow} style={{ height: 750 }} data={mapData} />
     )

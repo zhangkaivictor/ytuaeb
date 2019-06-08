@@ -111,17 +111,30 @@ export default modelExtend(pageModel, {
         edges: [],
       }
       structurePaneObj.structureNodes.forEach(structure => {
+        console.log(structurePaneObj.structureTreeRoot)
         nodeData.nodes.push({
           type: 'node',
           size: '70*70',
           shape: structure.shape,
-          // color: '#FA8C16',
+          root:
+            structure.id == structurePaneObj.structureTreeRoot.id
+              ? true
+              : false,
           label: structure.name,
           x: structure.x,
           y: structure.y,
           id: structure.paneId,
           structureId: structure.id,
-          // index: 0,
+          style: {
+            stroke:
+              structure.id == structurePaneObj.structureTreeRoot.id
+                ? 'red'
+                : '',
+            fill:
+              structure.id == structurePaneObj.structureTreeRoot.id
+                ? 'red'
+                : '',
+          },
         })
         if (structure.children.length > 0) {
           structure.children.forEach(child => {
@@ -535,14 +548,44 @@ export default modelExtend(pageModel, {
       let edges = state.nodeData.edges.filter(
         _ => _.target !== state.selectedStructure.paneId
       )
-      console.log(edges)
+      let nodes = state.nodeData.nodes.map(_ =>
+        _.id == state.selectedStructure.paneId
+          ? {
+              ..._,
+              root: true,
+              style: {
+                stroke: 'red',
+                fill: 'red',
+              },
+            }
+          : { ..._, root: false, style: '' }
+      )
+      console.log(nodes)
       return {
         ...state,
         StructurePane: StructurePaneObj,
         // selectedStructure: node,
         createModalType: 0,
         actionType: 0,
-        nodeData: { ...state.nodeData, edges: edges },
+        nodeData: { edges: edges, nodes: nodes },
+      }
+    },
+    cancelRootNode(state, action) {
+      let StructurePaneObj = Object.assign(
+        Object.create(Object.getPrototypeOf(state.StructurePane)),
+        state.StructurePane
+      )
+      StructurePaneObj.structureTreeRoot = null
+      let nodes = state.nodeData.nodes.map(_ =>
+        _.id == state.selectedStructure.paneId
+          ? { ..._, style: '', root: false }
+          : _
+      )
+      console.log(nodes)
+      return {
+        ...state,
+        StructurePane: StructurePaneObj,
+        nodeData: { ...state.nodeData, nodes: nodes },
       }
     },
   },

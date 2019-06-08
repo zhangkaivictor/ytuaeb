@@ -46,6 +46,7 @@ class addModal extends PureComponent {
   getAllAboveNodeOption = () => {
     let array = []
     if (this.props.FMEA.createModalType == 3) {
+      console.log(this.props.FMEA.selectedStructure.allAboveNodes())
       this.props.FMEA.selectedStructure.allAboveNodes().map(element => {
         console.log(array.push(...element.FunctionSet))
       })

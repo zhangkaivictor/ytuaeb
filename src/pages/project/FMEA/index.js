@@ -198,7 +198,6 @@ class FmeaPage extends React.Component {
       }
     }
     getViewData()
-    console.log(viewData)
     return (
       <div className={styles.structurePage}>
         <Row type="flex">

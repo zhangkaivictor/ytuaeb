@@ -83,6 +83,7 @@ class ViewPage extends React.Component {
       }
     }
     getViewData()
+    console.log(viewData)
     let graph = {
       defaultEdge: {
         shape: 'polyline-round',

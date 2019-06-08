@@ -139,6 +139,7 @@ class EditorItemPanel extends React.Component {
               const y = -height / 2
               const borderRadius = 4
               const color = model.color ? model.color : '#1890FF'
+              console.log(color)
               const keyShape = group.addShape('rect', {
                 attrs: {
                   x,
