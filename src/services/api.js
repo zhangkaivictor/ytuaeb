@@ -25,6 +25,8 @@ const api = {
   //FMEA
   getFmeaData: '/api/FMEAProjects/GetTree',
   postFmeaData: 'POST /api/FMEAProjects/AddTree',
+  //vars
+  getProjectContent: '/api/ProjectFiles',
 }
 
 export default api

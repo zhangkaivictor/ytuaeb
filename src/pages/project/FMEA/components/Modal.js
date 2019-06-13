@@ -48,7 +48,13 @@ class addModal extends PureComponent {
     if (this.props.FMEA.createModalType == 3) {
       console.log(this.props.FMEA.selectedStructure.allAboveNodes())
       this.props.FMEA.selectedStructure.allAboveNodes().map(element => {
-        console.log(array.push(...element.FunctionSet))
+        //去重复
+        if (
+          !array.find(el => el.id == element.FunctionSet.id) &&
+          this.props.FMEA.selectedStructure.id !== element.FunctionSet.id
+        ) {
+          console.log(array.push(...element.FunctionSet))
+        }
       })
       console.log(array)
       if (array.length > 0) {

@@ -16,10 +16,10 @@ class FlowMap extends React.Component {
       mapData.nodes.forEach(item => {
         item.checkDis = isHideScreen
         //添加style
-        // item.style={
-        //   stroke: `#${item.color?item.color:''}`,
-        //   fill:  `#${item.color?item.color:''}`
-        // }
+        item.style = {
+          stroke: `${item.color ? item.color : ''}`,
+          fill: `${item.color ? item.color : ''}`,
+        }
       })
     } else {
       mapData = {}

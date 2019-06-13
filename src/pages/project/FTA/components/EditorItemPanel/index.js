@@ -296,8 +296,8 @@ class EditorItemPanel extends React.Component {
                   y,
                   width,
                   height,
-                  fill: '#' + color,
-                  stroke: '#' + color,
+                  fill: color,
+                  stroke: color,
                   radius: borderRadius,
                 },
               })

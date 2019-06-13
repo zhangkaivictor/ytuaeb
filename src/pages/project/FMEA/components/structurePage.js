@@ -48,11 +48,6 @@ class StructurePage extends React.Component {
       //findStructureNodeById
     }
   }
-  onMouseEnter(e) {
-    // console.log(this.props,e)
-    // return false
-    console.log(e)
-  }
   onSelected(e) {
     // console.log(this.props,e)
     // return false
@@ -132,7 +127,6 @@ class StructurePage extends React.Component {
               }}
               onAfterChange={e => this.nodeDrag(e)}
               data={this.props.FMEA.nodeData}
-              onMouseLeave={e => this.onMouseEnter(e)}
               onAfterItemSelected={e => this.onSelected(e)}
             />
           </Col>

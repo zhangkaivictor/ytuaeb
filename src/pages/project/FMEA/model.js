@@ -8,7 +8,6 @@ import {
   StructureFunction,
   FunctionFailure,
   StructureNode,
-  FMEAObjectToJSONString,
   ConvertJsonToStructurePane,
 } from './components/structure'
 
@@ -36,7 +35,6 @@ export default modelExtend(pageModel, {
         // let content = "{"id":"138653589","projectName":"fmea","description":"","structureTreeRoot":{"id":"1073308239","name":"芯片，CPU","description":"","uri":"","html":"","shape":"","x":88.8125,"y":72,"parent":null,"children":[],"FunctionSet":[],"paneId":"681e3670"},"structureNodes":[{"id":"1073308239","name":"芯片，CPU","description":"","uri":"","html":"","shape":"","x":88.8125,"y":72,"parent":null,"children":[],"FunctionSet":[],"paneId":"681e3670"},{"id":"1003809898","name":"电机","description":"","uri":"","html":"","shape":"","x":92.8125,"y":206,"parent":"1073308239","children":[],"FunctionSet":[],"paneId":"43748557"}],"None":{"id":-1,"name":"NA","description":"","structureNodeId":" - 1","dependentFunctionSet":[],"FailureSet":[],"functionId":" - 1","dependentFailureSet":[],"detectionSet":[],"preCautionSet":[]}}";
         // console.log(JSON.parse(content))
         if (pathMatchRegexp('/project/FMEA', location.pathname)) {
-          console.log(location)
           if (location.query.projectId != undefined) {
             dispatch({
               type: 'getFmea',
@@ -59,9 +57,7 @@ export default modelExtend(pageModel, {
       const headers = {
         Authorization: window.localStorage.getItem('token'),
       }
-      console.log(payload)
       const data = yield call(postFmeaData, payload, headers)
-      console.log(data)
       if (data.success) {
         // yield put({
         //   type: 'querySuccess',
@@ -74,14 +70,11 @@ export default modelExtend(pageModel, {
       }
     },
     *getFmea({ payload = {} }, { call, put }) {
-      console.log(payload)
       const headers = {
         Authorization: window.localStorage.getItem('token'),
       }
       const data = yield call(getFmeaData, payload, headers)
-      console.log(data)
       if (data.success) {
-        console.log('ll')
         yield put({
           type: 'queryFmeaSuccess',
           payload: {
@@ -94,7 +87,6 @@ export default modelExtend(pageModel, {
   reducers: {
     //获取结构对象
     queryFmeaSuccess(state, { payload }) {
-      console.log(state, payload, 'l')
       if (!payload.list) {
         return {
           ...state,
@@ -111,7 +103,6 @@ export default modelExtend(pageModel, {
         edges: [],
       }
       structurePaneObj.structureNodes.forEach(structure => {
-        console.log(structurePaneObj.structureTreeRoot)
         nodeData.nodes.push({
           type: 'node',
           size: '70*70',
@@ -149,15 +140,11 @@ export default modelExtend(pageModel, {
           })
         }
       })
-      console.log(nodeData)
       return {
         ...state,
         nodeData: nodeData,
         StructurePane: ConvertJsonToStructurePane(payload.list),
       }
-    },
-    print(state, { payload: id }) {
-      console.log(state.structure, id)
     },
     //添加节点
     addNode(state, { payload }) {
@@ -176,7 +163,6 @@ export default modelExtend(pageModel, {
       )
       //画布node
       let paneNode = Object.assign(payload.addModel, { structureId: node.id })
-      console.log(StructurePaneObj)
       return {
         ...state,
         StructurePane: Object.assign(
@@ -192,7 +178,6 @@ export default modelExtend(pageModel, {
     },
     //添加关系线=》添加子功能
     addEdge(state, { payload }) {
-      console.log(payload)
       //禁止指向根节点
       let canAddEdge = true
       if (
@@ -209,7 +194,6 @@ export default modelExtend(pageModel, {
       let allAboveNodes = node
         .allAboveNodes()
         .map(structure => structure.paneId)
-      console.log(allAboveNodes)
       if (allAboveNodes.indexOf(payload.addModel.target) >= 0) {
         alert('闭环')
         canAddEdge = false
@@ -255,7 +239,6 @@ export default modelExtend(pageModel, {
     },
     //更新节点位置
     updateNode(state, { payload }) {
-      console.log(payload)
       let StructurePaneObj = state.StructurePane
       let nodesList = StructurePaneObj.structureNodes.map(structureNode => {
         payload.forEach(paneNode => {
@@ -267,7 +250,6 @@ export default modelExtend(pageModel, {
         })
         return structureNode
       })
-      console.log(nodesList)
       return {
         ...state,
         StructurePane: Object.assign(
@@ -280,7 +262,6 @@ export default modelExtend(pageModel, {
     },
     //移除节点
     deleteNode(state, { payload }) {
-      console.log(payload)
       //删除点时删除连接线
       let filterEdges = state.nodeData.edges.filter(_ => {
         if (
@@ -298,7 +279,6 @@ export default modelExtend(pageModel, {
       StructurePaneObj.deleteStructureNodeById(
         state.nodeData.nodes[payload].structureId
       )
-      console.log(StructurePaneObj)
       //删除结构
 
       return {
@@ -315,8 +295,6 @@ export default modelExtend(pageModel, {
     },
     //移除连接线
     deleteEdge(state, { payload }) {
-      console.log(payload)
-      console.log(state.nodeData.edges.filter((_, i) => i !== payload))
       return {
         ...state,
         nodeData: {
@@ -348,7 +326,6 @@ export default modelExtend(pageModel, {
         Object.create(Object.getPrototypeOf(state.selectedStructure)),
         state.selectedStructure
       )
-      console.log(structureNodeObj)
       structureNodeObj.appendFunction(fun)
       return {
         ...state,
@@ -358,7 +335,6 @@ export default modelExtend(pageModel, {
     },
     //选择功能或失效
     selectKey(state, { payload }) {
-      console.log(state.selectedFun, payload)
       let fun = state.selectedStructure.FunctionSet.find(
         fail => fail.id == payload.id
       )
@@ -441,7 +417,6 @@ export default modelExtend(pageModel, {
     },
     //添加失效依赖
     addFunctionFailureDependent(state, { payload }) {
-      console.log(payload)
       let dependentFail = null
       state.selectedStructure.allAboveNodes().forEach(node => {
         node.FunctionSet.forEach(fun => {
@@ -458,7 +433,6 @@ export default modelExtend(pageModel, {
           createModalVisible: false,
         }
       }
-      console.log(dependentFail)
       state.selectedFail.appendDependentFailure(dependentFail)
       // for (var i = 0, length = state.selectedFail.dependentFailureSet.length; i < length; i++) {
       //   if (state.selectedFail[i].id == dependentFail.id) {
@@ -484,7 +458,6 @@ export default modelExtend(pageModel, {
     },
     //点击modal类型
     triggerType(state, { payload }) {
-      console.log(payload)
       let text =
         payload.type == 0
           ? '添加功能'
@@ -501,7 +474,6 @@ export default modelExtend(pageModel, {
           createModalVisible: true,
         }
       } else if (payload.type == 1) {
-        console.log(state.selectedStructure, state.selectedFun)
         return {
           ...state,
           createModalType: payload.type,
@@ -509,7 +481,6 @@ export default modelExtend(pageModel, {
           createModalVisible: true,
         }
       } else if (payload.type == 2) {
-        console.log(state.selectedFail)
         return {
           ...state,
           createModalType: payload.type,
@@ -524,7 +495,6 @@ export default modelExtend(pageModel, {
           createModalVisible: true,
         }
       } else {
-        console.log(state.selectedStructure)
         return state
         // console.log(state.selectedStructure.findFunctionById(payload.id).name)
       }
@@ -543,7 +513,6 @@ export default modelExtend(pageModel, {
         state.StructurePane
       )
       //SetStructureTreeRootById
-      console.log(StructurePaneObj)
       StructurePaneObj.SetStructureTreeRootById(state.selectedStructure.id)
       let edges = state.nodeData.edges.filter(
         _ => _.target !== state.selectedStructure.paneId
@@ -560,7 +529,6 @@ export default modelExtend(pageModel, {
             }
           : { ..._, root: false, style: '' }
       )
-      console.log(nodes)
       return {
         ...state,
         StructurePane: StructurePaneObj,
@@ -581,7 +549,6 @@ export default modelExtend(pageModel, {
           ? { ..._, style: '', root: false }
           : _
       )
-      console.log(nodes)
       return {
         ...state,
         StructurePane: StructurePaneObj,

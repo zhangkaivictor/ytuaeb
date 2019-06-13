@@ -24,7 +24,6 @@ const findPrivileges = arr => {
 class PartnerLists extends React.Component {
   handleSelect = (start, optionName) => {
     let { options, selectedOptions, readOptions } = this.props
-    console.log(this.props)
     if (start == 1) {
       let isSide = delPartner(selectedOptions, optionName)
       if (!isSide) {
