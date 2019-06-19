@@ -8,9 +8,9 @@ import { CANCEL_REQUEST_MESSAGE } from 'utils/constant'
 import { logoutUser, loginUser, queryPostList } from 'api'
 import config from 'config'
 import { deLangPrefix } from 'utils'
-import $ from 'jquery'
-window.$ = $
-window.jQuery = $
+// import $ from 'jquery'
+// window.$ = $
+// window.jQuery = $
 // export default $
 // 菜单列表
 let database = [
@@ -159,8 +159,16 @@ export default {
             {},
             { Authorization: token }
           )
-
+          console.log(postList)
+          // yield put({
+          //   type: 'querySuccess',
+          //   payload: {
+          //    projectLists:postList.list
+          //   },
+          // })
+          sessionStorage.setItem('projectList', JSON.stringify(postList.list))
           let isAdmin = queryInfo.list.roles[0]
+          sessionStorage.setItem('isAdmin', isAdmin)
           let user = {}
           //此处设置登录用户信息（username等）
           if (isAdmin == 'Administrator') {
@@ -257,6 +265,7 @@ export default {
               return cases.every(_ => _)
             })
           }
+          console.log(routeList)
           yield put({
             type: 'updateState',
             payload: {
@@ -326,6 +335,10 @@ export default {
 
     allNotificationsRead(state) {
       state.notifications = []
+    },
+    projectLists(state, { payload }) {
+      console.log(payload)
+      state.projectLists = payload
     },
   },
 }

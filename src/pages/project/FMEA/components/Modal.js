@@ -46,7 +46,6 @@ class addModal extends PureComponent {
   getAllAboveNodeOption = () => {
     let array = []
     if (this.props.FMEA.createModalType == 3) {
-      console.log(this.props.FMEA.selectedStructure.allAboveNodes())
       this.props.FMEA.selectedStructure.allAboveNodes().map(element => {
         //去重复
         if (
@@ -70,7 +69,6 @@ class addModal extends PureComponent {
           fun.FailureSet.forEach(fail => array.push(fail))
         })
       })
-      console.log(array)
       if (array.length > 0) {
         this.setState({
           itemOptions: array,

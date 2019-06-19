@@ -8,31 +8,35 @@ class TemplatePage extends React.Component {
   }
   render() {
     const { files } = this.props
-    console.log(files)
+    console.log(this.props)
+    files.forEach(element => {
+      element.key = element.id
+    })
     const columns = [
       {
-        title: '文件名',
+        title: '项目名称',
         dataIndex: 'name',
         key: 'name',
+      },
+      {
+        title: '所有者',
+        dataIndex: 'createdBy.realName',
+        key: 'createdBy.realName',
       },
       {
         title: '修改时间',
         dataIndex: 'lastModfiedTime',
         key: 'lastModfiedTime',
       },
-      {
-        title: '大小',
-        dataIndex: 'size',
-        key: 'size',
-      },
+
       {
         title: '操作',
         key: 'action',
         render: (text, record) => (
           <span>
-            <a href="javascript:;">下载</a>
-            <Divider type="vertical" />
-            <a href="javascript:;">更新</a>
+            <a onClick={e => this.props.unBind(record)}>解绑</a>
+            {/* <Divider type="vertical" />
+            <a href="javascript:;">更新</a> */}
           </span>
         ),
       },

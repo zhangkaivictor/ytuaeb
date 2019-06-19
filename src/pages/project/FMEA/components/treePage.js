@@ -76,7 +76,6 @@ class TreePage extends React.Component {
   }
   //添加失效依赖
   addFailDepend(e) {
-    console.log(e)
     if (!this.props.FMEA.selectedFail) {
       alert('请选择失效')
       return
@@ -85,14 +84,10 @@ class TreePage extends React.Component {
   }
   //显示按钮
   getBtnDisplay() {
-    console.log(this.props)
     return this.prpos.FMEA.actionType
   }
   //设置根结构
   rootChange(e) {
-    console.log(e)
-    console.log(this.props)
-    console.log(this.props.FMEA.selectedStructure)
     if (e.target.checked) {
       this.props.dispatch({ type: 'FMEA/setRootNode' })
     } else {

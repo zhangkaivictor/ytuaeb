@@ -1,5 +1,5 @@
 import modelExtend from 'dva-model-extend'
-import { getProjectContent } from 'api'
+import { getProjectContent, linkProject, unLinkProject } from 'api'
 import { pathMatchRegexp, router } from 'utils'
 import { pageModel } from 'utils/model'
 import { message } from 'antd'
@@ -10,6 +10,7 @@ export default modelExtend(pageModel, {
   state: {
     projectContent: null,
     activeNode: null,
+    selectForAdd: [],
   },
   subscriptions: {
     setup({ dispatch, history }) {
@@ -20,8 +21,6 @@ export default modelExtend(pageModel, {
               type: 'getWorkProjectContent',
               payload: {
                 projectId: location.query.projectId,
-                path: 'Root',
-                searchOption: 1,
               },
             })
           } else {
@@ -58,11 +57,96 @@ export default modelExtend(pageModel, {
         Authorization: window.localStorage.getItem('token'),
       }
       const data = yield call(getProjectContent, payload, headers)
+      console.log(data)
       if (data.success) {
         yield put({
           type: 'projectContent',
           payload: {
             list: data.list,
+          },
+        })
+      }
+    },
+    *addProjectLink({ payload = {} }, { call, put, select }) {
+      const projects = yield select(state => state.VARS.selectForAdd)
+      const workProjectId = yield select(state => state.VARS.projectContent.id)
+      const headers = {
+        Authorization: window.localStorage.getItem('token'),
+      }
+      let data = null
+      for (let i = 0; i < projects.length; i++) {
+        let payload = {
+          linkedProjectId: projects[i],
+          workProjectId: workProjectId,
+        }
+        data = yield call(linkProject, payload, headers)
+      }
+      console.log(data)
+      if (data.success) {
+        yield put({
+          type: 'projectContent',
+          payload: {
+            list: data.list,
+          },
+        })
+        let node = yield select(state => state.VARS.activeNode)
+        console.log(node)
+        if (node.type == 'fmea') {
+          yield put({
+            type: 'selectTreeNode',
+            payload: {
+              type: 'fmea',
+              files: data.list.fmeaProjects,
+            },
+          })
+        } else {
+          yield put({
+            type: 'selectTreeNode',
+            payload: {
+              type: 'fta',
+              files: data.list.ftaProjects,
+            },
+          })
+        }
+      }
+    },
+    *unBindProject({ payload = {} }, { call, put, select }) {
+      console.log(payload)
+      const headers = {
+        Authorization: window.localStorage.getItem('token'),
+      }
+      const workProjectId = yield select(state => state.VARS.projectContent.id)
+      let dd = {
+        linkedProjectId: payload.id,
+        workProjectId: workProjectId,
+      }
+      console.log(dd)
+      const data = yield call(unLinkProject, dd, headers)
+      console.log(data)
+      if (data.success) {
+        yield put({
+          type: 'projectContent',
+          payload: {
+            list: data.list,
+          },
+        })
+      }
+      let node = yield select(state => state.VARS.activeNode)
+      console.log(node)
+      if (node.type == 'fmea') {
+        yield put({
+          type: 'selectTreeNode',
+          payload: {
+            type: 'fmea',
+            files: data.list.fmeaProjects,
+          },
+        })
+      } else {
+        yield put({
+          type: 'selectTreeNode',
+          payload: {
+            type: 'fta',
+            files: data.list.ftaProjects,
           },
         })
       }
@@ -79,7 +163,15 @@ export default modelExtend(pageModel, {
       console.log(payload)
       return {
         ...state,
+        selectForAdd: [],
         activeNode: payload,
+      }
+    },
+    addProject(state, { payload }) {
+      console.log(payload)
+      return {
+        ...state,
+        selectForAdd: payload.projects,
       }
     },
   },

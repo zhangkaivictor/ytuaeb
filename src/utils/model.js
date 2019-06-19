@@ -14,6 +14,7 @@ export const model = {
 export const pageModel = modelExtend(model, {
   state: {
     list: [],
+    projectLists: [],
     pagination: {
       showSizeChanger: true,
       showQuickJumper: true,
@@ -25,18 +26,21 @@ export const pageModel = modelExtend(model, {
 
   reducers: {
     querySuccess(state, { payload }) {
+      console.log(payload)
       const {
         list,
         pagination,
         userList,
         analyzeList,
         treeReportList,
+        projectLists,
       } = payload
       return {
         ...state,
         list,
         analyzeList,
         treeReportList,
+        projectLists,
         pagination: {
           ...state.pagination,
           ...pagination,

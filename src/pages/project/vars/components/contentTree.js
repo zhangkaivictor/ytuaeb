@@ -9,16 +9,30 @@ class ContentTree extends React.Component {
   }
   onSelect = (selectedKeys, info) => {
     // console.log('selected', selectedKeys, info);
-    if (selectedKeys[0] == 100 || selectedKeys[0] == 200) {
+    const { dispatch, VARS } = this.props
+    if (selectedKeys[0] == 'fmea') {
+      dispatch({
+        type: 'VARS/selectTreeNode',
+        payload: { type: 'fmea', files: VARS.projectContent.fmeaProjects },
+      })
       return
     }
-    const { projectContent } = this.props.VARS
-    this.getActiveNode(projectContent, selectedKeys[0])
+    if (selectedKeys[0] == 'fta') {
+      dispatch({
+        type: 'VARS/selectTreeNode',
+        payload: { type: 'fta', files: VARS.projectContent.ftaProjects },
+      })
+      return
+    }
+    this.getActiveNode(VARS.projectContent.projectFiles, selectedKeys[0])
   }
   getActiveNode(folder, id) {
     if (folder.id == id) {
       const { dispatch } = this.props
-      dispatch({ type: 'VARS/selectTreeNode', payload: folder })
+      dispatch({
+        type: 'VARS/selectTreeNode',
+        payload: { ...folder, type: 'project' },
+      })
       // return folder
     } else {
       folder.subFolders.forEach(f => {
@@ -28,19 +42,20 @@ class ContentTree extends React.Component {
   }
   render() {
     const { projectContent } = this.props.VARS
-    const getTreeData = array => {
-      return array.map(content => {
-        if (content.subFolders.length > 0) {
-          return (
-            <TreeNode title={content.name} key={content.id}>
-              {getTreeData(content.subFolders)}
-            </TreeNode>
-          )
-        } else {
-          return <TreeNode title={content.name} key={content.id} />
-        }
-      })
-    }
+    console.log(projectContent)
+    // const getTreeData = array => {
+    //   return array.map(content => {
+    //     if (content.subFolders.length > 0) {
+    //       return (
+    //         <TreeNode title={content.name} key={content.id}>
+    //           {getTreeData(content.subFolders)}
+    //         </TreeNode>
+    //       )
+    //     } else {
+    //       return <TreeNode title={content.name} key={content.id} />
+    //     }
+    //   })
+    // }
     return (
       <DirectoryTree
         defaultExpandAll
@@ -48,13 +63,14 @@ class ContentTree extends React.Component {
         onExpand={this.onExpand}
       >
         {/* <TreeNode title={projectContent.name} key={projectContent.id}>
-        {getTreeData(projectContent.subFolders)}
-      </TreeNode> */}
-        {projectContent.subFolders.map(folder => {
-          return <TreeNode title={folder.name} key={folder.id} />
-        })}
-        <TreeNode title={'FMEA项目分析'} key={100} />
-        <TreeNode title={'FTA项目分析'} key={200} />
+          {getTreeData(projectContent.subFolders)}
+        </TreeNode> */}
+        {projectContent != null &&
+          projectContent.projectFiles.subFolders.map(folder => {
+            return <TreeNode title={folder.name} key={folder.id} />
+          })}
+        <TreeNode title={'FMEA项目分析'} key={'fmea'} />
+        <TreeNode title={'FTA项目分析'} key={'fta'} />
       </DirectoryTree>
     )
   }

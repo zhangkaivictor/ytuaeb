@@ -9,6 +9,9 @@ class ProjectPage extends React.Component {
   render() {
     const { files } = this.props
     console.log(files)
+    files.forEach(element => {
+      element.key = element.id
+    })
     const dataSource = [
       {
         key: '1',
