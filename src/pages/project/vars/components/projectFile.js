@@ -1,11 +1,11 @@
 import React from 'react'
-import { Table, Divider } from 'antd'
-import { file } from '@babel/types'
+import { Table, Divider, Popconfirm, message, Button } from 'antd'
 class ProjectPage extends React.Component {
   constructor(props) {
     super(props)
     console.log(props)
   }
+  text1 = 'Are you sure to delete this file?'
   render() {
     const { files } = this.props
     console.log(files)
@@ -42,15 +42,25 @@ class ProjectPage extends React.Component {
         title: '大小',
         dataIndex: 'size',
         key: 'size',
+        render: text => <span>{parseInt(text / 1024) + 'K'}</span>,
       },
       {
         title: '操作',
         key: 'action',
         render: (text, record) => (
           <span>
-            <a href="javascript:;">下载</a>
+            <a onClick={e => this.props.download(record)}>下载</a>
             <Divider type="vertical" />
-            <a href="javascript:;">更新</a>
+            {/* <a onClick={e => this.props.delete(record)}>删除</a> */}
+            <Popconfirm
+              placement="left"
+              title={this.text1}
+              onConfirm={e => this.props.delete(record)}
+              okText="Yes"
+              cancelText="No"
+            >
+              <a>删除</a>
+            </Popconfirm>
           </span>
         ),
       },

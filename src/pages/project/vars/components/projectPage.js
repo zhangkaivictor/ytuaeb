@@ -1,8 +1,9 @@
 import React from 'react'
-import { Row, Col, Button, Modal, Input, Select } from 'antd'
+import { Row, Col, Button, Alert, Upload, Modal, Icon, Select } from 'antd'
 import styles from './projectPage.less'
 import ProjectFile from './projectFile'
 import TemplateFile from './templateFile'
+import UploadCon from './uploadCon'
 const { Option } = Select
 class ProjectPage extends React.Component {
   constructor(props) {
@@ -142,6 +143,15 @@ class ProjectPage extends React.Component {
             ),
           }
         : null
+      const templateProps = {
+        ...templateFile,
+        download: a => {
+          this.props.dispatch({ type: 'VARS/download', payload: a })
+        },
+        delete: a => {
+          this.props.dispatch({ type: 'VARS/delete', payload: a })
+        },
+      }
       let projectFile = this.props.VARS.activeNode
         ? {
             files: this.props.VARS.activeNode.files.filter(
@@ -149,18 +159,38 @@ class ProjectPage extends React.Component {
             ),
           }
         : null
+      const projectProps = {
+        ...projectFile,
+        download: a => {
+          this.props.dispatch({ type: 'VARS/download', payload: a })
+        },
+        delete: a => {
+          projectProps.spin = true
+          this.props.dispatch({ type: 'VARS/delete', payload: a })
+        },
+      }
       return (
         <div>
           <Row className={styles.project}>
-            <Col span={24}>
-              <div className={styles.title}>模板文件列表</div>
-              {templateFile != null && <ProjectFile {...templateFile} />}
+            <Col span={18} className={styles.title}>
+              模板文件列表
+            </Col>
+            <Col span={6}>
+              <UploadCon {...this.props} />
+            </Col>
+            <Col span={24} className={styles.table}>
+              {templateFile != null && <ProjectFile {...templateProps} />}
             </Col>
           </Row>
           <Row className={styles.template}>
-            <Col span={24}>
-              <div className={styles.title}>项目文件列表</div>
-              {projectFile != null && <ProjectFile {...projectFile} />}
+            <Col span={18} className={styles.title}>
+              项目文件列表
+            </Col>
+            <Col span={6}>
+              <UploadCon {...this.props} />
+            </Col>
+            <Col span={24} className={styles.table}>
+              {projectFile != null && <ProjectFile {...projectProps} />}
             </Col>
           </Row>
         </div>

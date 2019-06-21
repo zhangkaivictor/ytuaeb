@@ -31,7 +31,7 @@ class ContentTree extends React.Component {
       const { dispatch } = this.props
       dispatch({
         type: 'VARS/selectTreeNode',
-        payload: { ...folder, type: 'project' },
+        payload: { ...folder, type: 'project', id: id },
       })
       // return folder
     } else {

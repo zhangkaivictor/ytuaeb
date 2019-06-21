@@ -29,6 +29,7 @@ const api = {
   getProjectContent: '/api/WorkProjects/GetWorkProject',
   linkProject: 'GET /api/WorkProjects/AddLinkedProject',
   unLinkProject: 'GET /api/WorkProjects/RemoveLinkedProject',
+  updateFile: 'POST /api/ProjectFiles/Update',
 }
 
 export default api

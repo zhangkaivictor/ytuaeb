@@ -1,5 +1,5 @@
 import React from 'react'
-import { Row, Col, Button, Modal, Input } from 'antd'
+import { Row, Col, Button, Modal, Input, Spin } from 'antd'
 import styles from './index.less'
 import { connect } from 'dva'
 import ContentTree from './components/contentTree'
@@ -37,6 +37,11 @@ class WorkProPage extends React.Component {
             </div>
           </Col>
         </Row>
+        {this.props.VARS.spin && (
+          <div className={styles.innerSpin}>
+            <Spin tip={this.props.VARS.spinText} />
+          </div>
+        )}
         {/* {createModalVisible && <AddModal {...modalProps} />} */}
       </div>
     )
