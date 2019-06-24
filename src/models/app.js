@@ -337,7 +337,6 @@ export default {
       state.notifications = []
     },
     projectLists(state, { payload }) {
-      console.log(payload)
       state.projectLists = payload
     },
   },

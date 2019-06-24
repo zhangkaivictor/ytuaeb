@@ -1,7 +1,19 @@
 import React from 'react'
-import { Upload, Button, Icon, message, Row, Col } from 'antd'
+import { Upload, Button, Icon, Select, Row, Col } from 'antd'
 // import reqwest from 'reqwest';
-
+const { Option } = Select
+const children = []
+for (let i = 0; i < 10; i++) {
+  let v = Math.pow(2, i)
+  children.push(<Option key={v}>{`Level${i}`}</Option>)
+}
+// function handleChange(value) {
+//   console.log(`selected ${value}`);
+//   console.log(value.join('|'));
+//   this.setState({
+//     level: value.join('|'),
+//   })
+// }
 class UploadCon extends React.Component {
   constructor(props) {
     super(props)
@@ -10,16 +22,17 @@ class UploadCon extends React.Component {
   state = {
     fileList: [],
     uploading: false,
+    level: 0,
   }
 
   handleUpload = async () => {
-    const { fileList } = this.state
+    const { fileList, level } = this.state
     this.setState({
       uploading: true,
     })
     this.props.dispatch({
       type: 'VARS/updateFile',
-      payload: fileList,
+      payload: { fileList: fileList, level: level },
       callback: res => {
         if (res == 'success') {
           this.setState({
@@ -32,6 +45,12 @@ class UploadCon extends React.Component {
           })
         }
       },
+    })
+  }
+  handleChange(value) {
+    console.log(value)
+    this.setState({
+      level: value.join('|'),
     })
   }
   render() {
@@ -59,7 +78,6 @@ class UploadCon extends React.Component {
         inputdata.cmd = 'uploadFile'
         inputdata.Name = file.name
         inputdata.name = file.name
-        inputdata.Level = 0
         inputdata.uid = file.uid
         this.setState(state => ({
           fileList: [...state.fileList, inputdata],
@@ -68,21 +86,33 @@ class UploadCon extends React.Component {
       },
       fileList,
     }
-
     return (
-      <Row>
-        <Col span={11}>
+      <Row type="flex" justify="end">
+        <Col span={6}>
           <Upload {...props}>
             <Button>
               <Icon type="upload" /> Select File
             </Button>
           </Upload>
         </Col>
-        <Col span={8}>
+        {this.props.level && (
+          <Col span={8}>
+            <Select
+              mode="multiple"
+              disabled={fileList.length === 0}
+              style={{ width: '100%' }}
+              placeholder="Please select"
+              onChange={e => this.handleChange(e)}
+            >
+              {children}
+            </Select>
+          </Col>
+        )}
+        <Col span={6}>
           <Button
             type="primary"
             onClick={this.handleUpload}
-            disabled={fileList.length === 0}
+            disabled={fileList.length === 0 || this.state.level == ''}
             loading={uploading}
           >
             {uploading ? 'Uploading' : 'Start Upload'}

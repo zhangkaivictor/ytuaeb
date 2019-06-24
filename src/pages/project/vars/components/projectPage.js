@@ -19,6 +19,7 @@ class ProjectPage extends React.Component {
     dispatch({ type: 'VARS/addProjectLink' })
   }
   render() {
+    let isAdmin = sessionStorage.getItem('isAdmin')
     if (this.props.VARS.activeNode == null) {
       return (
         <div>
@@ -172,21 +173,23 @@ class ProjectPage extends React.Component {
       return (
         <div>
           <Row className={styles.project}>
-            <Col span={18} className={styles.title}>
+            <Col span={14} className={styles.title}>
               模板文件列表
             </Col>
-            <Col span={6}>
-              <UploadCon {...this.props} />
+            <Col span={10}>
+              {isAdmin == 'Administrator' && (
+                <UploadCon {...this.props} level={true} />
+              )}
             </Col>
             <Col span={24} className={styles.table}>
               {templateFile != null && <ProjectFile {...templateProps} />}
             </Col>
           </Row>
           <Row className={styles.template}>
-            <Col span={18} className={styles.title}>
+            <Col span={14} className={styles.title}>
               项目文件列表
             </Col>
-            <Col span={6}>
+            <Col span={10}>
               <UploadCon {...this.props} />
             </Col>
             <Col span={24} className={styles.table}>

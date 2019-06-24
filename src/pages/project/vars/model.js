@@ -121,6 +121,7 @@ export default modelExtend(pageModel, {
       }
     },
     *updateFile({ payload = {}, callback }, { call, put, select }) {
+      const { fileList, level } = payload
       const workProjectId = yield select(state => state.VARS.projectContent.id)
       const node = yield select(state => state.VARS.activeNode)
       yield put({
@@ -134,10 +135,11 @@ export default modelExtend(pageModel, {
         Authorization: window.localStorage.getItem('token'),
       }
       let result = null
-      for (let i = 0; i < payload.length; i++) {
-        payload[i].ProjectId = workProjectId
-        payload[i].TartgetPath = node.path
-        result = yield call(updateFile, payload[i], headers)
+      for (let i = 0; i < fileList.length; i++) {
+        fileList[i].ProjectId = workProjectId
+        fileList[i].TartgetPath = node.path
+        fileList[i].level = level
+        result = yield call(updateFile, fileList[i], headers)
       }
       yield put({
         type: 'spin',
@@ -157,12 +159,6 @@ export default modelExtend(pageModel, {
           headers
         )
         if (data.success) {
-          // yield put({
-          //   type: 'projectContent',
-          //   payload: {
-          //     list: data.list,
-          //   },
-          // })
           const activeFolder = data.list.projectFiles.subFolders.find(
             folder => folder.id == node.id
           )

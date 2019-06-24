@@ -8,7 +8,8 @@ class ProjectPage extends React.Component {
   text1 = 'Are you sure to delete this file?'
   render() {
     const { files } = this.props
-    console.log(files)
+    console.log(sessionStorage.getItem('isAdmin'))
+    let isAdmin = sessionStorage.getItem('isAdmin')
     files.forEach(element => {
       element.key = element.id
     })
@@ -49,7 +50,12 @@ class ProjectPage extends React.Component {
         key: 'action',
         render: (text, record) => (
           <span>
-            <a onClick={e => this.props.download(record)}>下载</a>
+            <a
+              onClick={e => this.props.download(record)}
+              disabled={isAdmin != 'Administrator'}
+            >
+              下载
+            </a>
             <Divider type="vertical" />
             {/* <a onClick={e => this.props.delete(record)}>删除</a> */}
             <Popconfirm
@@ -59,7 +65,7 @@ class ProjectPage extends React.Component {
               okText="Yes"
               cancelText="No"
             >
-              <a>删除</a>
+              <a disabled={isAdmin != 'Administrator'}>删除</a>
             </Popconfirm>
           </span>
         ),

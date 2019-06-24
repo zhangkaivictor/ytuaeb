@@ -1,11 +1,18 @@
 import React from 'react'
-import { Table, Divider } from 'antd'
-import { file } from '@babel/types'
+import { Table, Popconfirm } from 'antd'
+import router from 'umi/router'
 class TemplatePage extends React.Component {
   constructor(props) {
     super(props)
-    console.log(props)
   }
+  goProject(record) {
+    router.push(
+      `/project/${record.type == 'FTAProject' ? 'FTA' : 'FMEA'}?projectId=${
+        record.id
+      }`
+    )
+  }
+  text1 = 'Are you sure to unbind this project?'
   render() {
     const { files } = this.props
     console.log(this.props)
@@ -17,6 +24,15 @@ class TemplatePage extends React.Component {
         title: '项目名称',
         dataIndex: 'name',
         key: 'name',
+        render: (text, record) => (
+          <a
+            onClick={e => {
+              this.goProject(record)
+            }}
+          >
+            {text}
+          </a>
+        ),
       },
       {
         title: '所有者',
@@ -28,15 +44,20 @@ class TemplatePage extends React.Component {
         dataIndex: 'lastModfiedTime',
         key: 'lastModfiedTime',
       },
-
       {
         title: '操作',
         key: 'action',
         render: (text, record) => (
           <span>
-            <a onClick={e => this.props.unBind(record)}>解绑</a>
-            {/* <Divider type="vertical" />
-            <a href="javascript:;">更新</a> */}
+            <Popconfirm
+              placement="left"
+              title={this.text1}
+              onConfirm={e => this.props.unBind(record)}
+              okText="Yes"
+              cancelText="No"
+            >
+              <a>解绑</a>
+            </Popconfirm>
           </span>
         ),
       },

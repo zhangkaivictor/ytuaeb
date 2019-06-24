@@ -77,10 +77,22 @@ const arrDup = (bigArr, arr1, arr2) => {
   })
   return newBigArr
 }
+const { Option } = Select
+const children = []
+for (let i = 0; i < 10; i++) {
+  let v = Math.pow(2, i)
+  children.push(<Option key={v}>{`Level${i}`}</Option>)
+}
 
+function handleChange(value) {
+  console.log(`selected ${value}`)
+}
 @withI18n()
 @Form.create()
 class UserModal extends PureComponent {
+  constructor(props) {
+    super(props)
+  }
   handleOk = () => {
     const { item = {}, onOk, userNameList, form } = this.props
     const { validateFields, getFieldsValue } = form
@@ -114,6 +126,7 @@ class UserModal extends PureComponent {
       let newCreateRead = data.usersPrivileges.readOptions
       let newCreateWrite = data.usersPrivileges.selectedOptions
       data.usersPrivileges = newCreateRead.concat(newCreateWrite)
+      console.log(data)
       onOk(data)
     })
   }
@@ -161,6 +174,23 @@ class UserModal extends PureComponent {
               ],
             })(<Input disabled />)}
           </FormItem>
+          {this.props.start == 1 && (
+            <Form.Item label="Level" {...formItemLayout}>
+              {getFieldDecorator('level', {
+                rules: [
+                  { required: true, message: 'Please select project level!' },
+                ],
+              })(
+                <Select
+                  style={{ width: '100%' }}
+                  placeholder="Please select"
+                  onChange={handleChange}
+                >
+                  {children}
+                </Select>
+              )}
+            </Form.Item>
+          )}
           <FormItem label={'创建时间'} hasFeedback {...formItemLayout}>
             {getFieldDecorator('varData', {
               initialValue: new Date().toLocaleString(),
