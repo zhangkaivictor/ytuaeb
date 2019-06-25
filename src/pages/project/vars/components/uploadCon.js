@@ -22,7 +22,7 @@ class UploadCon extends React.Component {
   state = {
     fileList: [],
     uploading: false,
-    level: 0,
+    level: [],
   }
 
   handleUpload = async () => {
@@ -112,7 +112,10 @@ class UploadCon extends React.Component {
           <Button
             type="primary"
             onClick={this.handleUpload}
-            disabled={fileList.length === 0 || this.state.level == ''}
+            disabled={
+              fileList.length === 0 ||
+              (this.props.level && this.state.level.length == 0)
+            }
             loading={uploading}
           >
             {uploading ? 'Uploading' : 'Start Upload'}

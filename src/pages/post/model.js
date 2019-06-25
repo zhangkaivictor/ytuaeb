@@ -34,7 +34,7 @@ export default modelExtend(pageModel, {
         Authorization: window.localStorage.getItem('token'),
       }
       if (payload.type == undefined) {
-        payload.type = 'FTAProject'
+        payload.type = 'WorkProject'
       }
       const data = yield call(queryPostTypeList, payload, headers)
       if (data.success) {

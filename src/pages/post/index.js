@@ -78,7 +78,7 @@ class Post extends PureComponent {
       },
     }
     const modalProps = {
-      start: query.status === undefined ? '3' : query.status,
+      start: query.status === undefined ? '1' : query.status,
       item: modalType === 'create' ? {} : currentItem,
       visible: modalVisible,
       maskClosable: false,
@@ -141,11 +141,11 @@ class Post extends PureComponent {
         <Filter {...filterProps} />
         <Tabs
           activeKey={
-            query.status === String(EnumPostStatus.PROJECT)
-              ? String(EnumPostStatus.PROJECT)
+            query.status === String(EnumPostStatus.FTA)
+              ? String(EnumPostStatus.FTA)
               : query.status === String(EnumPostStatus.FMEA)
               ? String(EnumPostStatus.FMEA)
-              : String(EnumPostStatus.FTA)
+              : String(EnumPostStatus.PROJECT)
           }
           onTabClick={handleTabClick}
         >

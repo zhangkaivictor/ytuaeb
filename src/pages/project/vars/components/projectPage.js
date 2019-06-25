@@ -144,8 +144,10 @@ class ProjectPage extends React.Component {
             ),
           }
         : null
+      let isAdmin = sessionStorage.getItem('isAdmin')
       const templateProps = {
         ...templateFile,
+        operateAccess: isAdmin == 'Administrator' ? true : false,
         download: a => {
           this.props.dispatch({ type: 'VARS/download', payload: a })
         },
@@ -160,8 +162,18 @@ class ProjectPage extends React.Component {
             ),
           }
         : null
+      let user = localStorage.getItem('username')
+      console.log(user)
+      let userPrivilege = 1
+      if (user != 'admin@dxc.com') {
+        let projectUser = this.props.VARS.projectContent.usersPrivileges.find(
+          u => u.emailAddress == user
+        )
+        userPrivilege = projectUser.privilege
+      }
       const projectProps = {
         ...projectFile,
+        operateAccess: userPrivilege == 1 ? true : false,
         download: a => {
           this.props.dispatch({ type: 'VARS/download', payload: a })
         },
@@ -189,9 +201,11 @@ class ProjectPage extends React.Component {
             <Col span={14} className={styles.title}>
               项目文件列表
             </Col>
-            <Col span={10}>
-              <UploadCon {...this.props} />
-            </Col>
+            {projectProps.operateAccess && (
+              <Col span={10}>
+                <UploadCon {...this.props} />
+              </Col>
+            )}
             <Col span={24} className={styles.table}>
               {projectFile != null && <ProjectFile {...projectProps} />}
             </Col>
