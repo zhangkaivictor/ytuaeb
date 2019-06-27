@@ -15,7 +15,6 @@ class TemplatePage extends React.Component {
   text1 = 'Are you sure to unbind this project?'
   render() {
     const { files } = this.props
-    console.log(this.props)
     files.forEach(element => {
       element.key = element.id
     })

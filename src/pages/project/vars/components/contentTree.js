@@ -5,10 +5,8 @@ const { TreeNode, DirectoryTree } = Tree
 class ContentTree extends React.Component {
   constructor(props) {
     super(props)
-    console.log(props)
   }
   onSelect = (selectedKeys, info) => {
-    console.log('selected', selectedKeys, info)
     const { dispatch, VARS } = this.props
     //原型项目
     if (selectedKeys[0] == 'fmea') {
@@ -32,7 +30,6 @@ class ContentTree extends React.Component {
     // }
   }
   getActiveNode(folder, id) {
-    console.log(folder)
     if (folder.id == id) {
       const { dispatch } = this.props
       dispatch({
@@ -48,7 +45,6 @@ class ContentTree extends React.Component {
   }
   render() {
     const { projectContent } = this.props.VARS
-    console.log(projectContent)
     // const getTreeData = array => {
     //   return array.map(content => {
     //     if (content.subFolders.length > 0) {
@@ -68,7 +64,6 @@ class ContentTree extends React.Component {
       })
     }
     let node = getTreeNode()
-    console.log(node)
     return (
       <DirectoryTree
         defaultExpandAll

@@ -6,9 +6,7 @@ import { Trans, withI18n } from '@lingui/react'
 const FormItem = Form.Item
 const Option = Select.Option
 
-const handleChange = value => {
-  console.log(`selected ${value}`)
-}
+const handleChange = value => {}
 
 const changeStatus = value => {
   if (value == '正常') {
@@ -47,7 +45,6 @@ class UserModal extends PureComponent {
         data.status = changeStatus(data.status)
         data.status = parseInt(data.status)
         data.roles = ['user']
-        console.log(data.status)
         onOk(data)
       } else {
         data.status = parseInt(data.status)

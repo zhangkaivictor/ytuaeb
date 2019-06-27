@@ -40,9 +40,7 @@ class addModal extends PureComponent {
       onOk(data)
     })
   }
-  handleChange(e) {
-    console.log(e)
-  }
+  handleChange(e) {}
   getAllAboveNodeOption = () => {
     let array = []
     if (this.props.FMEA.createModalType == 3) {
@@ -55,7 +53,6 @@ class addModal extends PureComponent {
           console.log(array.push(...element.FunctionSet))
         }
       })
-      console.log(array)
       if (array.length > 0) {
         this.setState({
           itemOptions: array,
@@ -81,7 +78,6 @@ class addModal extends PureComponent {
   componentDidMount() {
     //获取依赖功能选项列表
     this.getAllAboveNodeOption()
-    console.log(this.state)
     //获取依赖失效功能列表
   }
   render() {

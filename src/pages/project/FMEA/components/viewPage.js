@@ -6,14 +6,12 @@ import styles from './viewPage.less'
 class ViewPage extends React.Component {
   componentDidMount() {
     const { propsAPI } = this.props
-    console.log(this.props)
     // console.log(this.props.propsAPI.read());
   }
 
   render() {
     let viewData = null
     const getViewData = () => {
-      console.log(this.props.FMEA)
       if (this.props.FMEA.selectedStructure === null) {
         return
       }
@@ -83,7 +81,6 @@ class ViewPage extends React.Component {
       }
     }
     getViewData()
-    console.log(viewData)
     return (
       <Col span={24} className={styles.view}>
         {viewData != null && (

@@ -19,7 +19,6 @@ class StructurePage extends React.Component {
   componentDidMount() {
     const { propsAPI } = this.props
     const { getSelected } = propsAPI
-    console.log(propsAPI)
   }
   handleClick() {
     let data = {}
@@ -32,7 +31,6 @@ class StructurePage extends React.Component {
     }
   }
   nodeDrag(e) {
-    console.log(e, this.props)
     if (e.action === 'update') {
       //更新nodeData
       let node = this.props.FMEA.nodeData.nodes.map(node => {
@@ -49,9 +47,7 @@ class StructurePage extends React.Component {
     }
   }
   onSelected(e) {
-    // console.log(this.props,e)
     // return false
-    console.log(e)
     const item = e.item
     // if (item.hasState('active')) {
     //   graph.setItemState(item, 'active', false);
@@ -59,7 +55,6 @@ class StructurePage extends React.Component {
     // }
   }
   render() {
-    console.log(this.props.propsAPI)
     let data = {
       // nodes: [{
       //   type: 'node',

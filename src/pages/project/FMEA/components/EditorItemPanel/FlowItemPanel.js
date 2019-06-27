@@ -12,7 +12,6 @@ const FlowItemPanel = () => {
           draw(item) {
             const group = item.getGraphicGroup()
             const model = item.getModel()
-            console.log(model)
             const width = 45
             const height = 45
             const x = -width / 2
@@ -41,7 +40,6 @@ const FlowItemPanel = () => {
             return keyShape
           },
           setState(name, value, item) {
-            console.log(name, value.item)
             const group = item.getContainer()
             const shape = group.get('children')[0] // 顺序根据 draw 时确定
             if (name === 'selected') {

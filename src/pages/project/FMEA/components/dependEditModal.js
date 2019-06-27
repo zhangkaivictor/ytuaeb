@@ -13,9 +13,6 @@ class dependEditModal extends PureComponent {
 
   componentDidMount() {}
   render() {
-    // console.log(this.props.FMEA.selectedStructure.allAboveNodes())
-    // let
-
     return <Modal onOk={this.handleOk}>{'edit'}</Modal>
   }
 }

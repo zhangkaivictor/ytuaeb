@@ -32,8 +32,6 @@ export default modelExtend(pageModel, {
   subscriptions: {
     setup({ dispatch, history }) {
       history.listen(location => {
-        // let content = "{"id":"138653589","projectName":"fmea","description":"","structureTreeRoot":{"id":"1073308239","name":"芯片，CPU","description":"","uri":"","html":"","shape":"","x":88.8125,"y":72,"parent":null,"children":[],"FunctionSet":[],"paneId":"681e3670"},"structureNodes":[{"id":"1073308239","name":"芯片，CPU","description":"","uri":"","html":"","shape":"","x":88.8125,"y":72,"parent":null,"children":[],"FunctionSet":[],"paneId":"681e3670"},{"id":"1003809898","name":"电机","description":"","uri":"","html":"","shape":"","x":92.8125,"y":206,"parent":"1073308239","children":[],"FunctionSet":[],"paneId":"43748557"}],"None":{"id":-1,"name":"NA","description":"","structureNodeId":" - 1","dependentFunctionSet":[],"FailureSet":[],"functionId":" - 1","dependentFailureSet":[],"detectionSet":[],"preCautionSet":[]}}";
-        // console.log(JSON.parse(content))
         if (pathMatchRegexp('/project/FMEA', location.pathname)) {
           if (location.query.projectId != undefined) {
             dispatch({
@@ -243,7 +241,6 @@ export default modelExtend(pageModel, {
       let nodesList = StructurePaneObj.structureNodes.map(structureNode => {
         payload.forEach(paneNode => {
           if (paneNode.id == structureNode.paneId) {
-            console.log(paneNode)
             structureNode.x = paneNode.x
             structureNode.y = paneNode.y
           }
@@ -352,7 +349,6 @@ export default modelExtend(pageModel, {
         state.selectedStructure.FunctionSet.forEach(fun => {
           fun.FailureSet.forEach(fail => {
             if (fail.id == payload.id) {
-              console.log(fail)
               faill = fail
               funn = fun
             }
@@ -381,7 +377,6 @@ export default modelExtend(pageModel, {
     },
     //删除功能
     removeFun(state, { payload }) {
-      console.log(state.selectedStructure, state.selectedFun)
       if (!state.selectedStructure || !state.selectedFun) {
         alert('请选择功能')
         return
@@ -496,7 +491,6 @@ export default modelExtend(pageModel, {
         }
       } else {
         return state
-        // console.log(state.selectedStructure.findFunctionById(payload.id).name)
       }
     },
     //显示对话框

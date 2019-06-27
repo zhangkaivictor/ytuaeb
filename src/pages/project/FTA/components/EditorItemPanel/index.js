@@ -6,7 +6,6 @@ import styles from './index.less'
 class EditorItemPanel extends React.Component {
   render() {
     const { isHideScreen } = this.props
-    // console.log(isHideScreen)
     return (
       <ItemPanel className={styles.itemPanel}>
         <RegisterNode
@@ -139,7 +138,6 @@ class EditorItemPanel extends React.Component {
               const y = -height / 2
               const borderRadius = 4
               const color = model.color ? model.color : '#1890FF'
-              console.log(color)
               const keyShape = group.addShape('rect', {
                 attrs: {
                   x,
@@ -289,7 +287,6 @@ class EditorItemPanel extends React.Component {
               const y = -height / 2
               const borderRadius = 34
               const color = model.color ? model.color : '#1890FF'
-              console.log(color)
               const keyShape = group.addShape('rect', {
                 attrs: {
                   x,

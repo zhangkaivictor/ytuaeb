@@ -64,7 +64,6 @@ export default modelExtend(pageModel, {
         data = yield call(getProjectContent, payload, headers)
       }
       if (data.success) {
-        console.log(data)
         if (data.list.id == 0) {
           data.list.projectFiles = Object.assign(
             {},
@@ -345,7 +344,6 @@ export default modelExtend(pageModel, {
       }
     },
     selectTreeNode(state, { payload }) {
-      console.log(payload)
       return {
         ...state,
         selectForAdd: [],

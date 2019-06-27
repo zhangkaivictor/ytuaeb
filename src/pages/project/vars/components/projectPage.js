@@ -8,7 +8,6 @@ const { Option } = Select
 class ProjectPage extends React.Component {
   constructor(props) {
     super(props)
-    console.log(props)
   }
   handleChange(value) {
     const { dispatch } = this.props
@@ -163,7 +162,6 @@ class ProjectPage extends React.Component {
           }
         : null
       let user = localStorage.getItem('username')
-      console.log(user)
       let userPrivilege = 1
       if (user != 'admin@dxc.com') {
         let projectUser = this.props.VARS.projectContent.usersPrivileges.find(

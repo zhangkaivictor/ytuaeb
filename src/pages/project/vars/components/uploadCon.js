@@ -17,7 +17,6 @@ for (let i = 0; i < 10; i++) {
 class UploadCon extends React.Component {
   constructor(props) {
     super(props)
-    console.log(props)
   }
   state = {
     fileList: [],
@@ -48,7 +47,6 @@ class UploadCon extends React.Component {
     })
   }
   handleChange(value) {
-    console.log(value)
     this.setState({
       level: value.join('|'),
     })

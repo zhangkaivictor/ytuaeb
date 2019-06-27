@@ -24,8 +24,6 @@ class FlowMap extends React.Component {
     } else {
       mapData = {}
     }
-    console.log(mapData)
-
     return (
       <Flow className={styles.flow} style={{ height: 750 }} data={mapData} />
     )

@@ -84,9 +84,7 @@ for (let i = 0; i < 10; i++) {
   children.push(<Option key={v}>{`Level${i}`}</Option>)
 }
 
-function handleChange(value) {
-  console.log(`selected ${value}`)
-}
+function handleChange(value) {}
 @withI18n()
 @Form.create()
 class UserModal extends PureComponent {
@@ -126,7 +124,6 @@ class UserModal extends PureComponent {
       let newCreateRead = data.usersPrivileges.readOptions
       let newCreateWrite = data.usersPrivileges.selectedOptions
       data.usersPrivileges = newCreateRead.concat(newCreateWrite)
-      console.log(data)
       onOk(data)
     })
   }

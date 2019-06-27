@@ -44,9 +44,6 @@ class FmeaPage extends React.Component {
           return
       }
     } else if ((e.name = 'delete')) {
-      console.log(e.itemIds)
-      // console.log(this.props.FMEA.nodeData.nodes.findIndex(node=>node.id==e.itemIds[0]))
-      // console.log(this.props.FMEA.nodeData.edges.findIndex(edge=>edge.id==e.itemIds[0]))
       if (
         e.itemIds &&
         this.props.FMEA.nodeData.nodes.findIndex(
@@ -71,7 +68,6 @@ class FmeaPage extends React.Component {
   }
   //选择结构
   nodeClick(e) {
-    console.log(e)
     this.props.dispatch({ type: 'FMEA/selectStructure', payload: e })
   }
   render() {

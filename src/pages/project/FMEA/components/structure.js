@@ -296,7 +296,6 @@ StructureNode.prototype.allAboveNodes = function() {
     parent = parent.parent
     layer++
   }
-  console.log(rootNode)
   var startLayer = 1
   ;(function recurse(currentNode, currentLayer) {
     if (currentLayer < layer) {
@@ -507,7 +506,6 @@ StructurePane.prototype.GetStructureFunctionDepTree = function(
       recurse(depFunction, r.Childs)
     }
   })(fs, result.rightChilds)
-  console.log(result)
   return result
 }
 
@@ -1162,7 +1160,6 @@ StructurePane.prototype.GetStructureFunctionDepTree = function(
   var fs = sfArray.find(item => {
     return item.structureNodeId === structureNodeId && item.id === functionId
   })
-  console.log(fs)
   if (!fs) return
   var result = {}
   result.Id = functionId

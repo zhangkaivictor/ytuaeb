@@ -3,7 +3,6 @@ import { Table, Divider, Popconfirm, message, Button } from 'antd'
 class ProjectPage extends React.Component {
   constructor(props) {
     super(props)
-    console.log(props)
   }
   text1 = 'Are you sure to delete this file?'
   render() {

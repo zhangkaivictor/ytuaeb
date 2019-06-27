@@ -9,9 +9,6 @@ class TreePage extends React.Component {
     this.state = { nodeType: 0 }
   }
   onSelect = (selectedKeys, info) => {
-    console.log('selected', selectedKeys, info)
-    console.log('selected', this.props.FMEA.selectedStructure)
-    console.log('selected', this.props.FMEA.StructurePane.structureTreeRoot)
     if (!this.props.FMEA.StructurePane.structureTreeRoot) {
       alert('请设置根节点')
       return
@@ -57,13 +54,10 @@ class TreePage extends React.Component {
       alert('请选择功能')
       return
     }
-    console.log(e, this.props.FMEA.selectedFun)
     this.props.dispatch({ type: 'FMEA/triggerType', payload: { type: 1 } })
   }
   //移除失效
   removeFail(e) {
-    console.log(this.props.FMEA.selectedFun)
-    console.log(this.props.FMEA.selectedFail)
     this.props.dispatch({ type: 'FMEA/removeFail' })
   }
   //添加功能依赖
@@ -113,7 +107,6 @@ class TreePage extends React.Component {
           )
         })
       }
-      console.log(lh)
       return lh
     }
     if (

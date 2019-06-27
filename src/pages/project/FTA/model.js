@@ -36,7 +36,6 @@ export default modelExtend(pageModel, {
       }
       const data = yield call(createPostFtaMap, payload, headers)
       if (data.success) {
-        console.log(data)
         yield put({
           type: 'querySuccess',
           payload: {
@@ -52,7 +51,6 @@ export default modelExtend(pageModel, {
         Authorization: window.localStorage.getItem('token'),
       }
       const data = yield call(getFtaMap, payload, headers)
-      console.log(data)
       if (data.success) {
         yield put({
           type: 'querySuccess',
@@ -97,9 +95,7 @@ export default modelExtend(pageModel, {
       }
       const data = yield call(getTreeReport, payload, headers)
       if (data.success) {
-        console.log(payload)
         const ftaMapData = yield call(getFtaMap, payload, headers)
-        console.log(data)
         yield put({
           type: 'querySuccess',
           payload: {

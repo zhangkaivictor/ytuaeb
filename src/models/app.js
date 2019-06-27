@@ -159,7 +159,6 @@ export default {
             {},
             { Authorization: token }
           )
-          console.log(postList)
           // yield put({
           //   type: 'querySuccess',
           //   payload: {
@@ -238,7 +237,6 @@ export default {
               newPost.zhName = postList.list[i].name
               newPost.route = '/project/vars' + '?projectId=' + newPost.itemId
             }
-            console.log(newPost)
             let itemArrey = []
             database.map((item, index) => {
               itemArrey.push(item.id)
@@ -287,7 +285,6 @@ export default {
               return cases.every(_ => _)
             })
           }
-          console.log(routeList)
           yield put({
             type: 'updateState',
             payload: {
