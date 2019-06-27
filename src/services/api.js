@@ -27,6 +27,7 @@ const api = {
   postFmeaData: 'POST /api/FMEAProjects/AddTree',
   //vars
   getProjectContent: '/api/WorkProjects/GetWorkProject',
+  queryOriginProject: '/api/ProjectFiles',
   linkProject: 'GET /api/WorkProjects/AddLinkedProject',
   unLinkProject: 'GET /api/WorkProjects/RemoveLinkedProject',
   updateFile: 'POST /api/ProjectFiles/Update',

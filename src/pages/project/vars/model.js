@@ -1,5 +1,11 @@
 import modelExtend from 'dva-model-extend'
-import { getProjectContent, linkProject, unLinkProject, updateFile } from 'api'
+import {
+  getProjectContent,
+  linkProject,
+  unLinkProject,
+  updateFile,
+  queryOriginProject,
+} from 'api'
 import { pathMatchRegexp, router } from 'utils'
 import { apiPrefix } from 'utils/config'
 import { pageModel } from 'utils/model'
@@ -42,8 +48,46 @@ export default modelExtend(pageModel, {
       const headers = {
         Authorization: window.localStorage.getItem('token'),
       }
-      const data = yield call(getProjectContent, payload, headers)
+      let data = null
+      //查询原型
+      if (payload.projectId == '1b2cd8ab-6d6c-4a05-931b-e40607bd8b19') {
+        data = yield call(
+          queryOriginProject,
+          {
+            projectId: '1b2cd8ab-6d6c-4a05-931b-e40607bd8b19',
+            path: 'Root',
+            searchOption: 1,
+          },
+          headers
+        )
+      } else {
+        data = yield call(getProjectContent, payload, headers)
+      }
       if (data.success) {
+        console.log(data)
+        if (data.list.id == 0) {
+          data.list.projectFiles = Object.assign(
+            {},
+            { subFolders: data.list.subFolders }
+          )
+        } else {
+          data.list.projectFiles.subFolders = data.list.projectFiles.subFolders.concat(
+            [
+              {
+                name: 'FMEA',
+                id: 'fmea',
+                // fils:data.list.fmeaProjects,
+                subFolders: [],
+              },
+              {
+                name: 'FTA',
+                id: 'fta',
+                // fils:data.list.ftaProjects,
+                subFolders: [],
+              },
+            ]
+          )
+        }
         yield put({
           type: 'projectContent',
           payload: {

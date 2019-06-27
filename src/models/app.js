@@ -238,6 +238,7 @@ export default {
               newPost.zhName = postList.list[i].name
               newPost.route = '/project/vars' + '?projectId=' + newPost.itemId
             }
+            console.log(newPost)
             let itemArrey = []
             database.map((item, index) => {
               itemArrey.push(item.id)
@@ -247,6 +248,27 @@ export default {
             }
             if (isAdmin != 'Administrator') {
               permissions.visit.push(newPost.id)
+            }
+          }
+          //添加原型工程项目
+          if (isAdmin == 'Administrator') {
+            var originProject = {
+              id: '1b2cd8ab-6d6c-4a05-931b-e40607bd8b19',
+              itemId: '1b2cd8ab-6d6c-4a05-931b-e40607bd8b19',
+              breadcrumbParentId: '61',
+              menuParentId: '61',
+              name: 'originProject',
+              zhName: '原型项目',
+              icon: 'area-chart',
+              route:
+                '/project/vars?projectId=1b2cd8ab-6d6c-4a05-931b-e40607bd8b19',
+            }
+            if (
+              !database.find(
+                d => d.id == '1b2cd8ab-6d6c-4a05-931b-e40607bd8b19'
+              )
+            ) {
+              database.unshift(originProject)
             }
           }
           let list = database

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { Tree } from 'antd'
 const { TreeNode, DirectoryTree } = Tree
 
@@ -8,8 +8,9 @@ class ContentTree extends React.Component {
     console.log(props)
   }
   onSelect = (selectedKeys, info) => {
-    // console.log('selected', selectedKeys, info);
+    console.log('selected', selectedKeys, info)
     const { dispatch, VARS } = this.props
+    //原型项目
     if (selectedKeys[0] == 'fmea') {
       dispatch({
         type: 'VARS/selectTreeNode',
@@ -24,9 +25,14 @@ class ContentTree extends React.Component {
       })
       return
     }
+    // if (VARS.projectContent.id == 0) {
+    //   // this.getActiveNode(VARS.projectContent.projectFiles, selectedKeys[0])
+    // } else {
     this.getActiveNode(VARS.projectContent.projectFiles, selectedKeys[0])
+    // }
   }
   getActiveNode(folder, id) {
+    console.log(folder)
     if (folder.id == id) {
       const { dispatch } = this.props
       dispatch({
@@ -56,21 +62,22 @@ class ContentTree extends React.Component {
     //     }
     //   })
     // }
+    const getTreeNode = () => {
+      return projectContent.projectFiles.subFolders.map(folder => {
+        return <TreeNode title={folder.name} key={folder.id} />
+      })
+    }
+    let node = getTreeNode()
+    console.log(node)
     return (
       <DirectoryTree
         defaultExpandAll
         onSelect={this.onSelect}
         onExpand={this.onExpand}
       >
-        {/* <TreeNode title={projectContent.name} key={projectContent.id}>
-          {getTreeData(projectContent.subFolders)}
-        </TreeNode> */}
-        {projectContent != null &&
-          projectContent.projectFiles.subFolders.map(folder => {
-            return <TreeNode title={folder.name} key={folder.id} />
-          })}
-        <TreeNode title={'FMEA项目分析'} key={'fmea'} />
-        <TreeNode title={'FTA项目分析'} key={'fta'} />
+        {node}
+        {/* <TreeNode title={'FMEA项目分析'} key={'fmea'} /> */}
+        {/* <TreeNode title={'FTA项目分析'} key={'fta'} /> */}
       </DirectoryTree>
     )
   }
