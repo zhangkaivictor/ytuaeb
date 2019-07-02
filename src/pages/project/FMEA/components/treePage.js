@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Tree, Icon, Button, Checkbox } from 'antd'
+import FailDeatail from './failDetail'
 import styles from './treePage.less'
 const { TreeNode } = Tree
 
@@ -17,26 +18,6 @@ class TreePage extends React.Component {
       type: 'FMEA/selectKey',
       payload: { id: info.node.props.eventKey },
     })
-    // let isLeaf=true;
-    // for(let i=0;i<this.props.FMEA.selectedStructure.FunctionSet.length;i++){
-    //   if(this.props.FMEA.selectedStructure.FunctionSet[i].id==info.node.props.eventKey){
-    //     this.props.dispatch({ type: 'FMEA/selectFun', payload: { id:  info.node.props.eventKey} })
-    //     return
-    //   }
-    // }
-    // for(let i=0;i<this.props.FMEA.selectedStructure.FunctionSet.length;i++){
-    //   this.props.FMEA.selectedStructure.FunctionSet[i].FailureSet.forEach(fail=>{
-
-    //   })
-    // }
-    // this.setState({
-    //   nodeType:isLeaf?1:0
-    // });
-    // if(isLeaf){
-    //   this.props.dispatch({ type: 'FMEA/selectFail', payload: { id:  info.node.props.eventKey} })
-    // }else{
-    //   this.props.dispatch({ type: 'FMEA/selectFun', payload: { id:  info.node.props.eventKey} })
-    // }
   }
   //设置根节点
   setRoot(e) {
@@ -141,14 +122,10 @@ class TreePage extends React.Component {
         rootStructureChecked = false
       }
     }
-
-    // if(this.props.FMEA.selectedStructure&&(this.props.FMEA.selectedStructure.id==this.props.FMEA.StructurePane.structureTreeRoot.id)){
-    //   rootStructureSetAble=true
-    // }
     return (
       <div className={styles.treePage}>
         {FMEA.selectedStructure && (
-          <div>
+          <div className={styles.setTarget}>
             <div className={styles.currStr}>当前结构:</div>
             <div className={styles.currN}>
               <Icon type="appstore" theme="filled" />
@@ -163,28 +140,14 @@ class TreePage extends React.Component {
                   {'设为根节点'}
                 </Checkbox>
               </div>
-              {/* <Button
-                type="danger"
-                className={styles.rootBtn}
-                onClick={e => this.setRoot(e)}
-              >
-                
-              </Button> */}
             </div>
           </div>
         )}
         {FMEA.selectedStructure &&
           FMEA.selectedStructure.FunctionSet.length > 0 && (
-            <div>
+            <div className={styles.setTarget}>
               <div className={styles.currTree}>
                 <span>功能树:</span>
-                {/* <Button type="dashed" onClick={e => this.addFun(e)}>
-                  <Icon type="plus" /> 添加功能
-                </Button> */}
-                {/* <div> */}
-                {/* <Icon type="folder-add"  theme="twoTone" onClick={(e) => this.addFun(e)}/> */}
-                {/* <span>添加功能</span> */}
-                {/* </div> */}
               </div>
               <Tree
                 showLine
@@ -196,6 +159,7 @@ class TreePage extends React.Component {
               </Tree>
             </div>
           )}
+        {FMEA.actionType == 2 && <FailDeatail {...this.props} />}
         <div className={styles.btnDiv}>
           {(FMEA.actionType == 1 || FMEA.actionType == 0) && (
             <Button className={styles.addBtn} onClick={e => this.addFun(e)}>

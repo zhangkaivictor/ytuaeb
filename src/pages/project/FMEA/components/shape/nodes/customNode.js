@@ -117,7 +117,10 @@ class CustomNode extends React.Component {
     }
     const config = {
       // 绘制标签
-      // drawLabel(item) {},
+      drawl(item) {
+        const model = item.getModel()
+        const group = item.getGraphicGroup()
+      },
 
       // 绘制图标
       afterDraw(item) {
@@ -126,16 +129,29 @@ class CustomNode extends React.Component {
 
         const label = group.findByClass('label')[0]
         const labelBox = label.getBBox()
-
-        group.addShape('image', {
-          // attrs: {
-          //   x: labelBox.width / 2 + ICON_SPAN,
-          //   y: -labelBox.height / 2,
-          //   width: ICON_SIZE,
-          //   height: ICON_SIZE,
-          //   img: model.icon || ICON_URL
-          // }
-        })
+        // group.addShape('image', {
+        // attrs: {
+        //   x: labelBox.width / 2 + ICON_SPAN,
+        //   y: -labelBox.height / 2,
+        //   width: ICON_SIZE,
+        //   height: ICON_SIZE,
+        //   img: model.icon || ICON_URL
+        // }
+        // })
+        if (model.sValue !== undefined) {
+          let attr = `{o:${model.oValue},d:${model.dValue},λ:${
+            model.lambdaValue
+          },s:${model.sValue}}`
+          group.addShape('text', {
+            attrs: {
+              x: 0,
+              y: 42,
+              textAlign: 'center',
+              text: attr,
+              fill: '#444',
+            },
+          })
+        }
       },
 
       // 对齐标签
@@ -225,11 +241,7 @@ class CustomNode extends React.Component {
     }
     return (
       <Fragment>
-        <RegisterNode
-          name="mind-root"
-          config={rootConfig}
-          extend={'mind-base'}
-        />
+        <RegisterNode name="mind-root" config={config} extend={'mind-base'} />
         <RegisterNode name="mind-base" config={config} extend={'mind-base'} />
         <RegisterNode name="custom-node" config={config} extend={'mind-base'} />
       </Fragment>

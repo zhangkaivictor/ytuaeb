@@ -64,6 +64,10 @@ class ViewPage extends React.Component {
                     this.props.FMEA.selectedFun.name +
                     '--' +
                     this.props.FMEA.selectedFail.name,
+                  oValue: this.props.FMEA.selectedFail.oValue,
+                  sValue: this.props.FMEA.selectedFail.sValue,
+                  dValue: this.props.FMEA.selectedFail.dValue,
+                  lambdaValue: this.props.FMEA.selectedFail.lambdaValue,
                   children: this.props.FMEA.StructurePane.GetFunctionFailureDepTree(
                     this.props.FMEA.selectedStructure.id,
                     this.props.FMEA.selectedFun.id,
@@ -82,7 +86,6 @@ class ViewPage extends React.Component {
       }
     }
     getViewData()
-    console.log(viewData)
     let graph = {
       // defaultNode: {
       //   size: 16,
@@ -138,6 +141,9 @@ class ViewPage extends React.Component {
               rootShape="mind-root"
               firstSubShape="custom-node"
               secondSubShape="custom-node"
+              thirdSubShape="custom-node"
+              fouthSubShape="custom-node"
+              fifthSubShape="custom-node"
             />
             <CustomNode />
           </GGEditor>

@@ -63,6 +63,7 @@ export default modelExtend(pageModel, {
         //     list: data.list,
         //   },
         // })
+        message.success('保存成功')
       } else {
         throw data
       }
@@ -349,6 +350,7 @@ export default modelExtend(pageModel, {
         state.selectedStructure.FunctionSet.forEach(fun => {
           fun.FailureSet.forEach(fail => {
             if (fail.id == payload.id) {
+              console.log(fail)
               faill = fail
               funn = fun
             }
@@ -555,6 +557,10 @@ export default modelExtend(pageModel, {
         Object.create(Object.getPrototypeOf(state.StructurePane)),
         state.StructurePane
       )
+      if (structurePaneObj.CheckIfRePositionAble() < 0) {
+        message.error('未找到根节点！')
+        return
+      }
       structurePaneObj.RePositionTree(125, 150)
       let nodeData = {
         nodes: [],
@@ -602,6 +608,24 @@ export default modelExtend(pageModel, {
         ...state,
         StructurePane: structurePaneObj,
         nodeData: nodeData,
+      }
+    },
+    failAttrSet(state, action) {
+      console.log(state, action)
+      let StructurePaneObj = Object.assign(
+        Object.create(Object.getPrototypeOf(state.StructurePane)),
+        state.StructurePane
+      )
+      StructurePaneObj.UpdateFunctionFailureSValue(
+        state.selectedStructure.id,
+        state.selectedFun.id,
+        state.selectedFail.id,
+        action.payload
+      )
+      console.log(StructurePaneObj)
+      return {
+        ...state,
+        StructurePane: StructurePaneObj,
       }
     },
   },

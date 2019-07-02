@@ -2,6 +2,7 @@ import React from 'react'
 import { router } from 'utils'
 import { withPropsAPI } from 'gg-editor'
 import { Row, Col, Button } from 'antd'
+import { message } from 'antd'
 
 class Perputation extends React.Component {
   constructor(props) {
@@ -12,7 +13,7 @@ class Perputation extends React.Component {
     const { onOk, propsAPI } = this.props
     let saveData = propsAPI.save()
     if (Object.keys(saveData).length == 0) {
-      alert('画布为空,无法分析！！！')
+      message.error('画布为空,无法分析！！！')
       return
     } else {
       let nodes = saveData.nodes
@@ -41,6 +42,10 @@ class Perputation extends React.Component {
       // })
     } else {
       mapData = {}
+    }
+    if (!mapData.nodes) {
+      message.error('未找到根节点！')
+      return
     }
     dispatch({ type: 'FTA/perputation', payload: { data: mapData } })
   }

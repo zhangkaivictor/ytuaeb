@@ -1005,34 +1005,73 @@ StructurePane.prototype.CheckIfRePositionAble = function() {
 StructurePane.prototype.RePositionTree = function(xSpace, ySpace) {
   if (this.structureTreeRoot != null) {
     var rootNode = this.structureTreeRoot
+    var rootBaseX = rootNode.x
+    var rootBaseY = rootNode.y
     var vNodeArray = []
-    ;(function AddEndNode(root) {
+    var maxLayer = 0
+    ;(function AddEndNode(root, layerIndex) {
+      root.children = root.children.sort((top, bottom) => {
+        return top.y - bottom.y
+      })
+
       for (var i = 0; i < root.children.length; i++) {
-        if (root.children[i].children.length == 0) {
-          vNodeArray.push(root.children[i])
+        var childNode = root.children[i]
+        childNode.x = root.x + xSpace
+
+        if (childNode.children.length == 0) {
+          var element = {}
+          element.layerIndex = layerIndex + 1
+          element.node = childNode
+          vNodeArray.push(element)
+          if (maxLayer < element.layerIndex) {
+            maxLayer = element.layerIndex
+          }
         } else {
-          AddEndNode(root.children[i])
+          AddEndNode(childNode, layerIndex + 1)
         }
       }
-    })(rootNode)
+    })(rootNode, 0)
 
     var y = rootNode.y - ((vNodeArray.length - 1) * ySpace) / 2
     for (var u = 0; u < vNodeArray.length; u++) {
-      vNodeArray[u].y = y
+      vNodeArray[u].node.y = y
       y = y + ySpace
     }
 
-    ;(function Recurse(root) {
-      if (root.children.length > 0) {
-        root.y =
-          (root.children[0].y + root.children[root.children.length - 1].y) / 2
+    var sameLayerNode = []
+    for (var i = maxLayer; i > 0; i--) {
+      var layerNodes = vNodeArray
+        .filter(item => {
+          return item.layerIndex === i
+        })
+        .map(element => element.node)
+      layerNodes = layerNodes.concat(sameLayerNode)
+      sameLayerNode = []
 
-        for (var i = 0; i < root.children.length; i++) {
-          var childNode = root.children[i]
-          childNode.x = root.x + xSpace
-
-          Recurse(childNode)
+      var parent = null
+      layerNodes.forEach(item => {
+        if (item.parent != null && parent != item.parent) {
+          parent = item.parent
+          parent.y =
+            (parent.children[0].y +
+              parent.children[parent.children.length - 1].y) /
+            2
+          sameLayerNode.push(parent)
         }
+      })
+    }
+
+    var movX = rootBaseX - rootNode.x
+    var movY = rootBaseY - rootNode.y
+    rootNode.x = rootNode.x + movX
+    rootNode.y = rootNode.y + movY
+    ;(function MoveBaseRootXY(rootNode) {
+      for (var n = 0; n < rootNode.children.length; n++) {
+        var childNode = rootNode.children[n]
+        childNode.x = childNode.x + movX
+        childNode.y = childNode.y + movY
+
+        MoveBaseRootXY(rootNode.children[n])
       }
     })(rootNode)
   }
@@ -1347,6 +1386,10 @@ StructurePane.prototype.GetFunctionFailureDepTree = function(
       r.children = []
       r.side = 'left'
       r.label = depFailure.name
+      r.oValue = depFailure.oValue
+      r.sValue = depFailure.sValue
+      r.dValue = depFailure.dValue
+      r.lambdaValue = depFailure.lambdaValue
       childs.push(r)
 
       recurse(depFailure, r.children)
@@ -1367,7 +1410,6 @@ StructurePane.prototype.GetFunctionFailureDepTree = function(
 
     for (var i = 0, length = asParentFs.length; i < length; i++) {
       var depFailure = asParentFs[i]
-      console.log(depFailure)
       var r = {}
       r.Id = depFailure.id
       r.Name = depFailure.name
@@ -1375,6 +1417,10 @@ StructurePane.prototype.GetFunctionFailureDepTree = function(
       r.functionId = depFailure.functionId
       r.children = []
       r.side = 'right'
+      r.oValue = depFailure.oValue
+      r.sValue = depFailure.sValue
+      r.dValue = depFailure.dValue
+      r.lambdaValue = depFailure.lambdaValue
       // r.shape='custom-node'
       r.label = depFailure.name
       childs.push(r)
@@ -1414,7 +1460,6 @@ const RePositionTree = function(jsonTree, xSpace, ySpace) {
     rootNode.y = rootBaseY
     var uiNodessInSameLayer = []
     uiNodessInSameLayer.push(rootNode)
-
     ;(function Recurse(parentNodes) {
       var uiNodes = []
       for (var i = 0; i < parentNodes.length; i++) {
@@ -1449,6 +1494,61 @@ const RePositionTree = function(jsonTree, xSpace, ySpace) {
   }
 
   return jsonTree
+}
+StructurePane.prototype.UpdateFunctionFailureSValue = function(
+  structureNodeId,
+  functionId,
+  failureId,
+  value
+) {
+  var ffArray = this.AllFunctionFailures()
+  var ff = ffArray.find(item => {
+    return (
+      item.structureNodeId === structureNodeId &&
+      item.functionId == functionId &&
+      item.id === failureId
+    )
+  })
+  ff.sValue = value.S
+  ff.oValue = value.O
+  ff.dValue = value.D
+  ff.lambdaValue = value.λ
+  var result = []
+  result.push(ff)
+
+  // build right child
+  ;(function recurse(currentFailure) {
+    var asParentFf = ffArray.filter(item => {
+      return item.dependentFailureSet.find(chld => {
+        return (
+          chld.structureNodeId === currentFailure.structureNodeId &&
+          chld.functionId == currentFailure.functionId &&
+          chld.id === currentFailure.id
+        )
+      })
+    })
+
+    for (var i = 0, length = asParentFf.length; i < length; i++) {
+      var depFailure = asParentFf[i]
+      if (depFailure.sValue < currentFailure.sValue) {
+        depFailure.sValue = currentFailure.sValue
+        result.push(depFailure)
+
+        recurse(depFailure)
+      }
+      /*
+        	var existBigger = depFailure.dependentFailureSet.find(df => {return df.sValue > currentFailure.sValue;});
+        	if(existBigger == undefined)
+        	{
+        		depFailure.sValue = currentFailure.sValue;
+        		result.push(depFailure);
+
+        		recurse(depFailure);
+        	}*/
+    }
+  })(ff)
+
+  return result
 }
 export {
   StructurePane,
