@@ -1,5 +1,6 @@
 import React from 'react'
 import GGEditor, { Mind, withPropsAPI, RegisterNode } from 'gg-editor'
+import CustomNode from './shape/nodes/customNode'
 import { Col } from 'antd'
 import styles from './viewPage.less'
 
@@ -81,11 +82,64 @@ class ViewPage extends React.Component {
       }
     }
     getViewData()
+    console.log(viewData)
+    let graph = {
+      // defaultNode: {
+      //   size: 16,
+      //   anchorPoints: [[0, 0.5], [1, 0.5]]
+      // },
+      // defaultEdge: {
+      //   shape: 'flow-smooth'
+      // },
+      // nodeStyle: {
+      //   default: {
+      //     fill: 'red',
+      //     stroke: '#096dd9'
+      //   }
+      // },
+      // edgeStyle: {
+      //   default: {
+      //     stroke: '#A3B1BF'
+      //   }
+      // },
+      edgeDefaultShape: 'flow-polyline-round',
+      // nodeDefaultShape:'custom-node' ,
+      // defaultNode: {
+      //   shape:'custom-node'
+      // }
+      // layout: function layout(data) {
+      //   return Hierarchy.mindmap(data, {
+      //     direction: 'H',
+      //     getHeight: function getHeight() {
+      //       return 16;
+      //     },
+      //     getWidth: function getWidth() {
+      //       return 16;
+      //     },
+      //     getVGap: function getVGap() {
+      //       return 10;
+      //     },
+      //     getHGap: function getHGap() {
+      //       return 100;
+      //     }
+      //   });
+      // }
+    }
+
     return (
       <Col span={24} className={styles.view}>
         {viewData != null && (
           <GGEditor>
-            <Mind style={{ height: 300 }} data={viewData} />
+            {/* <Mind style={{ height: 300 }} graph={graph } data={viewData} rootShape="mind-root" firstSubShape="custom-node" /> */}
+            <Mind
+              style={{ height: 300 }}
+              graph={graph}
+              data={viewData}
+              rootShape="mind-root"
+              firstSubShape="custom-node"
+              secondSubShape="custom-node"
+            />
+            <CustomNode />
           </GGEditor>
         )}
       </Col>

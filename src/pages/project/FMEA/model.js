@@ -549,5 +549,60 @@ export default modelExtend(pageModel, {
         nodeData: { ...state.nodeData, nodes: nodes },
       }
     },
+    perputation(state, action) {
+      console.log(state, action)
+      let structurePaneObj = Object.assign(
+        Object.create(Object.getPrototypeOf(state.StructurePane)),
+        state.StructurePane
+      )
+      structurePaneObj.RePositionTree(125, 150)
+      let nodeData = {
+        nodes: [],
+        edges: [],
+      }
+      structurePaneObj.structureNodes.forEach(structure => {
+        nodeData.nodes.push({
+          type: 'node',
+          size: '70*70',
+          shape: structure.shape,
+          root:
+            structure.id == structurePaneObj.structureTreeRoot.id
+              ? true
+              : false,
+          label: structure.name,
+          x: structure.x,
+          y: structure.y,
+          id: structure.paneId,
+          structureId: structure.id,
+          style: {
+            stroke:
+              structure.id == structurePaneObj.structureTreeRoot.id
+                ? 'red'
+                : '',
+            fill:
+              structure.id == structurePaneObj.structureTreeRoot.id
+                ? 'red'
+                : '',
+          },
+        })
+        if (structure.children.length > 0) {
+          structure.children.forEach(child => {
+            nodeData.edges.push({
+              source: structure.paneId,
+              // sourceAnchor: 2,
+              target: child.paneId,
+              // targetAnchor: 0,
+              // id: '7989ac70',
+              // index: 1,
+            })
+          })
+        }
+      })
+      return {
+        ...state,
+        StructurePane: structurePaneObj,
+        nodeData: nodeData,
+      }
+    },
   },
 })

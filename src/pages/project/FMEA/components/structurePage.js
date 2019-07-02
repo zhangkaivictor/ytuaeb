@@ -30,6 +30,16 @@ class StructurePage extends React.Component {
       message.info('没有可保存的信息')
     }
   }
+  permutation(e) {
+    console.log(e)
+    const { dispatch, FMEA } = this.props
+    console.log(FMEA)
+    if (FMEA.StructurePane.CheckIfRePositionAble != 0) {
+      dispatch({ type: 'FMEA/perputation' })
+    } else {
+      console.log(FMEA.StructurePane.CheckIfRePositionAble)
+    }
+  }
   nodeDrag(e) {
     if (e.action === 'update') {
       //更新nodeData
@@ -94,16 +104,23 @@ class StructurePage extends React.Component {
         }}
       >
         <Row type="flex" className={styles.editorHd}>
-          <Col span={20}>
+          <Col span={16}>
             <FlowToolbar />
           </Col>
-          <Col span={4}>
+          <Col span={8}>
             <Button
               onClick={e => {
                 this.handleClick(e)
               }}
             >
               保存
+            </Button>
+            <Button
+              onClick={e => {
+                this.permutation(e)
+              }}
+            >
+              排列
             </Button>
           </Col>
           {/* <Redirect to={'/video'} /> */}

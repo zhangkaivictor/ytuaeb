@@ -11,6 +11,7 @@ import FlowMap from './components/EditorMap/index'
 import Save from './components/Save/index'
 import Full from './components/full/index'
 import Analysis from './components/analysis/index'
+import Perputation from './components/perputation/index'
 import styles from './index.less'
 
 const guid = () => {
@@ -99,6 +100,9 @@ class FlowPage extends React.Component {
               <Button onClick={this.handlehideClick}>
                 {this.state.isHideScreen ? '隐藏注释' : '显示注释'}
               </Button>
+            </div>
+            <div className={styles.perputation}>
+              <Perputation {...this.props} />
             </div>
             <div className={styles.save}>
               <Save {...mapProps} />

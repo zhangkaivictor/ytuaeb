@@ -158,7 +158,7 @@ StructureFunction.prototype.removeFailureById = function(failureId) {
 /*
 	定义结构树形点类
 */
-function StructureNode(name, x, y, shape) {
+function StructureNode(name) {
   this.id = GenerateId()
   this.name = name
   this.description = ''
@@ -166,9 +166,9 @@ function StructureNode(name, x, y, shape) {
   this.uri = ''
   this.html = ''
 
-  this.shape = shape
-  this.x = x
-  this.y = y
+  this.shape = ''
+  this.x = 0
+  this.y = 0
 
   this.parent = null
   this.children = []
@@ -286,6 +286,19 @@ StructureNode.prototype.removeChildById = function(id) {
   }
 }
 
+StructureNode.prototype.GetLayer = function() {
+  var parent = this.parent
+  var rootNode = this
+  var layer = 1
+  while (parent != null) {
+    rootNode = parent
+    parent = parent.parent
+    layer++
+  }
+
+  return layer
+}
+
 StructureNode.prototype.allAboveNodes = function() {
   var ndArray = []
   var parent = this.parent
@@ -296,6 +309,9 @@ StructureNode.prototype.allAboveNodes = function() {
     parent = parent.parent
     layer++
   }
+
+  console.log(rootNode)
+
   var startLayer = 1
   ;(function recurse(currentNode, currentLayer) {
     if (currentLayer < layer) {
@@ -305,6 +321,7 @@ StructureNode.prototype.allAboveNodes = function() {
       }
     }
   })(rootNode, startLayer)
+
   return ndArray
 }
 
@@ -457,6 +474,7 @@ StructurePane.prototype.GetStructureFunctionDepTree = function(
   var fs = sfArray.find(item => {
     return item.structureNodeId === structureNodeId && item.id === functionId
   })
+
   var result = {}
   result.Id = functionId
   result.Name = fs.name
@@ -506,6 +524,7 @@ StructurePane.prototype.GetStructureFunctionDepTree = function(
       recurse(depFunction, r.Childs)
     }
   })(fs, result.rightChilds)
+
   return result
 }
 
@@ -720,14 +739,14 @@ StructurePane.prototype.UpdateFunctionFailureSValue = function(
         recurse(depFailure)
       }
       /*
-            var existBigger = depFailure.dependentFailureSet.find(df => {return df.sValue > currentFailure.sValue;});
-            if(existBigger == undefined)
-            {
-              depFailure.sValue = currentFailure.sValue;
-              result.push(depFailure);
-  
-              recurse(depFailure);
-            }*/
+        	var existBigger = depFailure.dependentFailureSet.find(df => {return df.sValue > currentFailure.sValue;});
+        	if(existBigger == undefined)
+        	{
+        		depFailure.sValue = currentFailure.sValue;
+        		result.push(depFailure);
+
+        		recurse(depFailure);
+        	}*/
     }
   })(ff)
 
@@ -975,6 +994,78 @@ StructurePane.prototype.validateData = function() {
   return result
 }
 
+StructurePane.prototype.CheckIfRePositionAble = function() {
+  if (this.structureTreeRoot == null) {
+    return -1 // no root node is found
+  }
+
+  return 0 // it is ok to continue the reposition
+}
+
+StructurePane.prototype.RePositionTree = function(xSpace, ySpace) {
+  if (this.structureTreeRoot != null) {
+    var rootNode = this.structureTreeRoot
+    var vNodeArray = []
+    ;(function AddEndNode(root) {
+      for (var i = 0; i < root.children.length; i++) {
+        if (root.children[i].children.length == 0) {
+          vNodeArray.push(root.children[i])
+        } else {
+          AddEndNode(root.children[i])
+        }
+      }
+    })(rootNode)
+
+    var y = rootNode.y - ((vNodeArray.length - 1) * ySpace) / 2
+    for (var u = 0; u < vNodeArray.length; u++) {
+      vNodeArray[u].y = y
+      y = y + ySpace
+    }
+
+    ;(function Recurse(root) {
+      if (root.children.length > 0) {
+        root.y =
+          (root.children[0].y + root.children[root.children.length - 1].y) / 2
+
+        for (var i = 0; i < root.children.length; i++) {
+          var childNode = root.children[i]
+          childNode.x = root.x + xSpace
+
+          Recurse(childNode)
+        }
+      }
+    })(rootNode)
+  }
+}
+
+StructurePane.prototype.RePositionTreeMA = function(xSpace, ySpace) {
+  if (this.structureTreeRoot != null) {
+    var uiNodes = []
+    var rootNode = this.structureTreeRoot
+    uiNodes.push(rootNode)
+
+    var baseX = rootNode.x
+    ;(function Recurse(parentNodes) {
+      var uiNodes = []
+      for (var i = 0; i < parentNodes.length; i++) {
+        uiNodes = uiNodes.concat(parentNodes[i].children)
+      }
+
+      if (uiNodes.length > 0) {
+        baseX = baseX + xSpace
+        var y = rootNode.y - ((uiNodes.length - 1) * ySpace) / 2
+        for (var u = 0; u < uiNodes.length; u++) {
+          uiNodes[u].x = baseX
+          uiNodes[u].y = y
+          y = y + ySpace
+        }
+
+        Recurse(uiNodes)
+      }
+    })(uiNodes)
+  }
+}
+
 StructurePane.prototype.toJSONString = function() {
   return FMEAObjectToJSONString(this)
 }
@@ -1151,6 +1242,7 @@ function CheckObjectValueType(objectValue, objectType) {
       objectType
   }
 }
+
 ////////////////////////////////////////////////////////////////更改
 StructurePane.prototype.GetStructureFunctionDepTree = function(
   structureNodeId,
@@ -1275,6 +1367,7 @@ StructurePane.prototype.GetFunctionFailureDepTree = function(
 
     for (var i = 0, length = asParentFs.length; i < length; i++) {
       var depFailure = asParentFs[i]
+      console.log(depFailure)
       var r = {}
       r.Id = depFailure.id
       r.Name = depFailure.name
@@ -1282,6 +1375,7 @@ StructurePane.prototype.GetFunctionFailureDepTree = function(
       r.functionId = depFailure.functionId
       r.children = []
       r.side = 'right'
+      // r.shape='custom-node'
       r.label = depFailure.name
       childs.push(r)
 
@@ -1303,6 +1397,58 @@ StructurePane.prototype.SetStructureTreeRootById = function(structureNodeId) {
   } else {
     throw 'Not found the root node in the StructurePane!'
   }
+}
+const RePositionTree = function(jsonTree, xSpace, ySpace) {
+  var rootNodes = jsonTree.nodes.filter(node => {
+    return node.shape == 'square'
+  })
+  if (rootNodes.length == 0) {
+    return jsonTree
+  }
+
+  var rootBaseX = rootNodes[0].x
+  var rootBaseY = rootNodes[0].y
+  for (var i = 0; i < rootNodes.length; i++) {
+    var rootNode = rootNodes[i]
+    rootNode.x = rootBaseX
+    rootNode.y = rootBaseY
+    var uiNodessInSameLayer = []
+    uiNodessInSameLayer.push(rootNode)
+
+    ;(function Recurse(parentNodes) {
+      var uiNodes = []
+      for (var i = 0; i < parentNodes.length; i++) {
+        var edges = jsonTree.edges.filter(edge => {
+          return edge.source === parentNodes[i].id
+        })
+        for (var j = 0; j < edges.length; j++) {
+          var childNode = jsonTree.nodes.find(node => {
+            return node.id == edges[j].target
+          })
+          if (childNode != undefined) {
+            uiNodes.push(childNode)
+          }
+        }
+      }
+
+      if (uiNodes.length > 0) {
+        var x = rootBaseX - ((uiNodes.length - 1) * xSpace) / 2
+        rootBaseY = rootBaseY + ySpace
+
+        for (var u = 0; u < uiNodes.length; u++) {
+          uiNodes[u].x = x
+          uiNodes[u].y = rootBaseY
+          x = x + xSpace
+        }
+
+        Recurse(uiNodes)
+      }
+    })(uiNodessInSameLayer)
+
+    rootBaseY = rootBaseY + ySpace
+  }
+
+  return jsonTree
 }
 export {
   StructurePane,
