@@ -1,6 +1,6 @@
 import React from 'react'
 import { connect } from 'dva'
-import { Card, Form, Input, Checkbox, Switch } from 'antd'
+import { Card, Form, Input, Checkbox, InputNumber } from 'antd'
 import { withPropsAPI } from 'gg-editor'
 import styles from './index.less'
 
@@ -58,7 +58,12 @@ class FailDetail extends React.Component {
           >
             {getFieldDecorator('O', {
               initialValue: FMEA.selectedFail.oValue,
-            })(<Input onBlur={this.handleSubmit} />)}
+            })(
+              <InputNumber
+                onBlur={this.handleSubmit}
+                style={{ width: '100%' }}
+              />
+            )}
           </Item>
           <Item
             label="D"
@@ -67,7 +72,12 @@ class FailDetail extends React.Component {
           >
             {getFieldDecorator('D', {
               initialValue: FMEA.selectedFail.dValue,
-            })(<Input onBlur={this.handleSubmit} />)}
+            })(
+              <InputNumber
+                onBlur={this.handleSubmit}
+                style={{ width: '100%' }}
+              />
+            )}
           </Item>
           <Item
             label="λ"
@@ -76,7 +86,12 @@ class FailDetail extends React.Component {
           >
             {getFieldDecorator('λ', {
               initialValue: FMEA.selectedFail.lambdaValue,
-            })(<Input onBlur={this.handleSubmit} />)}
+            })(
+              <InputNumber
+                onBlur={this.handleSubmit}
+                style={{ width: '100%' }}
+              />
+            )}
           </Item>
           <Item
             label="S"
@@ -87,6 +102,7 @@ class FailDetail extends React.Component {
               initialValue: FMEA.selectedFail.sValue,
             })(
               <Input
+                type="number"
                 addonAfter={
                   <Checkbox
                     checked={this.state.qchecked}

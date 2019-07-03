@@ -197,7 +197,7 @@ class FmeaPage extends React.Component {
     return (
       <div className={styles.structurePage}>
         <Row type="flex">
-          <Col span={18} className={styles.structure}>
+          <Col span={19} className={styles.structure}>
             <StructurePage
               panelAction={e => {
                 this.panelAction(e)
@@ -209,7 +209,7 @@ class FmeaPage extends React.Component {
               {...this.props}
             />
           </Col>
-          <Col span={6} className={styles.set}>
+          <Col span={5} className={styles.set}>
             <TreePage {...this.props} />
           </Col>
         </Row>

@@ -735,7 +735,6 @@ StructurePane.prototype.UpdateFunctionFailureSValue = function(
       if (depFailure.sValue < currentFailure.sValue) {
         depFailure.sValue = currentFailure.sValue
         result.push(depFailure)
-
         recurse(depFailure)
       }
       /*
@@ -744,7 +743,6 @@ StructurePane.prototype.UpdateFunctionFailureSValue = function(
         	{
         		depFailure.sValue = currentFailure.sValue;
         		result.push(depFailure);
-
         		recurse(depFailure);
         	}*/
     }
@@ -1499,7 +1497,7 @@ StructurePane.prototype.UpdateFunctionFailureSValue = function(
   structureNodeId,
   functionId,
   failureId,
-  value
+  sValue
 ) {
   var ffArray = this.AllFunctionFailures()
   var ff = ffArray.find(item => {
@@ -1509,10 +1507,10 @@ StructurePane.prototype.UpdateFunctionFailureSValue = function(
       item.id === failureId
     )
   })
-  ff.sValue = value.S
-  ff.oValue = value.O
-  ff.dValue = value.D
-  ff.lambdaValue = value.λ
+  ff.sValue = Number(sValue.S)
+  ff.oValue = Number(sValue.O)
+  ff.dValue = Number(sValue.D)
+  ff.lambdaValue = Number(sValue.λ)
   var result = []
   result.push(ff)
 
@@ -1530,7 +1528,7 @@ StructurePane.prototype.UpdateFunctionFailureSValue = function(
 
     for (var i = 0, length = asParentFf.length; i < length; i++) {
       var depFailure = asParentFf[i]
-      if (depFailure.sValue < currentFailure.sValue) {
+      if (Number(depFailure.sValue) < Number(currentFailure.sValue)) {
         depFailure.sValue = currentFailure.sValue
         result.push(depFailure)
 
@@ -1547,7 +1545,6 @@ StructurePane.prototype.UpdateFunctionFailureSValue = function(
         	}*/
     }
   })(ff)
-
   return result
 }
 export {

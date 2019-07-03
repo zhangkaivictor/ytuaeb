@@ -43,6 +43,10 @@ class Perputation extends React.Component {
     } else {
       mapData = {}
     }
+    if (!mapData) {
+      message.info('没有排列的信息')
+      return
+    }
     if (!mapData.nodes) {
       message.error('未找到根节点！')
       return

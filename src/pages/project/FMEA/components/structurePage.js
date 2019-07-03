@@ -34,6 +34,10 @@ class StructurePage extends React.Component {
     console.log(e)
     const { dispatch, FMEA } = this.props
     console.log(FMEA)
+    if (!FMEA.StructurePane) {
+      message.info('没有排列的信息')
+      return
+    }
     if (FMEA.StructurePane.CheckIfRePositionAble != 0) {
       dispatch({ type: 'FMEA/perputation' })
     } else {
@@ -119,6 +123,7 @@ class StructurePage extends React.Component {
               onClick={e => {
                 this.permutation(e)
               }}
+              style={{ marginLeft: '10px' }}
             >
               排列
             </Button>

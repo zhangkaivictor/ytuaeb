@@ -561,7 +561,7 @@ export default modelExtend(pageModel, {
         message.error('未找到根节点！')
         return
       }
-      structurePaneObj.RePositionTree(125, 150)
+      structurePaneObj.RePositionTree(100, 80)
       let nodeData = {
         nodes: [],
         edges: [],
@@ -583,11 +583,11 @@ export default modelExtend(pageModel, {
           style: {
             stroke:
               structure.id == structurePaneObj.structureTreeRoot.id
-                ? 'red'
+                ? '#e83632'
                 : '',
             fill:
               structure.id == structurePaneObj.structureTreeRoot.id
-                ? 'red'
+                ? '#e83632'
                 : '',
           },
         })
@@ -611,7 +611,7 @@ export default modelExtend(pageModel, {
       }
     },
     failAttrSet(state, action) {
-      console.log(state, action)
+      console.log(state)
       let StructurePaneObj = Object.assign(
         Object.create(Object.getPrototypeOf(state.StructurePane)),
         state.StructurePane
@@ -622,7 +622,6 @@ export default modelExtend(pageModel, {
         state.selectedFail.id,
         action.payload
       )
-      console.log(StructurePaneObj)
       return {
         ...state,
         StructurePane: StructurePaneObj,
