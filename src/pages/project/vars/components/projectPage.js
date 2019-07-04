@@ -144,6 +144,7 @@ class ProjectPage extends React.Component {
           }
         : null
       let isAdmin = sessionStorage.getItem('isAdmin')
+      console.log(this.props)
       const templateProps = {
         ...templateFile,
         operateAccess: isAdmin == 'Administrator' ? true : false,

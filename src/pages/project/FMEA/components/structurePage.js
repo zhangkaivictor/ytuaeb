@@ -7,6 +7,7 @@ import { FlowItemPanel } from '../components/EditorItemPanel'
 import styles from './structurePage.less'
 import { Button } from 'antd'
 import { FMEAObjectToJSONString } from './structure'
+import Full from './full/index'
 
 const guid = () => {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -127,6 +128,7 @@ class StructurePage extends React.Component {
             >
               排列
             </Button>
+            <Full />
           </Col>
           {/* <Redirect to={'/video'} /> */}
           {/* <Col span={4}><Button onClick=this.handleClick(e)>保存</Button></Col> */}
@@ -138,7 +140,7 @@ class StructurePage extends React.Component {
           <Col span={21} className={styles.editorContent}>
             <Flow
               className={styles.flow}
-              style={{ height: 450 }}
+              style={{ height: '100%', minHeight: '500px' }}
               onNodeClick={e => {
                 this.props.nodeClick(e)
               }}

@@ -50,6 +50,7 @@ export default modelExtend(pageModel, {
       }
       let data = null
       //查询原型
+      console.log(payload)
       if (payload.projectId == '1b2cd8ab-6d6c-4a05-931b-e40607bd8b19') {
         data = yield call(
           queryOriginProject,
@@ -227,13 +228,17 @@ export default modelExtend(pageModel, {
           text: 'downloading',
         },
       })
+      console.log(payload)
       const headers = {
         Authorization: window.localStorage.getItem('token'),
       }
       const workProjectId = yield select(state => state.VARS.projectContent.id)
       let inputdata = {}
       inputdata.Id = payload.id
-      inputdata.ProjectId = workProjectId
+      inputdata.ProjectId =
+        workProjectId == 0
+          ? '1b2cd8ab-6d6c-4a05-931b-e40607bd8b19'
+          : workProjectId
       inputdata.TartgetPath = payload.path
       inputdata.Name = payload.name
       inputdata.cmd = 'dowloadFile'
@@ -249,28 +254,34 @@ export default modelExtend(pageModel, {
         if (callback && typeof (callback === 'function')) {
           callback('success')
         }
-        let data = null
-        const workProjectId = yield select(
-          state => state.VARS.projectContent.id
-        )
-        data = yield call(
-          getProjectContent,
-          { projectId: workProjectId },
-          headers
-        )
-        if (data.success) {
-          let node = yield select(state => state.VARS.activeNode)
-          const activeFolder = data.list.projectFiles.subFolders.find(
-            folder => folder.id == node.id
-          )
-          yield put({
-            type: 'selectTreeNode',
-            payload: {
-              ...node,
-              files: activeFolder.files,
-            },
-          })
-        }
+        // let data = null
+        // const workProjectId = yield select(
+        //   state => state.VARS.projectContent.id
+        // )
+        // data = yield call(
+        //   getProjectContent,
+        //   { projectId: '1b2cd8ab-6d6c-4a05-931b-e40607bd8b19' },
+        //   headers
+        // )
+        // yield put({
+        //   type: 'projectContent',
+        //   payload: {
+        //     list: data.list,
+        //   },
+        // })
+        // if (data.success) {
+        // let node = yield select(state => state.VARS.activeNode)
+        // const activeFolder = data.list.projectFiles.subFolders.find(
+        //   folder => folder.id == node.id
+        // )
+        // yield put({
+        //   type: 'selectTreeNode',
+        //   payload: {
+        //     ...node,
+        //     files: activeFolder.files,
+        //   },
+        // })
+        // }
       } else {
         if (callback && typeof (callback === 'function')) {
           callback('fail')
@@ -341,6 +352,7 @@ export default modelExtend(pageModel, {
       return {
         ...state,
         projectContent: payload.list,
+        activeNode: null,
       }
     },
     selectTreeNode(state, { payload }) {
@@ -366,6 +378,7 @@ export default modelExtend(pageModel, {
   },
 })
 const downloadPrjectFile = (inputdata, token) => {
+  console.log(inputdata)
   return new Promise((resolve, reject) => {
     var xhr = new XMLHttpRequest()
     xhr.open('POST', apiPrefix + '/api/ProjectFiles/Update', true)

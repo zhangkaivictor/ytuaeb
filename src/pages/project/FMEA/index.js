@@ -195,8 +195,8 @@ class FmeaPage extends React.Component {
     }
     getViewData()
     return (
-      <div className={styles.structurePage}>
-        <Row type="flex">
+      <div className={styles.structurePage} id="ggFMEA">
+        <Row type="flex" className={styles.editPanel}>
           <Col span={19} className={styles.structure}>
             <StructurePage
               panelAction={e => {
@@ -213,11 +213,11 @@ class FmeaPage extends React.Component {
             <TreePage {...this.props} />
           </Col>
         </Row>
-        <Row>
-          <ViewPage {...this.props} />
+        <Row className={styles.viewPanel}>
+          {this.props.FMEA.StructurePane && <ViewPage {...this.props} />}
         </Row>
         {createModalVisible && <AddModal {...modalProps} />}
-        <DependEditModal />
+        {/* <DependEditModal /> */}
       </div>
     )
   }

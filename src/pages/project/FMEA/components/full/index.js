@@ -24,7 +24,10 @@ class Full extends React.Component {
   //进入全屏
   requestFullScreen = () => {
     console.log('requestFullScreen')
-    var de = document.documentElement
+    // var de = document.documentElement
+    var de = document.getElementById('ggFMEA')
+    console.log(de)
+    // console.log(ggFMEA)
     if (de.requestFullscreen) {
       de.requestFullscreen()
     } else if (de.mozRequestFullScreen) {
@@ -82,7 +85,7 @@ class Full extends React.Component {
   render() {
     const { isFullScreen } = this.state
     return (
-      <Button onClick={this.fullScreen}>
+      <Button onClick={this.fullScreen} style={{ marginLeft: '10px' }}>
         {isFullScreen ? '退出全屏' : '全屏'}
       </Button>
     )

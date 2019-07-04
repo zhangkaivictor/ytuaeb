@@ -17,7 +17,6 @@ const inlineFormItemLayout = {
 class FailDetail extends React.Component {
   constructor(props) {
     super(props)
-    console.log(props)
     this.state = {
       qchecked: false,
     }
@@ -26,12 +25,10 @@ class FailDetail extends React.Component {
   componentWillMount() {}
 
   handleSubmit = e => {
-    console.log(e)
     const { form, dispatch } = this.props
     e.preventDefault()
     form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values)
         dispatch({ type: 'FMEA/failAttrSet', payload: values })
       }
     })
