@@ -170,6 +170,13 @@ class ProjectPage extends React.Component {
         )
         userPrivilege = projectUser.privilege
       }
+      //添加原型项目控制
+      if (
+        this.props.VARS.projectContent.id ==
+        '1b2cd8ab-6d6c-4a05-931b-e40607bd8b19'
+      ) {
+        userPrivilege = 0
+      }
       const projectProps = {
         ...projectFile,
         operateAccess: userPrivilege == 1 ? true : false,

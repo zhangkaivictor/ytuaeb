@@ -1,5 +1,5 @@
 import React from 'react'
-import { Upload, Button, Icon, Select, Row, Col } from 'antd'
+import { Form, Upload, Button, Icon, Select, Row, Col } from 'antd'
 // import reqwest from 'reqwest';
 const { Option } = Select
 const children = []
@@ -22,6 +22,7 @@ class UploadCon extends React.Component {
     fileList: [],
     uploading: false,
     level: [],
+    defaultLevel: [],
   }
 
   handleUpload = async () => {
@@ -36,19 +37,23 @@ class UploadCon extends React.Component {
         if (res == 'success') {
           this.setState({
             fileList: [],
+            defaultLevel: [],
             uploading: false,
           })
         } else {
           this.setState({
             uploading: false,
+            defaultLevel: [],
           })
         }
       },
     })
   }
   handleChange(value) {
+    console.log(value)
     this.setState({
       level: value.join('|'),
+      defaultLevel: value,
     })
   }
   render() {
@@ -97,6 +102,7 @@ class UploadCon extends React.Component {
           <Col span={8}>
             <Select
               mode="multiple"
+              value={this.state.defaultLevel}
               disabled={fileList.length === 0}
               style={{ width: '100%' }}
               placeholder="Please select"

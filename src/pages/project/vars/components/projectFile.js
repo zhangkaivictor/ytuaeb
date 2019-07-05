@@ -28,6 +28,36 @@ class ProjectPage extends React.Component {
         render: text => <span>{parseInt(text / 1024) + 'K'}</span>,
       },
       {
+        title: '等级',
+        dataIndex: 'level',
+        key: 'level',
+        filters: [
+          {
+            text: 'Level0',
+            value: 0,
+          },
+          {
+            text: 'Level1',
+            value: 1,
+          },
+          {
+            text: 'Level2',
+            value: 2,
+          },
+          {
+            text: 'Level4',
+            value: 4,
+          },
+          {
+            text: 'Level5',
+            value: 5,
+          },
+        ],
+        // specify the condition of filtering result
+        // here is that finding the name started with `value`
+        onFilter: (value, record) => record.level === value,
+      },
+      {
         title: '操作',
         key: 'action',
         render: (text, record) => (

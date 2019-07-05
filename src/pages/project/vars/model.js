@@ -66,6 +66,7 @@ export default modelExtend(pageModel, {
       }
       if (data.success) {
         if (data.list.id == 0) {
+          data.list.id = '1b2cd8ab-6d6c-4a05-931b-e40607bd8b19'
           data.list.projectFiles = Object.assign(
             {},
             { subFolders: data.list.subFolders }
@@ -93,6 +94,16 @@ export default modelExtend(pageModel, {
           payload: {
             list: data.list,
           },
+        })
+        yield put({
+          type: 'projectContent',
+          payload: {
+            list: data.list,
+          },
+        })
+        yield put({
+          type: 'selectTreeNode',
+          payload: null,
         })
       }
     },
@@ -197,12 +208,56 @@ export default modelExtend(pageModel, {
         if (callback && typeof (callback === 'function')) {
           callback('success')
         }
-        data = yield call(
-          getProjectContent,
-          { projectId: workProjectId },
-          headers
-        )
+        if (workProjectId == '1b2cd8ab-6d6c-4a05-931b-e40607bd8b19') {
+          data = yield call(
+            queryOriginProject,
+            {
+              projectId: '1b2cd8ab-6d6c-4a05-931b-e40607bd8b19',
+              path: 'Root',
+              searchOption: 1,
+            },
+            headers
+          )
+        } else {
+          data = yield call(
+            getProjectContent,
+            { projectId: workProjectId },
+            headers
+          )
+        }
         if (data.success) {
+          console.log(data)
+          if (data.list.id == 0) {
+            data.list.id = '1b2cd8ab-6d6c-4a05-931b-e40607bd8b19'
+            data.list.projectFiles = Object.assign(
+              {},
+              { subFolders: data.list.subFolders }
+            )
+          } else {
+            data.list.projectFiles.subFolders = data.list.projectFiles.subFolders.concat(
+              [
+                {
+                  name: 'FMEA',
+                  id: 'fmea',
+                  // fils:data.list.fmeaProjects,
+                  subFolders: [],
+                },
+                {
+                  name: 'FTA',
+                  id: 'fta',
+                  // fils:data.list.ftaProjects,
+                  subFolders: [],
+                },
+              ]
+            )
+          }
+          yield put({
+            type: 'projectContent',
+            payload: {
+              list: data.list,
+            },
+          })
+          let node = yield select(state => state.VARS.activeNode)
           const activeFolder = data.list.projectFiles.subFolders.find(
             folder => folder.id == node.id
           )
@@ -228,17 +283,16 @@ export default modelExtend(pageModel, {
           text: 'downloading',
         },
       })
-      console.log(payload)
       const headers = {
         Authorization: window.localStorage.getItem('token'),
       }
       const workProjectId = yield select(state => state.VARS.projectContent.id)
       let inputdata = {}
       inputdata.Id = payload.id
-      inputdata.ProjectId =
-        workProjectId == 0
-          ? '1b2cd8ab-6d6c-4a05-931b-e40607bd8b19'
-          : workProjectId
+      inputdata.ProjectId = workProjectId
+      // workProjectId == 0
+      //   ? '1b2cd8ab-6d6c-4a05-931b-e40607bd8b19'
+      //   : workProjectId
       inputdata.TartgetPath = payload.path
       inputdata.Name = payload.name
       inputdata.cmd = 'dowloadFile'
@@ -254,34 +308,6 @@ export default modelExtend(pageModel, {
         if (callback && typeof (callback === 'function')) {
           callback('success')
         }
-        // let data = null
-        // const workProjectId = yield select(
-        //   state => state.VARS.projectContent.id
-        // )
-        // data = yield call(
-        //   getProjectContent,
-        //   { projectId: '1b2cd8ab-6d6c-4a05-931b-e40607bd8b19' },
-        //   headers
-        // )
-        // yield put({
-        //   type: 'projectContent',
-        //   payload: {
-        //     list: data.list,
-        //   },
-        // })
-        // if (data.success) {
-        // let node = yield select(state => state.VARS.activeNode)
-        // const activeFolder = data.list.projectFiles.subFolders.find(
-        //   folder => folder.id == node.id
-        // )
-        // yield put({
-        //   type: 'selectTreeNode',
-        //   payload: {
-        //     ...node,
-        //     files: activeFolder.files,
-        //   },
-        // })
-        // }
       } else {
         if (callback && typeof (callback === 'function')) {
           callback('fail')
@@ -322,12 +348,55 @@ export default modelExtend(pageModel, {
         const workProjectId = yield select(
           state => state.VARS.projectContent.id
         )
-        data = yield call(
-          getProjectContent,
-          { projectId: workProjectId },
-          headers
-        )
+        if (workProjectId == '1b2cd8ab-6d6c-4a05-931b-e40607bd8b19') {
+          data = yield call(
+            queryOriginProject,
+            {
+              projectId: '1b2cd8ab-6d6c-4a05-931b-e40607bd8b19',
+              path: 'Root',
+              searchOption: 1,
+            },
+            headers
+          )
+        } else {
+          data = yield call(
+            getProjectContent,
+            { projectId: workProjectId },
+            headers
+          )
+        }
         if (data.success) {
+          console.log(data)
+          if (data.list.id == 0) {
+            data.list.id = '1b2cd8ab-6d6c-4a05-931b-e40607bd8b19'
+            data.list.projectFiles = Object.assign(
+              {},
+              { subFolders: data.list.subFolders }
+            )
+          } else {
+            data.list.projectFiles.subFolders = data.list.projectFiles.subFolders.concat(
+              [
+                {
+                  name: 'FMEA',
+                  id: 'fmea',
+                  // fils:data.list.fmeaProjects,
+                  subFolders: [],
+                },
+                {
+                  name: 'FTA',
+                  id: 'fta',
+                  // fils:data.list.ftaProjects,
+                  subFolders: [],
+                },
+              ]
+            )
+          }
+          yield put({
+            type: 'projectContent',
+            payload: {
+              list: data.list,
+            },
+          })
           let node = yield select(state => state.VARS.activeNode)
           const activeFolder = data.list.projectFiles.subFolders.find(
             folder => folder.id == node.id
@@ -352,7 +421,6 @@ export default modelExtend(pageModel, {
       return {
         ...state,
         projectContent: payload.list,
-        activeNode: null,
       }
     },
     selectTreeNode(state, { payload }) {
