@@ -73,6 +73,7 @@ export default modelExtend(pageModel, {
         Authorization: window.localStorage.getItem('token'),
       }
       const data = yield call(getFmeaData, payload, headers)
+      console.log(data)
       if (data.success) {
         yield put({
           type: 'queryFmeaSuccess',
@@ -97,6 +98,7 @@ export default modelExtend(pageModel, {
         }
       }
       let structurePaneObj = ConvertJsonToStructurePane(payload.list)
+      console.log(structurePaneObj)
       let nodeData = {
         nodes: [],
         edges: [],
@@ -107,6 +109,7 @@ export default modelExtend(pageModel, {
           size: '70*70',
           shape: structure.shape,
           root:
+            structurePaneObj.structureTreeRoot &&
             structure.id == structurePaneObj.structureTreeRoot.id
               ? true
               : false,
@@ -117,10 +120,12 @@ export default modelExtend(pageModel, {
           structureId: structure.id,
           style: {
             stroke:
+              structurePaneObj.structureTreeRoot &&
               structure.id == structurePaneObj.structureTreeRoot.id
                 ? 'red'
                 : '',
             fill:
+              structurePaneObj.structureTreeRoot &&
               structure.id == structurePaneObj.structureTreeRoot.id
                 ? 'red'
                 : '',

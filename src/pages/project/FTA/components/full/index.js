@@ -23,8 +23,9 @@ class Full extends React.Component {
 
   //进入全屏
   requestFullScreen = () => {
-    console.log('requestFullScreen')
-    var de = document.documentElement
+    // var de = document.documentElement
+    var de = document.getElementById('ggFTA')
+    // console.log(ggFMEA)
     if (de.requestFullscreen) {
       de.requestFullscreen()
     } else if (de.mozRequestFullScreen) {

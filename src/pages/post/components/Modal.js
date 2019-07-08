@@ -78,11 +78,6 @@ const arrDup = (bigArr, arr1, arr2) => {
   return newBigArr
 }
 const { Option } = Select
-const children = []
-for (let i = 0; i < 10; i++) {
-  let v = Math.pow(2, i)
-  children.push(<Option key={v}>{`Level${i}`}</Option>)
-}
 
 function handleChange(value) {}
 @withI18n()
@@ -106,6 +101,7 @@ class UserModal extends PureComponent {
       if (this.props.title == '创建项目') {
         if (this.props.start == '1') {
           data.type = 'WorkProject'
+          data.level = Number(data.level)
         } else if (this.props.start == '2') {
           data.type = 'FMEAProject'
         } else {
@@ -115,6 +111,7 @@ class UserModal extends PureComponent {
       } else {
         if (this.props.start == '1') {
           data.type = 'WorkProject'
+          data.level = Number(data.level)
         } else if (this.props.start == '2') {
           data.type = 'FMEAProject'
         } else {
@@ -129,6 +126,17 @@ class UserModal extends PureComponent {
   }
 
   render() {
+    //下拉level
+    const children = []
+    let dictionary = JSON.parse(sessionStorage.getItem('dictionary'))
+      ? JSON.parse(sessionStorage.getItem('dictionary'))
+      : []
+    console.log(dictionary)
+    for (let i = 0; i < dictionary.length; i++) {
+      children.push(
+        <Option key={dictionary[i].dictValue}>{dictionary[i].dictName}</Option>
+      )
+    }
     const {
       item = {},
       onOk,
@@ -142,6 +150,7 @@ class UserModal extends PureComponent {
     const owner = window.localStorage.getItem('username')
     let userList
     let usersPrivileges = item.usersPrivileges
+    console.log(item)
     if (modalProps.title == '创建项目') {
       const addRemoveProps = {
         options: usersListFn(userNameList, owner),
@@ -270,6 +279,25 @@ class UserModal extends PureComponent {
               ],
             })(<Input disabled />)}
           </FormItem>
+          {this.props.start == 1 && (
+            <Form.Item label="Level" {...formItemLayout}>
+              {getFieldDecorator('level', {
+                initialValue: String(item.level),
+                rules: [
+                  { required: true, message: 'Please select project level!' },
+                ],
+              })(
+                <Select
+                  style={{ width: '100%' }}
+                  placeholder="Please select"
+                  onChange={handleChange}
+                  disabled
+                >
+                  {children}
+                </Select>
+              )}
+            </Form.Item>
+          )}
           <FormItem label={'创建时间'} hasFeedback {...formItemLayout}>
             {getFieldDecorator('createdTime', {
               initialValue: item.createdTime,

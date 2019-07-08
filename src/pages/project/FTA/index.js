@@ -91,40 +91,42 @@ class FlowPage extends React.Component {
       isHideScreen: this.state.isHideScreen,
     }
     return (
-      <GGEditor className={styles.editor}>
-        <Row type="flex" className={styles.editorHd}>
-          <Col span={24}>
-            <FlowToolbar />
-            <div className={styles.full}>
-              <Full />
-              <Button onClick={this.handlehideClick}>
-                {this.state.isHideScreen ? '隐藏注释' : '显示注释'}
-              </Button>
-            </div>
-            <div className={styles.perputation}>
-              <Perputation {...this.props} />
-            </div>
-            <div className={styles.save}>
-              <Save {...mapProps} />
-              <Analysis {...analysisProps} />
-              <Button onClick={this.onAnalysis}>结果</Button>
-            </div>
-          </Col>
-        </Row>
-        <Row type="flex" className={styles.editorBd}>
-          <Col span={2} className={styles.editorSidebar}>
-            <EditorItemPanel {...editorItemProps} />
-          </Col>
-          <Col span={18} className={styles.editorContent}>
-            <FlowMap {...flowMapProps} />
-          </Col>
-          <Col span={4} className={styles.editorSidebar}>
-            <FlowDetailPanel {...flowDetailProps} />
-            <EditorMinimap />
-          </Col>
-        </Row>
-        <FlowContextMenu />
-      </GGEditor>
+      <div id="ggFTA" className={styles.bgf}>
+        <GGEditor className={styles.editor}>
+          <Row type="flex" className={styles.editorHd}>
+            <Col span={24}>
+              <FlowToolbar />
+              <div className={styles.full}>
+                <Full />
+                <Button onClick={this.handlehideClick}>
+                  {this.state.isHideScreen ? '隐藏注释' : '显示注释'}
+                </Button>
+              </div>
+              <div className={styles.perputation}>
+                <Perputation {...this.props} />
+              </div>
+              <div className={styles.save}>
+                <Save {...mapProps} />
+                <Analysis {...analysisProps} />
+                <Button onClick={this.onAnalysis}>结果</Button>
+              </div>
+            </Col>
+          </Row>
+          <Row type="flex" className={styles.editorBd}>
+            <Col span={2} className={styles.editorSidebar}>
+              <EditorItemPanel {...editorItemProps} />
+            </Col>
+            <Col span={18} className={styles.editorContent}>
+              <FlowMap {...flowMapProps} />
+            </Col>
+            <Col span={4} className={styles.editorSidebar}>
+              <FlowDetailPanel {...flowDetailProps} />
+              <EditorMinimap />
+            </Col>
+          </Row>
+          <FlowContextMenu />
+        </GGEditor>
+      </div>
     )
   }
 }

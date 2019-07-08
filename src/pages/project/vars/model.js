@@ -123,6 +123,22 @@ export default modelExtend(pageModel, {
       }
       if (data.success) {
         message.success('绑定成功')
+        data.list.projectFiles.subFolders = data.list.projectFiles.subFolders.concat(
+          [
+            {
+              name: 'FMEA',
+              id: 'fmea',
+              // fils:data.list.fmeaProjects,
+              subFolders: [],
+            },
+            {
+              name: 'FTA',
+              id: 'fta',
+              // fils:data.list.ftaProjects,
+              subFolders: [],
+            },
+          ]
+        )
         yield put({
           type: 'projectContent',
           payload: {
@@ -155,6 +171,22 @@ export default modelExtend(pageModel, {
       const data = yield call(unLinkProject, dd, headers)
       if (data.success) {
         message.success('解绑成功')
+        data.list.projectFiles.subFolders = data.list.projectFiles.subFolders.concat(
+          [
+            {
+              name: 'FMEA',
+              id: 'fmea',
+              // fils:data.list.fmeaProjects,
+              subFolders: [],
+            },
+            {
+              name: 'FTA',
+              id: 'fta',
+              // fils:data.list.ftaProjects,
+              subFolders: [],
+            },
+          ]
+        )
         yield put({
           type: 'projectContent',
           payload: {

@@ -15,6 +15,7 @@ export const pageModel = modelExtend(model, {
   state: {
     list: [],
     projectLists: [],
+    dictionary: [],
     pagination: {
       showSizeChanger: true,
       showQuickJumper: true,

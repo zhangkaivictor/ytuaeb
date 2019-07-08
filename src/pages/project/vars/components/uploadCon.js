@@ -2,11 +2,6 @@ import React from 'react'
 import { Form, Upload, Button, Icon, Select, Row, Col } from 'antd'
 // import reqwest from 'reqwest';
 const { Option } = Select
-const children = []
-for (let i = 0; i < 10; i++) {
-  let v = Math.pow(2, i)
-  children.push(<Option key={v}>{`Level${i}`}</Option>)
-}
 // function handleChange(value) {
 //   console.log(`selected ${value}`);
 //   console.log(value.join('|'));
@@ -50,13 +45,23 @@ class UploadCon extends React.Component {
     })
   }
   handleChange(value) {
-    console.log(value)
+    let formatLevel = value.map(v => Number(v))
     this.setState({
-      level: value.join('|'),
+      level: `${JSON.stringify(formatLevel)}`,
       defaultLevel: value,
     })
   }
   render() {
+    //下拉level
+    const children = []
+    let dictionary = JSON.parse(sessionStorage.getItem('dictionary'))
+      ? JSON.parse(sessionStorage.getItem('dictionary'))
+      : []
+    for (let i = 0; i < dictionary.length; i++) {
+      children.push(
+        <Option key={dictionary[i].dictValue}>{dictionary[i].dictName}</Option>
+      )
+    }
     const { uploading, fileList } = this.state
     const props = {
       onRemove: file => {

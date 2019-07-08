@@ -39,6 +39,7 @@ class SiderMenu extends PureComponent {
   }
 
   generateMenus = data => {
+    console.log(data)
     return data.map(item => {
       if (item.children) {
         return (
@@ -59,9 +60,7 @@ class SiderMenu extends PureComponent {
         <Menu.Item key={item.id}>
           <Navlink to={addLangPrefix(item.route) || '#'}>
             {item.icon && <Icon type={item.icon} />}
-            <span>
-              {item.name}
-            </span>
+            <span>{item.name}</span>
           </Navlink>
         </Menu.Item>
       )
@@ -87,10 +86,9 @@ class SiderMenu extends PureComponent {
     )
 
     // Find the key that should be selected according to the current menu.
-    const selectedKeys = currentMenu
+    let selectedKeys = currentMenu
       ? queryAncestors(menus, currentMenu, 'menuParentId').map(_ => _.id)
       : []
-
     return (
       <Menu
         mode="inline"
@@ -98,7 +96,6 @@ class SiderMenu extends PureComponent {
         onOpenChange={this.onOpenChange}
         openKeys={this.state.openKeys}
         inlineCollapsed={collapsed}
-        selectedKeys={selectedKeys}
         onClick={
           isMobile
             ? () => {

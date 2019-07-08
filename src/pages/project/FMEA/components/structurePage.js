@@ -32,9 +32,7 @@ class StructurePage extends React.Component {
     }
   }
   permutation(e) {
-    console.log(e)
     const { dispatch, FMEA } = this.props
-    console.log(FMEA)
     if (!FMEA.StructurePane) {
       message.info('没有排列的信息')
       return
@@ -42,7 +40,6 @@ class StructurePage extends React.Component {
     if (FMEA.StructurePane.CheckIfRePositionAble != 0) {
       dispatch({ type: 'FMEA/perputation' })
     } else {
-      console.log(FMEA.StructurePane.CheckIfRePositionAble)
     }
   }
   nodeDrag(e) {

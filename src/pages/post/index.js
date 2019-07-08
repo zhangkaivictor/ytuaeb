@@ -87,6 +87,7 @@ class Post extends PureComponent {
       wrapClassName: 'vertical-center-modal',
       userData: list,
       userNameList: userList,
+      level: this.props.dic,
       onOk(data) {
         dispatch({
           type: `post/${modalType}`,

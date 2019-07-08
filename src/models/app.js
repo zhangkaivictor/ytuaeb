@@ -5,7 +5,7 @@ import { stringify } from 'qs'
 import store from 'store'
 import { queryLayout, pathMatchRegexp } from 'utils'
 import { CANCEL_REQUEST_MESSAGE } from 'utils/constant'
-import { logoutUser, loginUser, queryPostList } from 'api'
+import { logoutUser, loginUser, queryPostList, queryDic } from 'api'
 import config from 'config'
 import { deLangPrefix } from 'utils'
 // import $ from 'jquery'
@@ -135,7 +135,9 @@ export default {
     },
 
     setup({ dispatch }) {
-      dispatch({ type: 'query' })
+      dispatch({ type: 'query' }).then(() => {
+        dispatch({ type: 'queryDic' })
+      })
     },
   },
   effects: {
@@ -308,7 +310,6 @@ export default {
         }
       }
     },
-
     *signOut({ payload }, { call, put }) {
       yield put({
         type: 'updateState',
@@ -331,6 +332,19 @@ export default {
         router.push({
           pathname: '/login',
         })
+      }
+    },
+    *queryDic({ payload }, { call, put }) {
+      let data = {
+        groupName: 'projectFileLevel',
+      }
+      const headers = {
+        Authorization: window.localStorage.getItem('token'),
+      }
+      const dic = yield call(queryDic, data, headers)
+      if (dic.success) {
+        // yield put({type:'dic',payload:dic.list})
+        sessionStorage.setItem('dictionary', JSON.stringify(dic.list))
       }
     },
   },
@@ -356,7 +370,15 @@ export default {
       state.notifications = []
     },
     projectLists(state, { payload }) {
+      console.log(state.projectLists)
       state.projectLists = payload
+    },
+    dic(state, { payload }) {
+      console.log(state, payload)
+      state.dictionary = payload
+      // return{
+      //   ...state,dic:payload
+      // }
     },
   },
 }

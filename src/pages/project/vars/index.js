@@ -15,7 +15,7 @@ class WorkProPage extends React.Component {
       if (this.props.VARS.projectContent != null) {
         return (
           <Col span={5} className={styles.tree}>
-            <div>工程项目目录树</div>
+            <div>{this.props.VARS.projectContent.name}</div>
             <ContentTree {...this.props} />
           </Col>
         )

@@ -136,6 +136,13 @@ class ProjectPage extends React.Component {
         </div>
       )
     } else {
+      let original = false
+      if (
+        this.props.VARS.projectContent.id ==
+        '1b2cd8ab-6d6c-4a05-931b-e40607bd8b19'
+      ) {
+        original = true
+      }
       let templateFile = this.props.VARS.activeNode
         ? {
             files: this.props.VARS.activeNode.files.filter(
@@ -147,7 +154,8 @@ class ProjectPage extends React.Component {
       console.log(this.props)
       const templateProps = {
         ...templateFile,
-        operateAccess: isAdmin == 'Administrator' ? true : false,
+        privilege: 0,
+        operateAccess: isAdmin == 'Administrator' && original ? true : false,
         download: a => {
           this.props.dispatch({ type: 'VARS/download', payload: a })
         },
@@ -168,7 +176,9 @@ class ProjectPage extends React.Component {
         let projectUser = this.props.VARS.projectContent.usersPrivileges.find(
           u => u.emailAddress == user
         )
-        userPrivilege = projectUser.privilege
+        userPrivilege = projectUser ? projectUser.privilege : 2
+      } else {
+        userPrivilege = 2
       }
       //添加原型项目控制
       if (
@@ -177,9 +187,11 @@ class ProjectPage extends React.Component {
       ) {
         userPrivilege = 0
       }
+      console.log(userPrivilege)
       const projectProps = {
         ...projectFile,
-        operateAccess: userPrivilege == 1 ? true : false,
+        privilege: 1,
+        operateAccess: userPrivilege == 2 ? true : false,
         download: a => {
           this.props.dispatch({ type: 'VARS/download', payload: a })
         },
@@ -195,9 +207,7 @@ class ProjectPage extends React.Component {
               模板文件列表
             </Col>
             <Col span={10}>
-              {isAdmin == 'Administrator' && (
-                <UploadCon {...this.props} level={true} />
-              )}
+              {original && <UploadCon {...this.props} level={true} />}
             </Col>
             <Col span={24} className={styles.table}>
               {templateFile != null && <ProjectFile {...templateProps} />}
