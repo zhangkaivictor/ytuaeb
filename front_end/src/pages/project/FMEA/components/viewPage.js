@@ -1,6 +1,7 @@
 import React from 'react'
-import GGEditor, { Mind, withPropsAPI, RegisterNode } from 'gg-editor'
+import GGEditor, { Mind, withPropsAPI, Command, NodeMenu, RegisterNode } from 'gg-editor'
 import CustomNode from './shape/nodes/customNode'
+import ContextMenu from './EditorContextMenu/MindContextMenu'
 import { Col } from 'antd'
 import styles from './viewPage.less'
 
@@ -26,24 +27,24 @@ class ViewPage extends React.Component {
         )
         viewData = treeData
           ? {
-              roots: [
-                {
-                  label:
-                    this.props.FMEA.selectedStructure.name +
-                    '--' +
-                    this.props.FMEA.selectedFun.name,
-                  children: this.props.FMEA.StructurePane.GetStructureFunctionDepTree(
+            roots: [
+              {
+                label:
+                  this.props.FMEA.selectedStructure.name +
+                  '--' +
+                  this.props.FMEA.selectedFun.name,
+                children: this.props.FMEA.StructurePane.GetStructureFunctionDepTree(
+                  this.props.FMEA.selectedStructure.id,
+                  this.props.FMEA.selectedFun.id
+                ).leftChilds.concat(
+                  this.props.FMEA.StructurePane.GetStructureFunctionDepTree(
                     this.props.FMEA.selectedStructure.id,
                     this.props.FMEA.selectedFun.id
-                  ).leftChilds.concat(
-                    this.props.FMEA.StructurePane.GetStructureFunctionDepTree(
-                      this.props.FMEA.selectedStructure.id,
-                      this.props.FMEA.selectedFun.id
-                    ).rightChilds
-                  ),
-                },
-              ],
-            }
+                  ).rightChilds
+                ),
+              },
+            ],
+          }
           : null
       } else if (
         this.props.FMEA.actionType == 2 &&
@@ -56,32 +57,32 @@ class ViewPage extends React.Component {
         )
         viewData = treeData
           ? {
-              roots: [
-                {
-                  label:
-                    this.props.FMEA.selectedStructure.name +
-                    '--' +
-                    this.props.FMEA.selectedFun.name +
-                    '--' +
-                    this.props.FMEA.selectedFail.name,
-                  oValue: this.props.FMEA.selectedFail.oValue,
-                  sValue: this.props.FMEA.selectedFail.sValue,
-                  dValue: this.props.FMEA.selectedFail.dValue,
-                  lambdaValue: this.props.FMEA.selectedFail.lambdaValue,
-                  children: this.props.FMEA.StructurePane.GetFunctionFailureDepTree(
+            roots: [
+              {
+                label:
+                  this.props.FMEA.selectedStructure.name +
+                  '--' +
+                  this.props.FMEA.selectedFun.name +
+                  '--' +
+                  this.props.FMEA.selectedFail.name,
+                oValue: this.props.FMEA.selectedFail.oValue,
+                sValue: this.props.FMEA.selectedFail.sValue,
+                dValue: this.props.FMEA.selectedFail.dValue,
+                lambdaValue: this.props.FMEA.selectedFail.lambdaValue,
+                children: this.props.FMEA.StructurePane.GetFunctionFailureDepTree(
+                  this.props.FMEA.selectedStructure.id,
+                  this.props.FMEA.selectedFun.id,
+                  this.props.FMEA.selectedFail.id
+                ).leftChilds.concat(
+                  this.props.FMEA.StructurePane.GetFunctionFailureDepTree(
                     this.props.FMEA.selectedStructure.id,
                     this.props.FMEA.selectedFun.id,
                     this.props.FMEA.selectedFail.id
-                  ).leftChilds.concat(
-                    this.props.FMEA.StructurePane.GetFunctionFailureDepTree(
-                      this.props.FMEA.selectedStructure.id,
-                      this.props.FMEA.selectedFun.id,
-                      this.props.FMEA.selectedFail.id
-                    ).rightChilds
-                  ),
-                },
-              ],
-            }
+                  ).rightChilds
+                ),
+              },
+            ],
+          }
           : null
       }
     }
@@ -146,6 +147,7 @@ class ViewPage extends React.Component {
               fifthSubShape="custom-node"
             />
             <CustomNode />
+            <ContextMenu/>
           </GGEditor>
         )}
       </Col>

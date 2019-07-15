@@ -17,6 +17,7 @@ const FlowItemPanel = () => {
             const x = -width / 2
             const y = -height / 2
             const borderRadius = 4
+            const label = group.findByClass('label')
             const keyShape = group.addShape('rect', {
               attrs: {
                 x,
@@ -35,6 +36,15 @@ const FlowItemPanel = () => {
                 y,
                 width,
                 height,
+              },
+            })
+            group.addShape('text', {
+              attrs: {
+                x: 0,
+                y: 40,
+                textAlign: 'center',
+                text: model.label,
+                fill: '#444',
               },
             })
             return keyShape
@@ -96,6 +106,15 @@ const FlowItemPanel = () => {
                 height,
               },
             })
+            group.addShape('text', {
+              attrs: {
+                x: 0,
+                y: 40,
+                textAlign: 'center',
+                text: model.label,
+                fill: '#444',
+              },
+            })
             return keyShape
           },
           // 设置锚点
@@ -138,6 +157,15 @@ const FlowItemPanel = () => {
                 height,
               },
             })
+            group.addShape('text', {
+              attrs: {
+                x: 0,
+                y: 40,
+                textAlign: 'center',
+                text: model.label,
+                fill: '#444',
+              }
+            })
             return keyShape
           },
           // 设置锚点
@@ -178,6 +206,15 @@ const FlowItemPanel = () => {
                 y,
                 width,
                 height,
+              },
+            })
+            group.addShape('text', {
+              attrs: {
+                x: 0,
+                y: 40,
+                textAlign: 'center',
+                text: model.label,
+                fill: '#444',
               },
             })
             return keyShape
@@ -222,6 +259,15 @@ const FlowItemPanel = () => {
                 height,
               },
             })
+            group.addShape('text', {
+              attrs: {
+                x: 0,
+                y: 40,
+                textAlign: 'center',
+                text: model.label,
+                fill: '#444',
+              },
+            })
             return keyShape
           },
           // 设置锚点
@@ -262,6 +308,15 @@ const FlowItemPanel = () => {
                 y,
                 width,
                 height,
+              },
+            })
+            group.addShape('text', {
+              attrs: {
+                x: 0,
+                y: 40,
+                textAlign: 'center',
+                text: model.label,
+                fill: '#444',
               },
             })
             return keyShape
