@@ -183,6 +183,7 @@ export default modelExtend(pageModel, {
     //添加关系线=》添加子功能
     addEdge(state, { payload }) {
       //禁止指向根节点
+      console.log(payload)
       let canAddEdge = true
       if (
         state.StructurePane.structureTreeRoot &&
@@ -213,6 +214,18 @@ export default modelExtend(pageModel, {
           canAddEdge = false
         }
       })
+
+      //添加关系
+      let parentNode = state.StructurePane.structureNodes.find(
+        node => node.paneId == payload.addModel.source
+      )
+      let childNode = state.StructurePane.structureNodes.find(
+        node => node.paneId == payload.addModel.target
+      )
+      //未指向子节点
+      if (!childNode) {
+        canAddEdge = false
+      }
       if (!canAddEdge) {
         let nodeData = Object.assign(
           Object.create(Object.getPrototypeOf(state.nodeData)),
@@ -223,13 +236,7 @@ export default modelExtend(pageModel, {
           nodeData: nodeData,
         }
       }
-      //添加关系
-      let parentNode = state.StructurePane.structureNodes.find(
-        node => node.paneId == payload.addModel.source
-      )
-      let childNode = state.StructurePane.structureNodes.find(
-        node => node.paneId == payload.addModel.target
-      )
+      console.log(parentNode, childNode)
       if (parentNode && childNode) {
         parentNode.appendChild(childNode)
         return {

@@ -39,7 +39,6 @@ class SiderMenu extends PureComponent {
   }
 
   generateMenus = data => {
-    console.log(data)
     return data.map(item => {
       if (item.children) {
         return (
@@ -57,7 +56,7 @@ class SiderMenu extends PureComponent {
         )
       }
       return (
-        <Menu.Item key={item.id}>
+        <Menu.Item key={item.id} title={item.name}>
           <Navlink to={addLangPrefix(item.route) || '#'}>
             {item.icon && <Icon type={item.icon} />}
             <span>{item.name}</span>

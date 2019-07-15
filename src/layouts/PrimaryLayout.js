@@ -121,7 +121,7 @@ class PrimaryLayout extends PureComponent {
               onClose={onCollapseChange.bind(this, !collapsed)}
               visible={!collapsed}
               placement="left"
-              width={200}
+              width={220}
               style={{
                 padding: 0,
                 height: '100vh',

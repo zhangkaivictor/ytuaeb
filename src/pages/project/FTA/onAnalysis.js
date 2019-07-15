@@ -1,11 +1,13 @@
 import React, { PureComponent } from 'react'
 import { connect } from 'dva'
 import { router } from 'utils'
-import { Table, Avatar } from 'antd'
+import { Table, Avatar, Tabs } from 'antd'
+import { Page } from 'components'
 import { DropOption } from 'components'
 import { Trans, withI18n } from '@lingui/react'
 import { Ellipsis } from 'ant-design-pro'
 import styles from './onAnalysis.less'
+const { TabPane } = Tabs
 
 @withI18n()
 @connect(({ FTA }) => ({ FTA }))
@@ -204,34 +206,47 @@ class onAnalysis extends PureComponent {
           name: '随机故障度量',
         },
       ]
+      const callback = () => {}
       return (
-        <div>
-          <Table
-            dataSource={topTable}
-            columns={columnsTop}
-            bordered
-            scroll={{ x: 1200 }}
-            className={styles.table}
-            simple
-          />
-          <Table
-            dataSource={tableP1}
-            bordered
-            scroll={{ x: 1200 }}
-            className={styles.table}
-            simple
-            columns={columns}
-            rowKey={record => record.id}
-          />
-          <Table
-            dataSource={tableP2}
-            columns={columns2}
-            bordered
-            scroll={{ x: 1200 }}
-            className={styles.table}
-            simple
-          />
-        </div>
+        <Page inner>
+          <Tabs defaultActiveKey="1" onChange={callback}>
+            <TabPane tab="结果 1" key="1">
+              <Table
+                dataSource={topTable}
+                pagination={false}
+                columns={columnsTop}
+                bordered
+                scroll={{ x: 1200 }}
+                className={styles.table}
+                simple
+              />
+            </TabPane>
+            <TabPane tab="结果 2" key="2">
+              <Table
+                dataSource={tableP1}
+                bordered
+                pagination={false}
+                scroll={{ x: 1200 }}
+                className={styles.table}
+                simple
+                columns={columns}
+                rowKey={record => record.id}
+              />
+            </TabPane>
+            <TabPane tab="结果 3" key="3">
+              <Table
+                dataSource={tableP2}
+                pagination={false}
+                columns={columns2}
+                bordered
+                scroll={{ x: 1200 }}
+                className={styles.table}
+                simple
+              />
+            </TabPane>
+          </Tabs>
+          ,
+        </Page>
       )
     }
   }

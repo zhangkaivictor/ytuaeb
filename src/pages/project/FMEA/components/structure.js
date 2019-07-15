@@ -309,9 +309,6 @@ StructureNode.prototype.allAboveNodes = function() {
     parent = parent.parent
     layer++
   }
-
-  console.log(rootNode)
-
   var startLayer = 1
   ;(function recurse(currentNode, currentLayer) {
     if (currentLayer < layer) {
