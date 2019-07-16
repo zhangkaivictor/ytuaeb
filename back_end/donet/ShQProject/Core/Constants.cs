@@ -33,6 +33,8 @@ namespace Dxc.Shq.WebApi.Core
         public const int FTANodeGateTypeOr = 2;
         public const int FTANodeGateTypeXor = 3;
 
+        public const int MaxSearchCount = 10;
+
         public enum FileStatus
         {
             Ready =0,

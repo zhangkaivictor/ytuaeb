@@ -90,7 +90,29 @@ namespace Dxc.Shq.WebApi.Controllers
                 await db.SaveChangesAsync();
 
                 dynamic jsonSource = JObject.Parse(FMEATree.Content);
-                //jsonSource.structureNodes
+                foreach (var structureNode in jsonSource.structureNodes)
+                {
+                    foreach (var function in structureNode.FunctionSet)
+                    {
+                        foreach (var failure in function.FailureSet)
+                        {
+                            foreach (var property in failure.properties)
+                            {
+                                string key = property.key;
+                                string value = property.value;
+                                if(property.previousValue != value)
+                                {
+                                    property.previousValue = value;
+                                    db.ShqKeywordSets.Add(new ShqKeywordSet { Keyword = string.Format("{0}^{1}^{2}^{3}", structureNode.name, function.name, failure.name, key), KeywordValue = value });
+                                }
+                            }
+                        }
+                    }
+                }
+
+                FMEATree.Content = JsonConvert.SerializeObject(jsonSource);
+
+                await db.SaveChangesAsync();
 
                 return Ok(new FTATreeRequestViewModel() { Id = FMEATree.Id, Content = FMEATree.Content, ProjectId = docs.ProjectId });
             }

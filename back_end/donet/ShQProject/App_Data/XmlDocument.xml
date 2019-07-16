@@ -488,6 +488,13 @@
             <param name="groupName">the category name , for the work project file level is "projectFileLevel"</param>
             <returns></returns>
         </member>
+        <member name="M:Dxc.Shq.WebApi.Controllers.ShqKeywordSetsController.GetShqKeywordSet(System.String)">
+            <summary>
+            use keyword to search values
+            </summary>
+            <param name="keywords">the keywords must by in a defined format: {"scope":"failureProperty","keywords":"structureNodeName^functionName^failureName^propertyKeyName^property_notcompleteValue"}</param>
+            <returns></returns>
+        </member>
         <member name="M:Dxc.Shq.WebApi.Controllers.ProjectFilesController.GetProjectFiles(System.Guid,System.String,System.IO.SearchOption)">
             <summary>
             get files
