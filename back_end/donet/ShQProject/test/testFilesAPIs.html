@@ -1,0 +1,133 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <script src="http://localhost:55011/test/jquery-3.3.1.js"></script>
+
+</head>
+<body>
+ 
+User name: <input id="uname" type="text" name="fname" value="admin@dxc.com"><br>
+Password name: <input id="upsw" type="text" name="lname" value="123456"><br>
+
+1. First click <button id="btn01">Get login tocken</button>
+</br>
+Return login data: <input id="loginData" type="text" name="lname" value="" style="width:1500px;"><br>
+</br>
+
+<div>
+	More General Testing:
+	<div>URL:<input id="testURL" type="text" name="fname" value="http://localhost:55011/api/ProjectFiles/Update" style="width:1500px;"><br></div>
+	Input Data: <textarea cols="50" rows="20"  id ="inputData"></textarea> <br>
+	Method: <select id="methodOption">
+		<option value="POST">POST</option>
+	</select> <br>
+	<label for="fileUpload" /> Select File to Upload: <input id="fileUpload" type="file" />
+	<button id="btn03">Submit</button><br>
+
+	Return Data: <textarea cols="50" rows="20"  id ="outputData"></textarea> <br>
+
+<br>
+<br>
+	
+</div>
+ 
+<script>
+
+$(document).ready(function () {
+
+	$("#btn01").click(function() {
+		var userName = $("#uname").val();
+		var psw = $("#upsw").val();
+
+		$.ajax({
+		    url: 'http://localhost:55011/oauth2/token',
+		    headers: {
+		        'Accept':'application/json',
+		        'Content-Type':'application/x-www-form-urlencoded'
+		    },
+		    method: 'POST',
+		    dataType: 'json',
+		    data: 'username=' + userName + '&password='+ psw +'&grant_type=password',
+		    success: function(json) {
+	        	$("#loginData").val(json.access_token);
+	    	},
+	    	error: function(data) {
+	          //console.log(data);
+	          var responseText=JSON.parse(data.responseText);
+	          alert($.param(responseText));
+	     		}
+		});
+	});
+
+	var fileName = "";
+	var fileBytes = "";
+	$("#fileUpload").change(function(evt) {
+		evt.target.files;
+
+        if (evt.target.files.length == 1)
+        {
+        	fileName = evt.target.files[0].name;
+            var reader = new FileReader();
+            reader.onload = function (e)
+            {
+                var data = reader.result;
+                if (data != null)
+                {
+                    fileBytes = data.split(',')[1];
+			        var testObj = $.parseJSON("{}");
+			        testObj.filedata ="hello "
+			        testObj.filedata = fileBytes;
+
+			        console.log(JSON.stringify(testObj));
+                }
+            }
+            reader.readAsDataURL(evt.target.files[0]);
+        }
+	});
+//{"Id":"2b2cd8ab-6d6c-4a05-931b-e40607bd8b19","ParentPath":"templates\\\\newfolder2.1b2cd8ab-6d6c-4a05-931b-e40607bd8b19","ProjectId":"*","Name":"newfolder2","Level":1,"cmd":"uploadFile"}
+	$("#btn03").click(function() {
+		var url = $('#testURL').val();
+		var method = $('#methodOption').val();
+		var tocken = 'bearer '+ $("#loginData").val();
+		var tempdata = $('#inputData').val();
+		if(tempdata == '')
+		{
+			tempdata = '{}'
+		}
+
+		var inputdata = $.parseJSON(tempdata);
+		if(inputdata.cmd == "uploadFile")
+		{
+			inputdata.Name = fileName;
+			inputdata.FileContent = fileBytes;
+		}
+		
+		console.log(inputdata);
+		console.log(JSON.stringify(inputdata));
+
+		$("#outputData").html("");
+
+		$.ajax({
+		    url: url,
+		    headers: {
+		        'Authorization': tocken
+		    },
+		    method: 'POST',
+			contentType: 'application/json',
+		    dataType: 'json',
+		    data: JSON.stringify(inputdata),
+		    success: function(json) {   
+	        	$("#outputData").html(JSON.stringify(json));
+	    	},
+	    	error: function(data) {
+	          var responseText=JSON.parse(data.responseText);
+	          $("#outputData").html(JSON.stringify(responseText));
+	     		}
+		});
+
+	});
+});
+
+</script>
+</body>
+</html>
