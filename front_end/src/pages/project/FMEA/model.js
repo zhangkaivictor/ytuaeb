@@ -270,6 +270,34 @@ export default modelExtend(pageModel, {
         nodeData: Object.assign({}, state.nodeData, { nodes: payload }),
       }
     },
+    //更新节点label
+    updateLabel(state, { payload }) {
+      let StructurePaneObj = state.StructurePane
+      let node = StructurePaneObj.structureNodes.find(
+        node => node.id == state.selectedStructure.id
+      )
+      let nodesList = StructurePaneObj.structureNodes.map(node => {
+        if (node.id == state.selectedStructure.id) {
+          node.name = payload.value
+        }
+        return node
+      })
+      let nodes = state.nodeData.nodes.map(_ =>
+        _.id == state.selectedStructure.paneId
+          ? { ..._, label: payload.value }
+          : _
+      )
+      return {
+        ...state,
+        StructurePane: Object.assign(
+          Object.create(Object.getPrototypeOf(StructurePaneObj)),
+          StructurePaneObj,
+          { structureNodes: nodesList }
+        ),
+        selectedStructure: Object.assign({}, node, { name: payload.value }),
+        nodeData: Object.assign({}, state.nodeData, { nodes: nodes }),
+      }
+    },
     //移除节点
     deleteNode(state, { payload }) {
       //删除点时删除连接线
@@ -459,11 +487,22 @@ export default modelExtend(pageModel, {
     },
     //移除失效
     removeFail(state, { payload }) {
-      state.selectedFun.removeFailureById(state.selectedFail.id)
+      // state.selectedFun.removeFailureById(state.selectedFail.id)
+      let StructurePaneObj =Object.assign(Object.create(Object.getPrototypeOf(state.StructurePane)),state.StructurePane)
+      console.log(StructurePaneObj)
+      StructurePaneObj.deleteFailureInFunction(state.selectedStructure.id,state.selectedFun.id,state.selectedFail.id)
+      console.log(StructurePaneObj,state.selectedFun)
       return {
         ...state,
-        selectedFail: null,
+        StructurePane:StructurePaneObj,
+        selectedFail:null,
+        actionType:1
+        // selectedFail: null,
       }
+    },
+    //移除功能依赖
+    removeFunDepend(state, { payload }){
+      console.log(payload,state.actionType)
     },
     //点击modal类型
     triggerType(state, { payload }) {

@@ -1286,18 +1286,20 @@ StructurePane.prototype.GetStructureFunctionDepTree = function(
   structureNodeId,
   functionId
 ) {
+  var st=this.findStructureNodeById(structureNodeId)
   var sfArray = this.AllStructureFunctions()
   var fs = sfArray.find(item => {
     return item.structureNodeId === structureNodeId && item.id === functionId
   })
   if (!fs) return
   var result = {}
-  result.Id = functionId
+  result.id = functionId
   result.Name = fs.name
   result.structureNodeId = fs.structureNodeId
   result.leftChilds = []
   result.rightChilds = []
-
+  result.t = 'fun'
+  result.structureNodeName=st.name
   // build left child
   ;(function recurse(currentFunction, childs) {
     for (
@@ -1307,14 +1309,15 @@ StructurePane.prototype.GetStructureFunctionDepTree = function(
     ) {
       var depFunction = currentFunction.dependentFunctionSet[i]
       var r = {}
-      r.Id = depFunction.id
+      r.id = depFunction.id
       r.Name = depFunction.name
       r.label = depFunction.name
       r.side = 'left'
       r.structureNodeId = depFunction.structureNodeId
       r.children = []
+      r.t = 'fun'
+      r.structureNodeName=st.name
       childs.push(r)
-
       recurse(depFunction, r.children)
     }
   })(fs, result.leftChilds)
@@ -1333,14 +1336,15 @@ StructurePane.prototype.GetStructureFunctionDepTree = function(
     for (var i = 0, length = asParentFs.length; i < length; i++) {
       var depFunction = asParentFs[i]
       var r = {}
-      r.Id = depFunction.id
+      r.id = depFunction.id
       r.Name = depFunction.name
       r.structureNodeId = depFunction.structureNodeId
       r.children = []
       r.side = 'right'
       r.label = depFunction.name
+      r.t = 'fun'
+      r.structureNodeName=st.name
       childs.push(r)
-
       recurse(depFunction, r.children)
     }
   })(fs, result.rightChilds)
@@ -1352,6 +1356,7 @@ StructurePane.prototype.GetFunctionFailureDepTree = function(
   functionId,
   failureId
 ) {
+  var st=this.findStructureNodeById(structureNodeId)
   var ffArray = this.AllFunctionFailures()
   var fs = ffArray.find(item => {
     return (
@@ -1362,13 +1367,14 @@ StructurePane.prototype.GetFunctionFailureDepTree = function(
   })
   if (!fs) return
   var result = {}
-  result.Id = failureId
+  result.id = failureId
   result.Name = fs.name
   result.structureNodeId = fs.structureNodeId
   result.functionId = fs.functionId
   result.leftChilds = []
   result.rightChilds = []
-
+  result.t = 'fail'
+  result.structureNodeName=st.name
   // build left child
   ;(function recurse(currentFailure, childs) {
     for (
@@ -1378,7 +1384,7 @@ StructurePane.prototype.GetFunctionFailureDepTree = function(
     ) {
       var depFailure = currentFailure.dependentFailureSet[i]
       var r = {}
-      r.Id = depFailure.id
+      r.id = depFailure.id
       r.Name = depFailure.name
       r.structureNodeId = depFailure.structureNodeId
       r.functionId = depFailure.functionId
@@ -1389,6 +1395,8 @@ StructurePane.prototype.GetFunctionFailureDepTree = function(
       r.sValue = depFailure.sValue
       r.dValue = depFailure.dValue
       r.lambdaValue = depFailure.lambdaValue
+      r.t = 'fail'
+      r.structureNodeName=st.name
       childs.push(r)
 
       recurse(depFailure, r.children)
@@ -1410,7 +1418,7 @@ StructurePane.prototype.GetFunctionFailureDepTree = function(
     for (var i = 0, length = asParentFs.length; i < length; i++) {
       var depFailure = asParentFs[i]
       var r = {}
-      r.Id = depFailure.id
+      r.id = depFailure.id
       r.Name = depFailure.name
       r.structureNodeId = depFailure.structureNodeId
       r.functionId = depFailure.functionId
@@ -1423,11 +1431,11 @@ StructurePane.prototype.GetFunctionFailureDepTree = function(
       // r.shape='custom-node'
       r.label = depFailure.name
       childs.push(r)
-
+      r.t = 'fail'
+      r.structureNodeName=st.name
       recurse(depFailure, r.children)
     }
   })(fs, result.rightChilds)
-
   return result
 }
 StructurePane.prototype.SetStructureTreeRootById = function(structureNodeId) {
@@ -1484,7 +1492,6 @@ const RePositionTree = function(jsonTree, xSpace, ySpace) {
           uiNodes[u].y = rootBaseY
           x = x + xSpace
         }
-
         Recurse(uiNodes)
       }
     })(uiNodessInSameLayer)

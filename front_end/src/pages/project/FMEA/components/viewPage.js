@@ -1,16 +1,18 @@
 import React from 'react'
-import GGEditor, { Mind, withPropsAPI, Command, NodeMenu, RegisterNode } from 'gg-editor'
+import GGEditor, { Mind, withPropsAPI, RegisterBehaviour } from 'gg-editor'
 import CustomNode from './shape/nodes/customNode'
-import ContextMenu from './EditorContextMenu/MindContextMenu'
 import { Col } from 'antd'
 import styles from './viewPage.less'
+import ContextMenu from './EditorContextMenu/MindContextMenu'
 
 class ViewPage extends React.Component {
   componentDidMount() {
     const { propsAPI } = this.props
     // console.log(this.props.propsAPI.read());
   }
-
+  panelAction(c) {
+    console.log(c)
+  }
   render() {
     let viewData = null
     const getViewData = () => {
@@ -27,24 +29,24 @@ class ViewPage extends React.Component {
         )
         viewData = treeData
           ? {
-            roots: [
-              {
-                label:
-                  this.props.FMEA.selectedStructure.name +
-                  '--' +
-                  this.props.FMEA.selectedFun.name,
-                children: this.props.FMEA.StructurePane.GetStructureFunctionDepTree(
-                  this.props.FMEA.selectedStructure.id,
-                  this.props.FMEA.selectedFun.id
-                ).leftChilds.concat(
-                  this.props.FMEA.StructurePane.GetStructureFunctionDepTree(
+              roots: [
+                {
+                  label: this.props.FMEA.selectedFun.name,
+                  id:this.props.FMEA.selectedFun.id,
+                  structureNodeName: this.props.FMEA.selectedStructure.name,
+                  t: 'fun',
+                  children: this.props.FMEA.StructurePane.GetStructureFunctionDepTree(
                     this.props.FMEA.selectedStructure.id,
                     this.props.FMEA.selectedFun.id
-                  ).rightChilds
-                ),
-              },
-            ],
-          }
+                  ).leftChilds.concat(
+                    this.props.FMEA.StructurePane.GetStructureFunctionDepTree(
+                      this.props.FMEA.selectedStructure.id,
+                      this.props.FMEA.selectedFun.id
+                    ).rightChilds
+                  ),
+                },
+              ],
+            }
           : null
       } else if (
         this.props.FMEA.actionType == 2 &&
@@ -57,36 +59,35 @@ class ViewPage extends React.Component {
         )
         viewData = treeData
           ? {
-            roots: [
-              {
-                label:
-                  this.props.FMEA.selectedStructure.name +
-                  '--' +
-                  this.props.FMEA.selectedFun.name +
-                  '--' +
-                  this.props.FMEA.selectedFail.name,
-                oValue: this.props.FMEA.selectedFail.oValue,
-                sValue: this.props.FMEA.selectedFail.sValue,
-                dValue: this.props.FMEA.selectedFail.dValue,
-                lambdaValue: this.props.FMEA.selectedFail.lambdaValue,
-                children: this.props.FMEA.StructurePane.GetFunctionFailureDepTree(
-                  this.props.FMEA.selectedStructure.id,
-                  this.props.FMEA.selectedFun.id,
-                  this.props.FMEA.selectedFail.id
-                ).leftChilds.concat(
-                  this.props.FMEA.StructurePane.GetFunctionFailureDepTree(
+              roots: [
+                {
+                  label: this.props.FMEA.selectedFail.name,
+                  id:this.props.FMEA.selectedFail.id,
+                  structureNodeName: this.props.FMEA.selectedStructure.name,
+                  t: 'fail',
+                  oValue: this.props.FMEA.selectedFail.oValue,
+                  sValue: this.props.FMEA.selectedFail.sValue,
+                  dValue: this.props.FMEA.selectedFail.dValue,
+                  lambdaValue: this.props.FMEA.selectedFail.lambdaValue,
+                  children: this.props.FMEA.StructurePane.GetFunctionFailureDepTree(
                     this.props.FMEA.selectedStructure.id,
                     this.props.FMEA.selectedFun.id,
                     this.props.FMEA.selectedFail.id
-                  ).rightChilds
-                ),
-              },
-            ],
-          }
+                  ).leftChilds.concat(
+                    this.props.FMEA.StructurePane.GetFunctionFailureDepTree(
+                      this.props.FMEA.selectedStructure.id,
+                      this.props.FMEA.selectedFun.id,
+                      this.props.FMEA.selectedFail.id
+                    ).rightChilds
+                  ),
+                },
+              ],
+            }
           : null
       }
     }
     getViewData()
+    console.log(viewData)
     let graph = {
       // defaultNode: {
       //   size: 16,
@@ -129,11 +130,23 @@ class ViewPage extends React.Component {
       //   });
       // }
     }
-
+    const panelAction = c => {
+      console.log(c)
+      console.log(this.props)
+      if(c.command== "delete"){
+        console.log(c.itemIds)
+        this.props.dispatch({type:'FMEA/removeFunDepend',payload:{id:c.itemIds[0]}})
+      }
+    }
+    const findLeftDepend=(node,id)=>{}
     return (
       <Col span={24} className={styles.view}>
         {viewData != null && (
-          <GGEditor>
+          <GGEditor
+            onAfterCommandExecute={({ command }) => {
+              panelAction(command)
+            }}
+          >
             {/* <Mind style={{ height: 300 }} graph={graph } data={viewData} rootShape="mind-root" firstSubShape="custom-node" /> */}
             <Mind
               style={{ height: 300 }}
@@ -147,7 +160,11 @@ class ViewPage extends React.Component {
               fifthSubShape="custom-node"
             />
             <CustomNode />
-            <ContextMenu/>
+            {/* <ContextMenu/> */}
+            <RegisterBehaviour
+              name="dblclickItemEditLabel"
+              behaviour={() => {}}
+            />
           </GGEditor>
         )}
       </Col>
