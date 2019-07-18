@@ -323,8 +323,8 @@ class CustomNode extends React.Component {
           config={rootConfig}
           extend={'mind-base'}
         />
-        <RegisterNode name="mind-base" config={config} extend={'mind-base'} />
-        <RegisterNode name="custom-node" config={config} extend={'mind-base'} />
+        <RegisterNode name="mind-base" config={config} extend={'mind-base'}/>
+        <RegisterNode name="custom-node" config={config} extend={'mind-base' } />
       </Fragment>
     )
   }

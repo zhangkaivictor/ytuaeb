@@ -489,9 +489,7 @@ export default modelExtend(pageModel, {
     removeFail(state, { payload }) {
       // state.selectedFun.removeFailureById(state.selectedFail.id)
       let StructurePaneObj =Object.assign(Object.create(Object.getPrototypeOf(state.StructurePane)),state.StructurePane)
-      console.log(StructurePaneObj)
       StructurePaneObj.deleteFailureInFunction(state.selectedStructure.id,state.selectedFun.id,state.selectedFail.id)
-      console.log(StructurePaneObj,state.selectedFun)
       return {
         ...state,
         StructurePane:StructurePaneObj,
@@ -502,7 +500,23 @@ export default modelExtend(pageModel, {
     },
     //移除功能依赖
     removeFunDepend(state, { payload }){
-      console.log(payload,state.actionType)
+      console.log(payload.id.slice(0,-5))
+      console.log(payload.id.slice(0,-5),state.actionType)
+      let StructurePaneObj =Object.assign(Object.create(Object.getPrototypeOf(state.StructurePane)),state.StructurePane)
+      if(state.actionType==1){
+        StructurePaneObj.deleteDependentFunction(state.selectedStructure.id,state.selectedFun.id,'',payload.id.slice(0,-5))
+      }else{
+        StructurePaneObj.deleteDependentFailure(state.selectedStructure.id,state.selectedFun.id,state.selectedFail.id,'','',payload.id.slice(0,-5)) 
+      }
+      console.log(StructurePaneObj)
+      return {
+        ...state,
+        StructurePane:StructurePaneObj,
+        // selectedFail:null,
+        // actionType:1
+        // selectedFail: null,
+      }
+
     },
     //点击modal类型
     triggerType(state, { payload }) {

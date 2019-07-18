@@ -156,7 +156,7 @@ class ViewPage extends React.Component {
               firstSubShape="custom-node"
               secondSubShape="custom-node"
               thirdSubShape="custom-node"
-              fouthSubShape="custom-node"
+              fourthSubShape="custom-node"
               fifthSubShape="custom-node"
             />
             <CustomNode />

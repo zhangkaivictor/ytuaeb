@@ -3,7 +3,14 @@ function GenerateId() {
   var id = window.crypto.getRandomValues(array)
   return String(array.join())
 }
-
+//生成固定长度随机数
+function randomId(l){
+  let str=''
+  for(let i=0;i<l;i++){
+    str+=parseInt(Math.random()*10) 
+  }
+  return str
+}
 /*
 	定义失效类
 */
@@ -24,6 +31,7 @@ function FunctionFailure(name) {
 
   this.detectionSet = []
   this.preCautionSet = []
+  this.properties = [];
 }
 
 FunctionFailure.prototype.appendDependentFailure = function(child) {
@@ -809,7 +817,24 @@ StructurePane.prototype.deleteFailureInFunction = function(
     }
   }
 }
-
+StructurePane.prototype.AddFailureProperties = function (structureNodeId, functionId, failureId, propertyKey, propertyValue)
+{
+    var node = this.findStructureNodeById(structureNodeId);
+    if (node != null) {
+        var sf = node.findFunctionById(functionId);
+        if (sf != null) {
+            var ff = sf.findFailureById(failureId);
+            if (ff != null)
+            {
+                var property = {};
+                property.key = propertyKey;
+                property.value = propertyValue;
+                ff.properties.push(property);
+            }
+        }
+    }
+    return null;
+}
 StructurePane.prototype.addDependentFailure = function(
   structureNodeId,
   functionId,
@@ -1293,7 +1318,7 @@ StructurePane.prototype.GetStructureFunctionDepTree = function(
   })
   if (!fs) return
   var result = {}
-  result.id = functionId
+  result.id = functionId+randomId(5)
   result.Name = fs.name
   result.structureNodeId = fs.structureNodeId
   result.leftChilds = []
@@ -1309,7 +1334,7 @@ StructurePane.prototype.GetStructureFunctionDepTree = function(
     ) {
       var depFunction = currentFunction.dependentFunctionSet[i]
       var r = {}
-      r.id = depFunction.id
+      r.id = depFunction.id+randomId(5)
       r.Name = depFunction.name
       r.label = depFunction.name
       r.side = 'left'
@@ -1336,7 +1361,7 @@ StructurePane.prototype.GetStructureFunctionDepTree = function(
     for (var i = 0, length = asParentFs.length; i < length; i++) {
       var depFunction = asParentFs[i]
       var r = {}
-      r.id = depFunction.id
+      r.id = depFunction.id+randomId(5)
       r.Name = depFunction.name
       r.structureNodeId = depFunction.structureNodeId
       r.children = []
@@ -1367,7 +1392,7 @@ StructurePane.prototype.GetFunctionFailureDepTree = function(
   })
   if (!fs) return
   var result = {}
-  result.id = failureId
+  result.id = failureId+randomId(5)
   result.Name = fs.name
   result.structureNodeId = fs.structureNodeId
   result.functionId = fs.functionId
@@ -1384,7 +1409,7 @@ StructurePane.prototype.GetFunctionFailureDepTree = function(
     ) {
       var depFailure = currentFailure.dependentFailureSet[i]
       var r = {}
-      r.id = depFailure.id
+      r.id = depFailure.id+randomId(5)
       r.Name = depFailure.name
       r.structureNodeId = depFailure.structureNodeId
       r.functionId = depFailure.functionId
@@ -1418,7 +1443,7 @@ StructurePane.prototype.GetFunctionFailureDepTree = function(
     for (var i = 0, length = asParentFs.length; i < length; i++) {
       var depFailure = asParentFs[i]
       var r = {}
-      r.id = depFailure.id
+      r.id = depFailure.id+randomId(5)
       r.Name = depFailure.name
       r.structureNodeId = depFailure.structureNodeId
       r.functionId = depFailure.functionId

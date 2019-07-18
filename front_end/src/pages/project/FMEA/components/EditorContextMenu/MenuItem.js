@@ -6,9 +6,8 @@ import styles from './index.less'
 
 const MenuItem = props => {
   const { command, icon, text } = props
-
   return (
-    <Command name={command}>
+    <Command name={command} enable={false}>
       <div className={styles.item}>
         <IconFont type={`icon-${icon || command}`} />
         <span>{text || upperFirst(command)}</span>
