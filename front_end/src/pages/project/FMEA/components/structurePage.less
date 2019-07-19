@@ -15,15 +15,19 @@
 .editorBd {
   flex: 1;
 }
-
 .editorSidebar,
 .editorContent {
   display: flex;
   flex-direction: column;
+  height: 100%;
+  // max-height: 500px;
+  // overflow-y:scroll;
 }
 
 .editorSidebar {
+  height: 100%;
   background: #fafafa;
+  overflow-y: scroll;
 
   &:first-child {
     border-right: 1px solid #e6e9ed;

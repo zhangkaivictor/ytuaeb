@@ -1,6 +1,6 @@
 import React from 'react'
 import { Row, Col, message } from 'antd'
-import GGEditor, { Flow, withPropsAPI } from 'gg-editor'
+import GGEditor, { Flow, withPropsAPI, RegisterBehaviour } from 'gg-editor'
 import { FlowContextMenu } from '../components/EditorContextMenu'
 import { FlowToolbar } from '../components/EditorToolbar'
 import { FlowItemPanel } from '../components/EditorItemPanel'
@@ -65,6 +65,9 @@ class StructurePage extends React.Component {
     //   graph.setItemState(item, 'active', false);
     //   return;
     // }
+  }
+  dbClick(e) {
+    console.log(e)
   }
   render() {
     let data = {
@@ -144,6 +147,12 @@ class StructurePage extends React.Component {
               onAfterChange={e => this.nodeDrag(e)}
               data={this.props.FMEA.nodeData}
               onAfterItemSelected={e => this.onSelected(e)}
+            />
+            <RegisterBehaviour
+              name="onDoubleClick"
+              behaviour={e => {
+                this.dbClick(e)
+              }}
             />
           </Col>
         </Row>

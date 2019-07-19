@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
-import { Tree, Icon, Button, Checkbox } from 'antd'
+import { Tree, Icon, Button, Checkbox, Input, Form } from 'antd'
 import FailDeatail from './failDetail'
 import styles from './treePage.less'
 const { TreeNode } = Tree
-
+const FormItem = Form.Item
+@Form.create()
 class TreePage extends React.Component {
   constructor(props) {
     super(props)
@@ -69,8 +70,11 @@ class TreePage extends React.Component {
       this.props.dispatch({ type: 'FMEA/cancelRootNode' })
     }
   }
+
   render() {
     const { FMEA } = this.props
+    const { item = {}, onOk, form, ...modalProps } = this.props
+    const { getFieldDecorator, resetFields } = form
     let funList = null
     const getLeafHtml = leafs => {
       let lh = ''
@@ -122,6 +126,23 @@ class TreePage extends React.Component {
         rootStructureChecked = false
       }
     }
+    //
+    const handleInputChange = e => {
+      if (e.target.value && e.target.value.trim() !== '') {
+        this.props.dispatch({
+          type: 'FMEA/updateLabel',
+          payload: { value: e.target.value },
+        })
+      }
+      //重置表单
+      resetFields()
+    }
+    const getInitialValue = () => {
+      return this.props.FMEA.selectedStructure
+        ? this.props.FMEA.selectedStructure.name
+        : ''
+    }
+    let initValue = getInitialValue()
     return (
       <div className={styles.treePage}>
         {FMEA.selectedStructure && (
@@ -129,7 +150,22 @@ class TreePage extends React.Component {
             <div className={styles.currStr}>当前结构:</div>
             <div className={styles.currN}>
               <Icon type="appstore" theme="filled" />
-              <span>{this.props.FMEA.selectedStructure.name}</span>
+              {/* <span>{this.props.FMEA.selectedStructure.name}</span> */}
+              <Form
+                style={{ display: 'inline-block', width: 'calc(100% - 150px)' }}
+              >
+                <FormItem>
+                  {getFieldDecorator('label', { initialValue: initValue })(
+                    <Input onBlur={e => handleInputChange(e)} />
+                  )}
+                </FormItem>
+              </Form>
+
+              {/* <Input
+                value={initValue}
+                onBlur={e => this.handleInputChange(e)}
+                style={{ width: 'calc(100% - 150px)' }}
+              /> */}
               {/* <Button type="dashed" onClick={e => this.setRoot(e)}> */}
               <div>
                 <Checkbox

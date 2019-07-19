@@ -3,7 +3,8 @@ import { NodeMenu, CanvasMenu, ContextMenu } from 'gg-editor'
 import MenuItem from './MenuItem'
 import styles from './index.less'
 
-const MindContextMenu = () => {
+const MindContextMenu = (props) => {
+    // console.log(props)
   return (
     <ContextMenu className={styles.contextMenu}>
       <NodeMenu>
@@ -11,7 +12,7 @@ const MindContextMenu = () => {
         {/* <MenuItem command="appendChild" icon="append-child" text="Subtopic" /> */}
         {/* <MenuItem command="collapse" text="Fold" /> */}
         {/* <MenuItem command="expand" text="Unfold" /> */}
-        <MenuItem command="delete" />
+        <MenuItem command="delete"/>
       </NodeMenu>
       {/* <CanvasMenu>
         <MenuItem command="undo" />

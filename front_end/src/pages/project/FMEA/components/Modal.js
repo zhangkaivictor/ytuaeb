@@ -85,7 +85,7 @@ class addModal extends PureComponent {
     // let
     const { FMEA } = this.props
     const { item = {}, onOk, form, ...modalProps } = this.props
-    const { getFieldDecorator } = form
+    const { getFieldDecorator } = this.props.form
     let addItem
     if (modalProps.type == 0) {
       addItem = (
