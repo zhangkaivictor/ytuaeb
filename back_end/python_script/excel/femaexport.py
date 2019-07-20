@@ -1,5 +1,6 @@
 import openpyxl
 from openpyxl.writer.excel import save_virtual_workbook
+from openpyxl.styles import Alignment
 from copy import copy
 from flask import Response
 
@@ -37,10 +38,34 @@ def ExtendTable(sheet, lastRow):
 		for row in range(templateTableLastRow + 1, lastRow):
 			for col in range(templateTableStartColumn, templateTableEndColumn):
 				sheet.cell(row, col).border = copy(sheet.cell(templateTableLastRow  - 1, col).border) 
+				sheet.cell(row, col).font = copy(sheet.cell(templateTableLastRow  - 1, col).font) 
+				sheet.cell(row, col).alignment = Alignment(horizontal='center')
 		# format last row
 		for col in range(templateTableStartColumn, templateTableEndColumn):
 			sheet.cell(lastRow, col).border = copy(sheet.cell(templateTableLastRow, col).border) 
+			sheet.cell(lastRow, col).font = copy(sheet.cell(templateTableLastRow, col).font) 
+			sheet.cell(lastRow, col).alignment = Alignment(horizontal='center')
 			sheet.cell(templateTableLastRow, col).border = copy(sheet.cell(templateTableLastRow - 1, col).border)
+
+def ResizeColumnWidth(sheet, lastRow):
+	for col in sheet.columns:
+	    max_length = 0
+	    column = col[0].column_letter 
+	    for cell in col[11:lastRow]:
+	        if cell.coordinate in sheet.merged_cells:
+	        	continue
+	        try: 
+	            if len(as_text(cell.value)) > max_length:
+	                max_length = len(as_text(cell.value))
+	        except:
+	            pass
+	    adjusted_width = (max_length + 2) * 2
+	    sheet.column_dimensions[column].width = adjusted_width
+
+def as_text(value):
+    if value is None:
+        return "####"
+    return str(value)
 
 def PutData(row, column, structureNode, workBookSheet, nodeType):
 	lastRowIndex = row
@@ -85,6 +110,8 @@ def ExportDataToTemplate(structureNodeId, structureNodes):
 	# extend table
 	lastRow = lastRowIndex - 1
 	ExtendTable(sheet, lastRow)
+
+	ResizeColumnWidth(sheet, lastRow)
 
 	response = Response(save_virtual_workbook(wb), mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',headers={"Content-Disposition":"attachment; filename=export.xlsx"})
 	return response
