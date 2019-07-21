@@ -3,6 +3,7 @@ from openpyxl.writer.excel import save_virtual_workbook
 from openpyxl.styles import Alignment
 from copy import copy
 from flask import Response
+import langid
 
 
 def GetStructureNodeById(nodeId, nodes):
@@ -54,18 +55,37 @@ def ResizeColumnWidth(sheet, lastRow):
 	    for cell in col[11:lastRow]:
 	        if cell.coordinate in sheet.merged_cells:
 	        	continue
-	        try: 
-	            if len(as_text(cell.value)) > max_length:
-	                max_length = len(as_text(cell.value))
+	        try:
+	        	cellWidth = getCellWidth(cell.value)
+	        	if cellWidth > max_length:
+	        		max_length = cellWidth
 	        except:
 	            pass
-	    adjusted_width = (max_length + 2) * 2
+	    adjusted_width = (max_length + 2) * 1.2
 	    sheet.column_dimensions[column].width = adjusted_width
 
 def as_text(value):
     if value is None:
         return "####"
     return str(value)
+
+''' performance is not accpected by check every charactor
+def getCellWidth(value):
+	text = as_text(value)
+	getLenth = lambda x: 1 if(langid.classify(x)[0] == 'en') else 2
+	return sum([getLenth(x) for x in text])
+'''
+'''
+def getCellWidth(value):
+	text = as_text(value)
+	if(langid.classify(text)[0] == 'en'):
+		return len(text)
+	else:
+		return 2 * len(text)
+'''
+def getCellWidth(value):
+	text = as_text(value)
+	return 2 * len(text)
 
 def PutData(row, column, structureNode, workBookSheet, nodeType):
 	lastRowIndex = row
