@@ -35,7 +35,7 @@ namespace Dxc.Shq.WebApi.Controllers
             {
                 DateTime lastDate = DateTime.Parse(lastModifiedDate);
                 var item = db.ShqDictionary.Where(row => row.LastModfiedTime > lastDate);
-                if (item!= null && item.Count() > 0)
+                if (item != null && item.Count() > 0)
                 {
                     return db.ShqDictionary.AsQueryable();
                 }
@@ -57,7 +57,7 @@ namespace Dxc.Shq.WebApi.Controllers
         [Route("api/ShqDictionaries")]
         public IQueryable<ShqDictionary> GetShqDictionary(string groupName, string lastModifiedDate)
         {
-            
+
             if (string.IsNullOrEmpty(lastModifiedDate) == true)
             {
                 return db.ShqDictionary.Where(item => item.GroupName == groupName);
@@ -66,7 +66,7 @@ namespace Dxc.Shq.WebApi.Controllers
             {
                 DateTime lastDate = DateTime.Parse(lastModifiedDate);
                 var row = db.ShqDictionary.Where(item => item.GroupName == groupName && item.LastModfiedTime > lastDate);
-                if (row!= null && row.Count() > 0)
+                if (row != null && row.Count() > 0)
                 {
                     return db.ShqDictionary.Where(item => item.GroupName == groupName);
                 }
@@ -75,6 +75,25 @@ namespace Dxc.Shq.WebApi.Controllers
                     return null;
                 }
             }
+        }
+
+        [HttpGet]
+        [Route("api/ShqDictionaries/Add")]
+        public ShqDictionary AddShqDictionary(string groupName, string dictName, string dictValue)
+        {
+            var row = db.ShqDictionary.FirstOrDefault(item => item.GroupName == groupName && item.DictName == dictName && item.DictValue == dictValue);
+            if (row != null)
+            {
+                row.DictValue = dictValue;
+            }
+            else
+            {
+                row = db.ShqDictionary.Add(new ShqDictionary() { GroupName = groupName, DictName = dictName, DictValue = dictValue });
+            }
+
+            db.SaveChanges();
+
+            return row;
         }
 
         //// PUT: api/ShqDictionaries/5

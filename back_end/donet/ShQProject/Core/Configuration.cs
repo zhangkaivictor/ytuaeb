@@ -55,6 +55,7 @@ namespace Dxc.Shq.WebApi.Core
                 context.ShqDictionary.Add(new ShqDictionary() { GroupName = "projectFileLevel", DictName = "等级A", DictValue = "1" });
                 context.ShqDictionary.Add(new ShqDictionary() { GroupName = "projectFileLevel", DictName = "等级B", DictValue = "2" });
                 context.ShqDictionary.Add(new ShqDictionary() { GroupName = "projectFileLevel", DictName = "等级C", DictValue = "3" });
+                context.ShqDictionary.Add(new ShqDictionary() { GroupName = "projectFileLevel", DictName = "等级D", DictValue = "4" });
 
                 context.ShqDictionary.Add(new ShqDictionary() { GroupName = "failureProperties", DictName = "预防措施", DictValue = "1" });
                 context.ShqDictionary.Add(new ShqDictionary() { GroupName = "failureProperties", DictName = "探测措施", DictValue = "2" });
