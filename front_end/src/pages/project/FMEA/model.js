@@ -23,6 +23,7 @@ export default modelExtend(pageModel, {
     structureNodes: [],
     selectedStructure: null,
     createModalVisible: false,
+    failActionModalVisiable: false,
     createModalType: 0,
     createModalTitle: '添加功能',
     selectedFun: null,
@@ -41,10 +42,12 @@ export default modelExtend(pageModel, {
               },
             })
           } else {
-            router.push({
-              pathname: '/post',
-            })
             message.info('目前没有项目，请新建！！！')
+            setTimeout(() => {
+              router.push({
+                pathname: '/post',
+              })
+            }, 0)
           }
         }
       })
@@ -110,7 +113,7 @@ export default modelExtend(pageModel, {
           shape: structure.shape,
           root:
             structurePaneObj.structureTreeRoot &&
-            structure.id == structurePaneObj.structureTreeRoot.id
+              structure.id == structurePaneObj.structureTreeRoot.id
               ? true
               : false,
           label: structure.name,
@@ -121,12 +124,12 @@ export default modelExtend(pageModel, {
           style: {
             stroke:
               structurePaneObj.structureTreeRoot &&
-              structure.id == structurePaneObj.structureTreeRoot.id
+                structure.id == structurePaneObj.structureTreeRoot.id
                 ? 'red'
                 : '',
             fill:
               structurePaneObj.structureTreeRoot &&
-              structure.id == structurePaneObj.structureTreeRoot.id
+                structure.id == structurePaneObj.structureTreeRoot.id
                 ? 'red'
                 : '',
           },
@@ -488,30 +491,30 @@ export default modelExtend(pageModel, {
     //移除失效
     removeFail(state, { payload }) {
       // state.selectedFun.removeFailureById(state.selectedFail.id)
-      let StructurePaneObj =Object.assign(Object.create(Object.getPrototypeOf(state.StructurePane)),state.StructurePane)
-      StructurePaneObj.deleteFailureInFunction(state.selectedStructure.id,state.selectedFun.id,state.selectedFail.id)
+      let StructurePaneObj = Object.assign(Object.create(Object.getPrototypeOf(state.StructurePane)), state.StructurePane)
+      StructurePaneObj.deleteFailureInFunction(state.selectedStructure.id, state.selectedFun.id, state.selectedFail.id)
       return {
         ...state,
-        StructurePane:StructurePaneObj,
-        selectedFail:null,
-        actionType:1
+        StructurePane: StructurePaneObj,
+        selectedFail: null,
+        actionType: 1
         // selectedFail: null,
       }
     },
     //移除功能依赖
-    removeFunDepend(state, { payload }){
-      console.log(payload.id.slice(0,-5))
-      console.log(payload.id.slice(0,-5),state.actionType)
-      let StructurePaneObj =Object.assign(Object.create(Object.getPrototypeOf(state.StructurePane)),state.StructurePane)
-      if(state.actionType==1){
-        StructurePaneObj.deleteDependentFunction(state.selectedStructure.id,state.selectedFun.id,'',payload.id.slice(0,-5))
-      }else{
-        StructurePaneObj.deleteDependentFailure(state.selectedStructure.id,state.selectedFun.id,state.selectedFail.id,'','',payload.id.slice(0,-5)) 
+    removeFunDepend(state, { payload }) {
+      console.log(payload.id.slice(0, -5))
+      console.log(payload.id.slice(0, -5), state.actionType)
+      let StructurePaneObj = Object.assign(Object.create(Object.getPrototypeOf(state.StructurePane)), state.StructurePane)
+      if (state.actionType == 1) {
+        StructurePaneObj.deleteDependentFunction(state.selectedStructure.id, state.selectedFun.id, '', payload.id.slice(0, -5))
+      } else {
+        StructurePaneObj.deleteDependentFailure(state.selectedStructure.id, state.selectedFun.id, state.selectedFail.id, '', '', payload.id.slice(0, -5))
       }
       console.log(StructurePaneObj)
       return {
         ...state,
-        StructurePane:StructurePaneObj,
+        StructurePane: StructurePaneObj,
         // selectedFail:null,
         // actionType:1
         // selectedFail: null,
@@ -524,10 +527,10 @@ export default modelExtend(pageModel, {
         payload.type == 0
           ? '添加功能'
           : payload.type == 1
-          ? '添加失效'
-          : payload.type == 2
-          ? '添加失效依赖'
-          : '添加功能依赖'
+            ? '添加失效'
+            : payload.type == 2
+              ? '添加失效依赖'
+              : '添加功能依赖'
       if (payload.type == 0) {
         return {
           ...state,
@@ -581,13 +584,13 @@ export default modelExtend(pageModel, {
       let nodes = state.nodeData.nodes.map(_ =>
         _.id == state.selectedStructure.paneId
           ? {
-              ..._,
-              root: true,
-              style: {
-                stroke: 'red',
-                fill: 'red',
-              },
-            }
+            ..._,
+            root: true,
+            style: {
+              stroke: 'red',
+              fill: 'red',
+            },
+          }
           : { ..._, root: false, style: '' }
       )
       return {
@@ -675,6 +678,14 @@ export default modelExtend(pageModel, {
         nodeData: nodeData,
       }
     },
+    showFailAction(state, action) {
+      console.log(action)
+      return {
+        ...state,
+        failActionModalVisiable: action.payload.show
+      }
+    },
+
     failAttrSet(state, action) {
       console.log(state)
       let StructurePaneObj = Object.assign(
@@ -692,5 +703,6 @@ export default modelExtend(pageModel, {
         StructurePane: StructurePaneObj,
       }
     },
+
   },
 })

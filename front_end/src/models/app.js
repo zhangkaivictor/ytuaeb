@@ -336,7 +336,7 @@ export default {
     },
     *queryDic({ payload }, { call, put }) {
       let data = {
-        groupName: 'projectFileLevel',
+        lastModifiedDate: null,
       }
       const headers = {
         Authorization: window.localStorage.getItem('token'),

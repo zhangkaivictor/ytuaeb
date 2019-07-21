@@ -20,3 +20,14 @@ export function getRectPath(x, y, w, h, r) {
 
   return res
 }
+export function getAPValue(S,O,D) {
+  if (S==1) {
+    return 'L'
+  }
+
+  const res = [['M', x, y], ['l', w, 0], ['l', 0, h], ['l', -w, 0], ['z']]
+
+  res.toString = toString
+
+  return res
+}

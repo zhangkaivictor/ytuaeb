@@ -128,10 +128,10 @@ class UserModal extends PureComponent {
   render() {
     //下拉level
     const children = []
-    let dictionary = JSON.parse(sessionStorage.getItem('dictionary'))
+    let alldictionary = JSON.parse(sessionStorage.getItem('dictionary'))
       ? JSON.parse(sessionStorage.getItem('dictionary'))
       : []
-    console.log(dictionary)
+    let dictionary=alldictionary.filter(dic=>dic.groupName==="projectFileLevel")
     for (let i = 0; i < dictionary.length; i++) {
       children.push(
         <Option key={dictionary[i].dictValue}>{dictionary[i].dictName}</Option>
@@ -150,7 +150,6 @@ class UserModal extends PureComponent {
     const owner = window.localStorage.getItem('username')
     let userList
     let usersPrivileges = item.usersPrivileges
-    console.log(item)
     if (modalProps.title == '创建项目') {
       const addRemoveProps = {
         options: usersListFn(userNameList, owner),

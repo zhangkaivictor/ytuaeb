@@ -94,7 +94,7 @@ class SiderMenu extends PureComponent {
         theme={theme}
         onOpenChange={this.onOpenChange}
         openKeys={this.state.openKeys}
-        inlineCollapsed={collapsed}
+        collapsed="false"
         onClick={
           isMobile
             ? () => {

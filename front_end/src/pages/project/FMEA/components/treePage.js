@@ -58,10 +58,6 @@ class TreePage extends React.Component {
     }
     this.props.dispatch({ type: 'FMEA/triggerType', payload: { type: 2 } })
   }
-  //显示按钮
-  getBtnDisplay() {
-    return this.prpos.FMEA.actionType
-  }
   //设置根结构
   rootChange(e) {
     if (e.target.checked) {
@@ -70,7 +66,10 @@ class TreePage extends React.Component {
       this.props.dispatch({ type: 'FMEA/cancelRootNode' })
     }
   }
-
+  //
+  failActionShow(e) {
+    this.props.dispatch({ type: 'FMEA/showFailAction', payload: { show: true } })
+  }
   render() {
     const { FMEA } = this.props
     const { item = {}, onOk, form, ...modalProps } = this.props
@@ -117,7 +116,7 @@ class TreePage extends React.Component {
       if (
         this.props.FMEA.selectedStructure &&
         this.props.FMEA.StructurePane.structureTreeRoot.id ==
-          this.props.FMEA.selectedStructure.id
+        this.props.FMEA.selectedStructure.id
       ) {
         rootStructureSetAble = true
         rootStructureChecked = true
@@ -179,33 +178,37 @@ class TreePage extends React.Component {
             </div>
           </div>
         )}
-        {FMEA.selectedStructure &&
-          FMEA.selectedStructure.FunctionSet.length > 0 && (
+        
             <div className={styles.setTarget}>
               <div className={styles.currTree}>
                 <span>功能树:</span>
+                <Button type="dashed" onClick={e => this.addFun(e)} style={{ width: '40%' }}>
+                  <Icon type="plus" /> 添加功能
+                </Button>
               </div>
-              <Tree
+              {FMEA.selectedStructure &&
+          FMEA.selectedStructure.FunctionSet.length > 0 && (<Tree
                 showLine
                 defaultExpandAll={true}
                 showLine
                 onSelect={this.onSelect}
               >
                 {funList}
-              </Tree>
+              </Tree>)}
             </div>
-          )}
+          
         {FMEA.actionType == 2 && <FailDeatail {...this.props} />}
         <div className={styles.btnDiv}>
-          {(FMEA.actionType == 1 || FMEA.actionType == 0) && (
-            <Button className={styles.addBtn} onClick={e => this.addFun(e)}>
-              添加功能
+          {/* {(FMEA.actionType == 0) && (
+          <Button className={styles.addBtn} onClick={e => this.addFun(e)} size='small'>
+            添加功能
             </Button>
-          )}
+          )} */}
           {FMEA.actionType == 1 &&
             FMEA.selectedStructure.FunctionSet.length > 0 && (
               <Button
                 className={styles.addBtn}
+                size='small'
                 onClick={e => this.props.dispatch({ type: 'FMEA/removeFun' })}
               >
                 删除功能
@@ -214,6 +217,7 @@ class TreePage extends React.Component {
           {FMEA.actionType == 1 && (
             <Button
               className={styles.addBtnDepend}
+              size='small'
               onClick={e => this.addFunDepend(e)}
             >
               添加功能依赖
@@ -222,6 +226,7 @@ class TreePage extends React.Component {
           {FMEA.actionType == 1 && (
             <Button
               className={styles.addFaillBtn}
+              size='small'
               onClick={e => this.addFail(e)}
             >
               添加失效
@@ -230,6 +235,7 @@ class TreePage extends React.Component {
           {FMEA.actionType == 2 && (
             <Button
               className={styles.addBtn}
+              size='small'
               onClick={e => this.addFailDepend(e)}
             >
               添加失效依赖
@@ -238,9 +244,19 @@ class TreePage extends React.Component {
           {FMEA.actionType == 2 && (
             <Button
               className={styles.addBtn}
+              size='small'
               onClick={e => this.props.dispatch({ type: 'FMEA/removeFail' })}
             >
               删除失效
+            </Button>
+          )}
+          {FMEA.actionType == 8 && (
+            <Button
+              className={styles.addBtn}
+              size='small'
+              onClick={e => this.failActionShow(e)}
+            >
+              设置
             </Button>
           )}
         </div>

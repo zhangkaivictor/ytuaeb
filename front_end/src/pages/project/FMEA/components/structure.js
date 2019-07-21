@@ -4,10 +4,10 @@ function GenerateId() {
   return String(array.join())
 }
 //生成固定长度随机数
-function randomId(l){
-  let str=''
-  for(let i=0;i<l;i++){
-    str+=parseInt(Math.random()*10) 
+function randomId(l) {
+  let str = ''
+  for (let i = 0; i < l; i++) {
+    str += parseInt(Math.random() * 10)
   }
   return str
 }
@@ -31,7 +31,7 @@ function FunctionFailure(name) {
 
   this.detectionSet = []
   this.preCautionSet = []
-  this.properties = [];
+  this.properties = []
 }
 
 FunctionFailure.prototype.appendDependentFailure = function(child) {
@@ -340,7 +340,7 @@ function StructurePane(projectName) {
 
   this.structureTreeRoot = null
   this.structureNodes = []
-  this.None = {
+  this.EmptyElement = {
     id: -1,
     name: 'NA',
     description: '',
@@ -415,7 +415,7 @@ StructurePane.prototype.deleteStructureNodeById = function(structureNodeId) {
               if (dff.structureNodeId == this.structureNodes[i].id) {
                 ff.dependentFailureSet[
                   ff.dependentFailureSet.indexOf(dff)
-                ] = this.None
+                ] = this.EmptyElement
               }
             })
           })
@@ -424,7 +424,7 @@ StructurePane.prototype.deleteStructureNodeById = function(structureNodeId) {
             if (dfs.structureNodeId == this.structureNodes[i].id) {
               fs.dependentFunctionSet[
                 fs.dependentFunctionSet.indexOf(dfs)
-              ] = this.None
+              ] = this.EmptyElement
             }
           })
         })
@@ -572,7 +572,7 @@ StructurePane.prototype.deleteFunctionInStructureNode = function(
             if (dff.functionId == functionId) {
               ff.dependentFailureSet[
                 ff.dependentFailureSet.indexOf(dff)
-              ] = this.None
+              ] = this.EmptyElement
             }
           })
         })
@@ -581,7 +581,7 @@ StructurePane.prototype.deleteFunctionInStructureNode = function(
           if (dfs.id == functionId) {
             fs.dependentFunctionSet[
               fs.dependentFunctionSet.indexOf(dfs)
-            ] = this.None
+            ] = this.EmptyElement
           }
         })
       })
@@ -806,7 +806,7 @@ StructurePane.prototype.deleteFailureInFunction = function(
               if (dff.id == failureId) {
                 ff.dependentFailureSet[
                   ff.dependentFailureSet.indexOf(dff)
-                ] = this.None
+                ] = this.EmptyElement
               }
             })
           })
@@ -817,23 +817,27 @@ StructurePane.prototype.deleteFailureInFunction = function(
     }
   }
 }
-StructurePane.prototype.AddFailureProperties = function (structureNodeId, functionId, failureId, propertyKey, propertyValue)
-{
-    var node = this.findStructureNodeById(structureNodeId);
-    if (node != null) {
-        var sf = node.findFunctionById(functionId);
-        if (sf != null) {
-            var ff = sf.findFailureById(failureId);
-            if (ff != null)
-            {
-                var property = {};
-                property.key = propertyKey;
-                property.value = propertyValue;
-                ff.properties.push(property);
-            }
-        }
+StructurePane.prototype.AddFailureProperties = function(
+  structureNodeId,
+  functionId,
+  failureId,
+  propertyKey,
+  propertyValue
+) {
+  var node = this.findStructureNodeById(structureNodeId)
+  if (node != null) {
+    var sf = node.findFunctionById(functionId)
+    if (sf != null) {
+      var ff = sf.findFailureById(failureId)
+      if (ff != null) {
+        var property = {}
+        property.key = propertyKey
+        property.value = propertyValue
+        ff.properties.push(property)
+      }
     }
-    return null;
+  }
+  return null
 }
 StructurePane.prototype.addDependentFailure = function(
   structureNodeId,
@@ -1311,20 +1315,20 @@ StructurePane.prototype.GetStructureFunctionDepTree = function(
   structureNodeId,
   functionId
 ) {
-  var st=this.findStructureNodeById(structureNodeId)
+  let _self = this
   var sfArray = this.AllStructureFunctions()
   var fs = sfArray.find(item => {
     return item.structureNodeId === structureNodeId && item.id === functionId
   })
   if (!fs) return
   var result = {}
-  result.id = functionId+randomId(5)
+  result.id = functionId + randomId(5)
   result.Name = fs.name
   result.structureNodeId = fs.structureNodeId
   result.leftChilds = []
   result.rightChilds = []
   result.t = 'fun'
-  result.structureNodeName=st.name
+  result.structureNodeName = this.findStructureNodeById(fs.structureNodeId).name
   // build left child
   ;(function recurse(currentFunction, childs) {
     for (
@@ -1334,14 +1338,16 @@ StructurePane.prototype.GetStructureFunctionDepTree = function(
     ) {
       var depFunction = currentFunction.dependentFunctionSet[i]
       var r = {}
-      r.id = depFunction.id+randomId(5)
+      r.id = depFunction.id + randomId(5)
       r.Name = depFunction.name
       r.label = depFunction.name
       r.side = 'left'
       r.structureNodeId = depFunction.structureNodeId
       r.children = []
       r.t = 'fun'
-      r.structureNodeName=st.name
+      r.structureNodeName = _self.findStructureNodeById(
+        depFunction.structureNodeId
+      ).name
       childs.push(r)
       recurse(depFunction, r.children)
     }
@@ -1361,14 +1367,16 @@ StructurePane.prototype.GetStructureFunctionDepTree = function(
     for (var i = 0, length = asParentFs.length; i < length; i++) {
       var depFunction = asParentFs[i]
       var r = {}
-      r.id = depFunction.id+randomId(5)
+      r.id = depFunction.id + randomId(5)
       r.Name = depFunction.name
       r.structureNodeId = depFunction.structureNodeId
       r.children = []
       r.side = 'right'
       r.label = depFunction.name
       r.t = 'fun'
-      r.structureNodeName=st.name
+      r.structureNodeName = _self.findStructureNodeById(
+        depFunction.structureNodeId
+      ).name
       childs.push(r)
       recurse(depFunction, r.children)
     }
@@ -1381,7 +1389,7 @@ StructurePane.prototype.GetFunctionFailureDepTree = function(
   functionId,
   failureId
 ) {
-  var st=this.findStructureNodeById(structureNodeId)
+  var _self = this
   var ffArray = this.AllFunctionFailures()
   var fs = ffArray.find(item => {
     return (
@@ -1392,14 +1400,14 @@ StructurePane.prototype.GetFunctionFailureDepTree = function(
   })
   if (!fs) return
   var result = {}
-  result.id = failureId+randomId(5)
+  result.id = failureId + randomId(5)
   result.Name = fs.name
   result.structureNodeId = fs.structureNodeId
   result.functionId = fs.functionId
   result.leftChilds = []
   result.rightChilds = []
   result.t = 'fail'
-  result.structureNodeName=st.name
+  result.structureNodeName = this.findStructureNodeById(fs.structureNodeId).name
   // build left child
   ;(function recurse(currentFailure, childs) {
     for (
@@ -1409,7 +1417,7 @@ StructurePane.prototype.GetFunctionFailureDepTree = function(
     ) {
       var depFailure = currentFailure.dependentFailureSet[i]
       var r = {}
-      r.id = depFailure.id+randomId(5)
+      r.id = depFailure.id + randomId(5)
       r.Name = depFailure.name
       r.structureNodeId = depFailure.structureNodeId
       r.functionId = depFailure.functionId
@@ -1421,7 +1429,9 @@ StructurePane.prototype.GetFunctionFailureDepTree = function(
       r.dValue = depFailure.dValue
       r.lambdaValue = depFailure.lambdaValue
       r.t = 'fail'
-      r.structureNodeName=st.name
+      r.structureNodeName = _self.findStructureNodeById(
+        depFailure.structureNodeId
+      ).name
       childs.push(r)
 
       recurse(depFailure, r.children)
@@ -1443,7 +1453,7 @@ StructurePane.prototype.GetFunctionFailureDepTree = function(
     for (var i = 0, length = asParentFs.length; i < length; i++) {
       var depFailure = asParentFs[i]
       var r = {}
-      r.id = depFailure.id+randomId(5)
+      r.id = depFailure.id + randomId(5)
       r.Name = depFailure.name
       r.structureNodeId = depFailure.structureNodeId
       r.functionId = depFailure.functionId
@@ -1457,7 +1467,9 @@ StructurePane.prototype.GetFunctionFailureDepTree = function(
       r.label = depFailure.name
       childs.push(r)
       r.t = 'fail'
-      r.structureNodeName=st.name
+      r.structureNodeName = _self.findStructureNodeById(
+        depFailure.structureNodeId
+      ).name
       recurse(depFailure, r.children)
     }
   })(fs, result.rightChilds)

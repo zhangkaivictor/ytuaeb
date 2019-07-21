@@ -24,10 +24,8 @@ export const pageModel = modelExtend(model, {
       pageSize: 10,
     },
   },
-
   reducers: {
     querySuccess(state, { payload }) {
-      console.log(payload)
       const {
         list,
         pagination,
