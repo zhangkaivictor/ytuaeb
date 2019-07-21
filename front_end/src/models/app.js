@@ -141,7 +141,7 @@ export default {
     },
   },
   effects: {
-    *query({}, { call, put, select }) {
+    *query({ }, { call, put, select }) {
       let email = window.localStorage.getItem('username')
       let token = window.localStorage.getItem('token')
       if (email == null && token == null) {
@@ -335,16 +335,27 @@ export default {
       }
     },
     *queryDic({ payload }, { call, put }) {
+      let storeDic = JSON.parse(localStorage.getItem('dictionary'))
       let data = {
         lastModifiedDate: null,
+      }
+      if (storeDic) {
+        let modifiedDateMax = new Date(storeDic[0].lastModfiedTime)
+        for (let i = 0; i < storeDic.length; i++) {
+          if (modifiedDateMax < new Date(storeDic[i].lastModfiedTime)) {
+            modifiedDateMax = new Date(storeDic[i].lastModfiedTime)
+            data.lastModifiedDate = storeDic[i].lastModfiedTime
+          }else{
+          }
+        }
       }
       const headers = {
         Authorization: window.localStorage.getItem('token'),
       }
       const dic = yield call(queryDic, data, headers)
-      if (dic.success) {
+      if (dic.list) {
         // yield put({type:'dic',payload:dic.list})
-        sessionStorage.setItem('dictionary', JSON.stringify(dic.list))
+        localStorage.setItem('dictionary', JSON.stringify(dic.list))
       }
     },
   },
@@ -370,7 +381,6 @@ export default {
       state.notifications = []
     },
     projectLists(state, { payload }) {
-      console.log(state.projectLists)
       state.projectLists = payload
     },
     dic(state, { payload }) {

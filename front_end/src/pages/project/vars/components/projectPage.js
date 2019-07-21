@@ -187,7 +187,6 @@ class ProjectPage extends React.Component {
       ) {
         userPrivilege = 0
       }
-      console.log(userPrivilege)
       const projectProps = {
         ...projectFile,
         privilege: 1,

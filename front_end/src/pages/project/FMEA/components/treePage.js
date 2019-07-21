@@ -250,7 +250,7 @@ class TreePage extends React.Component {
               删除失效
             </Button>
           )}
-          {FMEA.actionType == 8 && (
+          {FMEA.actionType == 2 && (
             <Button
               className={styles.addBtn}
               size='small'

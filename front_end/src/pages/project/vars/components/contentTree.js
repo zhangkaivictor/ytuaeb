@@ -59,6 +59,7 @@ class ContentTree extends React.Component {
     //   })
     // }
     const getTreeNode = () => {
+      console.log(projectContent.projectFiles.subFolders)
       return projectContent.projectFiles.subFolders.map(folder => {
         return <TreeNode title={folder.name} key={folder.id} />
       })

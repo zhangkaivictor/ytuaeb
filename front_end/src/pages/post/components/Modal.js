@@ -128,8 +128,8 @@ class UserModal extends PureComponent {
   render() {
     //下拉level
     const children = []
-    let alldictionary = JSON.parse(sessionStorage.getItem('dictionary'))
-      ? JSON.parse(sessionStorage.getItem('dictionary'))
+    let alldictionary = JSON.parse(localStorage.getItem('dictionary'))
+      ? JSON.parse(localStorage.getItem('dictionary'))
       : []
     let dictionary=alldictionary.filter(dic=>dic.groupName==="projectFileLevel")
     for (let i = 0; i < dictionary.length; i++) {

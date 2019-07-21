@@ -73,7 +73,6 @@ class onAnalysis extends PureComponent {
   }
   render() {
     const { FTA, location } = this.props
-    console.log(FTA)
     if (FTA.list.length <= 0) {
       router.push({
         pathname: '/project/FTA',
