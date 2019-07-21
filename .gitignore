@@ -1,0 +1,6 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/back_end/python_script/excel/Pipfile
+/back_end/python_script/excel/Pipfile.lock

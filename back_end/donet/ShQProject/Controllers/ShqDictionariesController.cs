@@ -19,16 +19,81 @@ namespace Dxc.Shq.WebApi.Controllers
         private ShqContext db = new ShqContext();
 
         /// <summary>
+        /// GetShqDictionaryAll
+        /// </summary>
+        /// <param name="lastModifiedDate">the max last modified date</param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("api/ShqDictionaries/all")]
+        public IQueryable<ShqDictionary> GetShqDictionaryAll(string lastModifiedDate)
+        {
+            if (string.IsNullOrEmpty(lastModifiedDate) == true)
+            {
+                return db.ShqDictionary.AsQueryable();
+            }
+            else
+            {
+                DateTime lastDate = DateTime.Parse(lastModifiedDate);
+                var item = db.ShqDictionary.Where(row => row.LastModfiedTime > lastDate);
+                if (item != null && item.Count() > 0)
+                {
+                    return db.ShqDictionary.AsQueryable();
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+
+        /// <summary>
         /// to get pre-defined Dictionary
         /// </summary>
         /// <param name="groupName">the category name , for the work project file level is "projectFileLevel"</param>
+        /// <param name="lastModifiedDate">the max last modified date</param>
         /// <returns></returns>
         [HttpGet]
         [Route("api/ShqDictionaries")]
-        public IQueryable<ShqDictionary> GetShqDictionary(string groupName)
+        public IQueryable<ShqDictionary> GetShqDictionary(string groupName, string lastModifiedDate)
         {
-            var all = db.ShqDictionary.Where(item => item.GroupName == groupName);
-            return all;
+
+            if (string.IsNullOrEmpty(lastModifiedDate) == true)
+            {
+                return db.ShqDictionary.Where(item => item.GroupName == groupName);
+            }
+            else
+            {
+                DateTime lastDate = DateTime.Parse(lastModifiedDate);
+                var row = db.ShqDictionary.Where(item => item.GroupName == groupName && item.LastModfiedTime > lastDate);
+                if (row != null && row.Count() > 0)
+                {
+                    return db.ShqDictionary.Where(item => item.GroupName == groupName);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+        }
+
+        [HttpGet]
+        [Route("api/ShqDictionaries/Add")]
+        public ShqDictionary AddShqDictionary(string groupName, string dictName, string dictValue)
+        {
+            var row = db.ShqDictionary.FirstOrDefault(item => item.GroupName == groupName && item.DictName == dictName && item.DictValue == dictValue);
+            if (row != null)
+            {
+                row.DictValue = dictValue;
+            }
+            else
+            {
+                row = db.ShqDictionary.Add(new ShqDictionary() { GroupName = groupName, DictName = dictName, DictValue = dictValue });
+            }
+
+            db.SaveChanges();
+
+            return row;
         }
 
         //// PUT: api/ShqDictionaries/5

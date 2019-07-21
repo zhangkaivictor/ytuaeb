@@ -1,9 +1,14 @@
 @import '~themes/vars';
 
+.left {
+  position: absolute;
+  top: 10%;
+  left: 5%;
+}
 .form {
   position: absolute;
   top: 45%;
-  left: 50%;
+  left: 75%;
   margin: -160px 0 0 -160px;
   width: 320px;
   height: 320px;
@@ -40,6 +45,31 @@
   span {
     vertical-align: text-bottom;
     font-size: 16px;
+    text-transform: uppercase;
+    display: inline-block;
+    font-weight: 700;
+    color: @primary-color;
+    .text-gradient();
+  }
+}
+
+.companyLogo {
+  text-align: left;
+  cursor: pointer;
+  margin-bottom: 24px;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  padding: 2%;
+
+  img {
+    width: 40px;
+    margin-right: 8px;
+  }
+
+  span {
+    vertical-align: text-bottom;
+    font-size: 32px;
     text-transform: uppercase;
     display: inline-block;
     font-weight: 700;

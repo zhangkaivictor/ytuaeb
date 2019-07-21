@@ -481,11 +481,19 @@
             </summary>
             <param name="documentPath">The physical path to XML document.</param>
         </member>
-        <member name="M:Dxc.Shq.WebApi.Controllers.ShqDictionariesController.GetShqDictionary(System.String)">
+        <member name="M:Dxc.Shq.WebApi.Controllers.ShqDictionariesController.GetShqDictionaryAll(System.String)">
+            <summary>
+            GetShqDictionaryAll
+            </summary>
+            <param name="lastModifiedDate">the max last modified date</param>
+            <returns></returns>
+        </member>
+        <member name="M:Dxc.Shq.WebApi.Controllers.ShqDictionariesController.GetShqDictionary(System.String,System.String)">
             <summary>
             to get pre-defined Dictionary
             </summary>
             <param name="groupName">the category name , for the work project file level is "projectFileLevel"</param>
+            <param name="lastModifiedDate">the max last modified date</param>
             <returns></returns>
         </member>
         <member name="M:Dxc.Shq.WebApi.Controllers.ShqKeywordSetsController.GetShqKeywordSet(System.String)">

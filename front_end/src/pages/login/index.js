@@ -31,10 +31,16 @@ class Login extends PureComponent {
 
     return (
       <Fragment>
+        <div className={styles.companyLogo}>
+          <img alt="logo" src={config.logoPath} />
+          <span>{config.siteName}</span>
+        </div>
+        <div className={styles.left}>
+          <img src={config.leftPath} alt="" />
+        </div>
         <div className={styles.form}>
           <div className={styles.logo}>
-            <img alt="logo" src={config.logoPath} />
-            <span>{config.siteName}</span>
+            <span>{'登录系统'}</span>
           </div>
           <form>
             <FormItem hasFeedback>
