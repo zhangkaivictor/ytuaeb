@@ -35,6 +35,9 @@ namespace Dxc.Shq.WebApi.Core
 
         public const int MaxSearchCount = 10;
 
+        public const int ProjectActive = 0;
+        public const int ProjectDeleted = 1;
+
         public enum FileStatus
         {
             Ready =0,

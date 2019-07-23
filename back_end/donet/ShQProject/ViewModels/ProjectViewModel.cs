@@ -31,6 +31,8 @@ namespace Dxc.Shq.WebApi.ViewModels
 
         public string Tag { get; set; }
 
+        public int Status { get; set; }
+
         [Required]
         public string Type { get; set; }
 
@@ -51,6 +53,7 @@ namespace Dxc.Shq.WebApi.ViewModels
             p.Description = Description;
             p.Tag = Tag;
             p.Type = Type;
+            p.Status = Status;
             //p.CreatedBy = CreatedBy.ToShqUser();
             //p.CreatedTime = DateTime.Parse(CreatedTime);
 
@@ -85,6 +88,7 @@ namespace Dxc.Shq.WebApi.ViewModels
             Description = project.Description;
             Type = project.Type;
             Tag = project.Tag;
+            Status = project.Status;
             
             if(project.Type == "WorkProject")
             {

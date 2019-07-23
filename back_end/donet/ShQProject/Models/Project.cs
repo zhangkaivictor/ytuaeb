@@ -16,6 +16,8 @@
 
         public string Tag { get; set; }
 
+        public int Status { get; set; }
+
         [Required]
         public string Type { get; set; }
 

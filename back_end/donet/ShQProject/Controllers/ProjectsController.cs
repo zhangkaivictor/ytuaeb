@@ -90,6 +90,7 @@ namespace Dxc.Shq.WebApi.Controllers
             pro.ProjectName = project.Name;
             pro.Description = project.Description;
             pro.Tag = project.Tag;
+            pro.Status = project.Status;
             pro.LastModifiedById = db.ShqUsers.Where(u => u.IdentityUser.UserName == HttpContext.Current.User.Identity.Name).FirstOrDefault().IdentityUserId;
             pro.LastModfiedTime = DateTime.Now;
 
@@ -304,22 +305,27 @@ namespace Dxc.Shq.WebApi.Controllers
         [ResponseType(typeof(ProjectViewModel))]
         public async Task<IHttpActionResult> DeleteProject(Guid id)
         {
-            Project project = await db.Projects.FirstOrDefaultAsync(item => item.Id == id);
-            if (project == null)
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            Project pro = await db.Projects.FindAsync(id);
+            if (pro == null)
             {
                 return NotFound();
             }
 
-            var ps = db.ProjectShqUsers.Where(item => item.ProjectId == id);
-            db.ProjectShqUsers.RemoveRange(ps);
+            if (ProjectHelper.HasUpdateAccess(pro) == false)
+            {
+                throw new HttpResponseException(Request.CreateErrorResponse(HttpStatusCode.Forbidden, "No Access"));
+            }
 
-            var ftas = db.FTAProjects.Where(item => item.ProjectId == id);
-            db.FTAProjects.RemoveRange(ftas);
+            pro.Status = ShqConstants.ProjectDeleted;
 
-            db.Projects.Remove(project);
             await db.SaveChangesAsync();
 
-            return Ok(new ProjectViewModel(project, db));
+            return Ok(new ProjectViewModel(pro, db));
         }
 
         protected override void Dispose(bool disposing)
