@@ -3,8 +3,8 @@ import { Table, Divider, Popconfirm, message, Button } from 'antd'
 import { array } from 'prop-types'
 
 const getLevelLabel = function(arry) {
-  let dictionary = JSON.parse(sessionStorage.getItem('dictionary'))
-    ? JSON.parse(sessionStorage.getItem('dictionary'))
+  let dictionary = JSON.parse(localStorage.getItem('dictionary'))
+    ? JSON.parse(localStorage.getItem('dictionary'))
     : []
   let array = JSON.parse(arry)
   let list = []
@@ -17,10 +17,10 @@ const getLevelLabel = function(arry) {
 class ProjectPage extends React.Component {
   constructor(props) {
     super(props)
+    console.log(props)
   }
   text1 = 'Are you sure to delete this file?'
   render() {
-    console.log(this.props)
     const { files } = this.props
     files.forEach(element => {
       element.key = element.id
@@ -66,9 +66,10 @@ class ProjectPage extends React.Component {
       },
     ]
     const children = []
-    let dictionary = JSON.parse(sessionStorage.getItem('dictionary'))
-      ? JSON.parse(sessionStorage.getItem('dictionary'))
-      : []
+    let dic=JSON.parse(localStorage.getItem('dictionary'))
+    ? JSON.parse(localStorage.getItem('dictionary'))
+    : []
+    let dictionary = dic.filter(dic=>dic.groupName=== "failureProperties")
     for (let i = 0; i < dictionary.length; i++) {
       children.push({
         text: dictionary[i].dictName,

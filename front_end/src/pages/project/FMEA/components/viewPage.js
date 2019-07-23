@@ -87,7 +87,6 @@ class ViewPage extends React.Component {
       }
     }
     getViewData()
-    console.log(viewData)
     let graph = {
       // defaultNode: {
       //   size: 16,
@@ -160,7 +159,7 @@ class ViewPage extends React.Component {
               fifthSubShape="custom-node"
             />
             <CustomNode />
-            {/* <ContextMenu/> */}
+            <ContextMenu/>
             <RegisterBehaviour
               name="dblclickItemEditLabel"
               behaviour={() => {}}

@@ -1,6 +1,6 @@
 const api = {
   queryUserInfo: '/user',
-  queryDic: '/api/ShqDictionaries', //
+  queryDic: '/api/ShqDictionaries/all', //
   logoutUser: '/user/logout',
   loginUser: '/api/ShqUsers',
   token: 'POST /oauth2/token',

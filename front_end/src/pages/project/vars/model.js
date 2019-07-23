@@ -50,7 +50,6 @@ export default modelExtend(pageModel, {
       }
       let data = null
       //查询原型
-      console.log(payload)
       if (payload.projectId == '1b2cd8ab-6d6c-4a05-931b-e40607bd8b19') {
         data = yield call(
           queryOriginProject,
@@ -258,7 +257,6 @@ export default modelExtend(pageModel, {
           )
         }
         if (data.success) {
-          console.log(data)
           if (data.list.id == 0) {
             data.list.id = '1b2cd8ab-6d6c-4a05-931b-e40607bd8b19'
             data.list.projectFiles = Object.assign(
@@ -398,7 +396,6 @@ export default modelExtend(pageModel, {
           )
         }
         if (data.success) {
-          console.log(data)
           if (data.list.id == 0) {
             data.list.id = '1b2cd8ab-6d6c-4a05-931b-e40607bd8b19'
             data.list.projectFiles = Object.assign(
@@ -478,7 +475,6 @@ export default modelExtend(pageModel, {
   },
 })
 const downloadPrjectFile = (inputdata, token) => {
-  console.log(inputdata)
   return new Promise((resolve, reject) => {
     var xhr = new XMLHttpRequest()
     xhr.open('POST', apiPrefix + '/api/ProjectFiles/Update', true)

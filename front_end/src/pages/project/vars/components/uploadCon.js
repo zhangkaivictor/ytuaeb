@@ -46,6 +46,8 @@ class UploadCon extends React.Component {
   }
   handleChange(value) {
     let formatLevel = value.map(v => Number(v))
+    console.log(formatLevel)
+
     this.setState({
       level: `${JSON.stringify(formatLevel)}`,
       defaultLevel: value,
@@ -54,12 +56,13 @@ class UploadCon extends React.Component {
   render() {
     //下拉level
     const children = []
-    let dictionary = JSON.parse(sessionStorage.getItem('dictionary'))
-      ? JSON.parse(sessionStorage.getItem('dictionary'))
-      : []
+    let dic=JSON.parse(localStorage.getItem('dictionary'))
+    ? JSON.parse(localStorage.getItem('dictionary'))
+    : []
+    let dictionary = dic.filter(dic=>dic.groupName=== "failureProperties")
     for (let i = 0; i < dictionary.length; i++) {
       children.push(
-        <Option key={dictionary[i].dictValue}>{dictionary[i].dictName}</Option>
+        <Option key={dictionary[i].id} value={dictionary[i].dictValue}>{dictionary[i].dictName}</Option>
       )
     }
     const { uploading, fileList } = this.state

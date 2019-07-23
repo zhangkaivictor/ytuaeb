@@ -10,6 +10,7 @@ export default modelExtend(pageModel, {
   subscriptions: {
     setup({ dispatch, history }) {
       history.listen(location => {
+        // console.log(history)
         if (pathMatchRegexp('/project/FTA', location.pathname)) {
           if (location.query.projectId != undefined) {
             dispatch({
