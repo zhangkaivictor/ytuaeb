@@ -1,11 +1,11 @@
 import React from 'react'
 import { Table, Divider, Popconfirm, message, Button } from 'antd'
 import { array } from 'prop-types'
-
+import {
+  dicNameQuery
+} from 'utils'
 const getLevelLabel = function(arry) {
-  let dictionary = JSON.parse(localStorage.getItem('dictionary'))
-    ? JSON.parse(localStorage.getItem('dictionary'))
-    : []
+  let dictionary = dicNameQuery("projectFileLevel")
   let array = JSON.parse(arry)
   let list = []
   array.map(v => {
@@ -66,10 +66,7 @@ class ProjectPage extends React.Component {
       },
     ]
     const children = []
-    let dic=JSON.parse(localStorage.getItem('dictionary'))
-    ? JSON.parse(localStorage.getItem('dictionary'))
-    : []
-    let dictionary = dic.filter(dic=>dic.groupName=== "failureProperties")
+    let dictionary = dicNameQuery("projectFileLevel")
     for (let i = 0; i < dictionary.length; i++) {
       children.push({
         text: dictionary[i].dictName,

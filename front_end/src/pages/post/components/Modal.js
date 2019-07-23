@@ -7,7 +7,7 @@ import PartnerLists from './PartnerLists'
 const FormItem = Form.Item
 
 const guid = () => {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
     let r = (Math.random() * 16) | 0,
       v = c == 'x' ? r : (r & 0x3) | 0x8
     return v.toString(16)
@@ -79,7 +79,7 @@ const arrDup = (bigArr, arr1, arr2) => {
 }
 const { Option } = Select
 
-function handleChange(value) {}
+function handleChange(value) { }
 @withI18n()
 @Form.create()
 class UserModal extends PureComponent {
@@ -124,14 +124,43 @@ class UserModal extends PureComponent {
       onOk(data)
     })
   }
-
+  componentWillMount() {
+    const {
+      item = {},
+      onOk,
+      form,
+      i18n,
+      userData,
+      userNameList,
+      ...modalProps
+    } = this.props
+    const owner = window.localStorage.getItem('username')
+    if (modalProps.title == '创建项目') {
+      this.addRemoveProps = {
+        options: usersListFn(userNameList, owner),
+        selectedOptions: [],
+        readOptions: [],
+      }
+    } else {
+      let createdReal = item.createdBy.realName
+      let usersPrivileges = item.usersPrivileges
+      this.addRemoveProps = {
+        options: arrDup(
+          usersListFn(userNameList, owner, createdReal),
+          selectedOptionsListFn(usersPrivileges),
+          readOptionsListFn(usersPrivileges)
+        ),
+        selectedOptions: selectedOptionsListFn(usersPrivileges),
+        readOptions: readOptionsListFn(usersPrivileges),
+      }
+    }
+  }
   render() {
     //下拉level
     const children = []
-    let alldictionary = JSON.parse(localStorage.getItem('dictionary'))
-      ? JSON.parse(localStorage.getItem('dictionary'))
+    let dictionary = JSON.parse(sessionStorage.getItem('dictionary'))
+      ? JSON.parse(sessionStorage.getItem('dictionary'))
       : []
-    let dictionary=alldictionary.filter(dic=>dic.groupName==="projectFileLevel")
     for (let i = 0; i < dictionary.length; i++) {
       children.push(
         <Option key={dictionary[i].dictValue}>{dictionary[i].dictName}</Option>
@@ -151,11 +180,11 @@ class UserModal extends PureComponent {
     let userList
     let usersPrivileges = item.usersPrivileges
     if (modalProps.title == '创建项目') {
-      const addRemoveProps = {
-        options: usersListFn(userNameList, owner),
-        selectedOptions: [],
-        readOptions: [],
-      }
+      // const addRemoveProps = {
+      //   options: usersListFn(userNameList, owner),
+      //   selectedOptions: [],
+      //   readOptions: [],
+      // }
       userList = (
         <Form layout="horizontal">
           <FormItem label={'项目名称'} hasFeedback {...formItemLayout}>
@@ -228,22 +257,22 @@ class UserModal extends PureComponent {
           </FormItem>
           <FormItem label={'项目参与者'} hasFeedback {...formItemLayout}>
             {getFieldDecorator('usersPrivileges', {
-              initialValue: addRemoveProps,
-            })(<PartnerLists {...addRemoveProps} />)}
+              initialValue: this.addRemoveProps,
+            })(<PartnerLists {...this.addRemoveProps} />)}
           </FormItem>
         </Form>
       )
     } else if (modalProps.title == '更新项目') {
       let createdReal = item.createdBy.realName
-      const addRemoveProps = {
-        options: arrDup(
-          usersListFn(userNameList, owner, createdReal),
-          selectedOptionsListFn(usersPrivileges),
-          readOptionsListFn(usersPrivileges)
-        ),
-        selectedOptions: selectedOptionsListFn(usersPrivileges),
-        readOptions: readOptionsListFn(usersPrivileges),
-      }
+      // const addRemoveProps = {
+      //   options: arrDup(
+      //     usersListFn(userNameList, owner, createdReal),
+      //     selectedOptionsListFn(usersPrivileges),
+      //     readOptionsListFn(usersPrivileges)
+      //   ),
+      //   selectedOptions: selectedOptionsListFn(usersPrivileges),
+      //   readOptions: readOptionsListFn(usersPrivileges),
+      // }
       let lastModified = item.lastModifiedBy.realName
       userList = (
         <Form layout="horizontal">
@@ -340,8 +369,8 @@ class UserModal extends PureComponent {
           </FormItem>
           <FormItem label={'项目参与者'} hasFeedback {...formItemLayout}>
             {getFieldDecorator('usersPrivileges', {
-              initialValue: addRemoveProps,
-            })(<PartnerLists {...addRemoveProps} />)}
+              initialValue: this.addRemoveProps,
+            })(<PartnerLists {...this.addRemoveProps} />)}
           </FormItem>
         </Form>
       )

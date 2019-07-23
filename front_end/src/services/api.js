@@ -26,6 +26,7 @@ const api = {
   //FMEA
   getFmeaData: '/api/FMEAProjects/GetTree',
   postFmeaData: 'POST /api/FMEAProjects/AddTree',
+  remotePrecaution:'/api/ShqKeywordSets/Search',
   //vars
   getProjectContent: '/api/WorkProjects/GetWorkProject',
   queryOriginProject: '/api/ProjectFiles',

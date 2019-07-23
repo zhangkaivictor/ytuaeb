@@ -106,6 +106,7 @@ class ViewPage extends React.Component {
       //     stroke: '#A3B1BF'
       //   }
       // },
+      mode: 'readOnly',
       edgeDefaultShape: 'flow-polyline-round',
       // nodeDefaultShape:'custom-node' ,
       // defaultNode: {

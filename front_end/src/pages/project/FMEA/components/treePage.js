@@ -1,5 +1,8 @@
 import React, { Component } from 'react'
 import { Tree, Icon, Button, Checkbox, Input, Form } from 'antd'
+import {
+  dicNameQuery
+} from 'utils'
 import FailDeatail from './failDetail'
 import styles from './treePage.less'
 const { TreeNode } = Tree
@@ -13,6 +16,10 @@ class TreePage extends React.Component {
   onSelect = (selectedKeys, info) => {
     if (!this.props.FMEA.StructurePane.structureTreeRoot) {
       alert('请设置根节点')
+      return
+    }
+    //失效措施
+    if (info.node.props.style.color == 'blue') {
       return
     }
     this.props.dispatch({
@@ -74,6 +81,33 @@ class TreePage extends React.Component {
     const { FMEA } = this.props
     const { item = {}, onOk, form, ...modalProps } = this.props
     const { getFieldDecorator, resetFields } = form
+    const getProptiesV=(pre)=>{
+      return pre.valueList.map(v=>{
+        return <TreeNode title={v.value} key={v.id} style={{ color: 'blue' }}/>
+      })
+    }
+    const getProperties = (leaf) => {
+      let precautions = dicNameQuery('failureProperties')
+      precautions.forEach(pre => {
+        pre.valueList = []
+        leaf.properties.forEach(prop => {
+          if (prop.key == pre.dictValue) {
+            pre.valueList.push(prop)
+          }
+        })
+      })
+      console.log(precautions)
+      let properties = precautions.map(pre => {
+        return <TreeNode
+          title={`${pre.dictName}`}
+          key={pre.dictValue}
+          className={styles.funNode}
+          style={{ color: 'blue' }}>
+          {getProptiesV(pre)}
+          </TreeNode>
+      })
+      return properties
+    }
     let funList = null
     const getLeafHtml = leafs => {
       let lh = ''
@@ -87,7 +121,17 @@ class TreePage extends React.Component {
               key={leaf.id}
               className={styles.funNode}
               style={{ color: 'red' }}
-            />
+            >
+              {/* {(leaf.properties.length > 0) && (leaf.properties.map(proper => {
+                return <TreeNode
+                  title={`${dicNameQuery('failureProperties',proper.key)} : ${proper.value}`}
+                  key={proper.id}
+                  className={styles.funNode}
+                  style={{ color: 'blue' }}
+                />
+              }))} */}
+              {(leaf.properties.length > 0) && (getProperties(leaf))}
+            </TreeNode>
           )
         })
       }
@@ -178,25 +222,25 @@ class TreePage extends React.Component {
             </div>
           </div>
         )}
-        
-            <div className={styles.setTarget}>
-              <div className={styles.currTree}>
-                <span>功能树:</span>
-                <Button type="dashed" onClick={e => this.addFun(e)} style={{ width: '40%' }}>
-                  <Icon type="plus" /> 添加功能
+
+        <div className={styles.setTarget}>
+          <div className={styles.currTree}>
+            <span>功能树:</span>
+            <Button type="dashed" onClick={e => this.addFun(e)}>
+              <Icon type="plus" /> 添加功能
                 </Button>
-              </div>
-              {FMEA.selectedStructure &&
-          FMEA.selectedStructure.FunctionSet.length > 0 && (<Tree
-                showLine
-                defaultExpandAll={true}
-                showLine
-                onSelect={this.onSelect}
-              >
-                {funList}
-              </Tree>)}
-            </div>
-          
+          </div>
+          {FMEA.selectedStructure &&
+            FMEA.selectedStructure.FunctionSet.length > 0 && (<Tree
+              showLine
+              defaultExpandAll={true}
+              showLine
+              onSelect={this.onSelect}
+            >
+              {funList}
+            </Tree>)}
+        </div>
+
         {FMEA.actionType == 2 && <FailDeatail {...this.props} />}
         <div className={styles.btnDiv}>
           {/* {(FMEA.actionType == 0) && (
@@ -256,7 +300,7 @@ class TreePage extends React.Component {
               size='small'
               onClick={e => this.failActionShow(e)}
             >
-              设置
+              措施
             </Button>
           )}
         </div>

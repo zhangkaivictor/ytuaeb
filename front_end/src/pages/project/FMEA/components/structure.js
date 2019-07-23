@@ -821,8 +821,7 @@ StructurePane.prototype.AddFailureProperties = function(
   structureNodeId,
   functionId,
   failureId,
-  propertyKey,
-  propertyValue
+  property,
 ) {
   var node = this.findStructureNodeById(structureNodeId)
   if (node != null) {
@@ -830,10 +829,7 @@ StructurePane.prototype.AddFailureProperties = function(
     if (sf != null) {
       var ff = sf.findFailureById(failureId)
       if (ff != null) {
-        var property = {}
-        property.key = propertyKey
-        property.value = propertyValue
-        ff.properties.push(property)
+        ff.properties=property
       }
     }
   }
@@ -1155,7 +1151,6 @@ function ConvertJsonToStructurePane(jsonString) {
       fsitem.FailureSet.forEach(function(ffitem, ffindex, ffarray) {
         var fs = JsonCloneNonObject(ffitem, FunctionFailure)
         fs.dependentFailureSet = ffitem.dependentFailureSet
-
         sf.FailureSet.push(fs)
       })
 
@@ -1263,20 +1258,18 @@ function ConvertJsonToStructurePane(jsonString) {
 
   return sp
 }
-
-function JsonCloneNonObject(jsonObject, toType) {
-  var to = new toType()
-  if (null == jsonObject || 'object' != typeof jsonObject) return to
-
-  for (var attr in jsonObject) {
-    if (jsonObject.hasOwnProperty(attr)) {
-      if ('object' != typeof jsonObject[attr]) {
-        to[attr] = jsonObject[attr]
-      }
-    }
-  }
-  return to
-}
+// function JsonCloneNonObject(jsonObject, toType) {
+//   var to = new toType()
+//   if (null == jsonObject || 'object' != typeof jsonObject) return to
+//   for (var attr in jsonObject) {
+//     if (jsonObject.hasOwnProperty(attr)) {
+//       if ('object' != typeof jsonObject[attr]) {
+//         to[attr] = jsonObject[attr]
+//       }
+//     }
+//   }
+//   return to
+// }
 
 function Clone(obj) {
   if (null == obj || 'object' != typeof obj) return obj
@@ -1337,6 +1330,10 @@ StructurePane.prototype.GetStructureFunctionDepTree = function(
       i++
     ) {
       var depFunction = currentFunction.dependentFunctionSet[i]
+      let structure=_self.findStructureNodeById(
+        depFunction.structureNodeId
+      )
+      if(!structure) continue
       var r = {}
       r.id = depFunction.id + randomId(5)
       r.Name = depFunction.name
@@ -1367,6 +1364,10 @@ StructurePane.prototype.GetStructureFunctionDepTree = function(
     for (var i = 0, length = asParentFs.length; i < length; i++) {
       var depFunction = asParentFs[i]
       var r = {}
+      let structure=_self.findStructureNodeById(
+        depFunction.structureNodeId
+      )
+      if(!structure) continue
       r.id = depFunction.id + randomId(5)
       r.Name = depFunction.name
       r.structureNodeId = depFunction.structureNodeId
@@ -1417,6 +1418,10 @@ StructurePane.prototype.GetFunctionFailureDepTree = function(
     ) {
       var depFailure = currentFailure.dependentFailureSet[i]
       var r = {}
+      let structure=_self.findStructureNodeById(
+        depFailure.structureNodeId
+      )
+      if(!structure) continue
       r.id = depFailure.id + randomId(5)
       r.Name = depFailure.name
       r.structureNodeId = depFailure.structureNodeId
@@ -1429,9 +1434,12 @@ StructurePane.prototype.GetFunctionFailureDepTree = function(
       r.dValue = depFailure.dValue
       r.lambdaValue = depFailure.lambdaValue
       r.t = 'fail'
-      r.structureNodeName = _self.findStructureNodeById(
+      r.structureNodeName = (_self.findStructureNodeById(
         depFailure.structureNodeId
-      ).name
+      )).name
+      console.log(_self.findStructureNodeById(
+        depFailure.structureNodeId
+      ))
       childs.push(r)
 
       recurse(depFailure, r.children)
@@ -1453,6 +1461,10 @@ StructurePane.prototype.GetFunctionFailureDepTree = function(
     for (var i = 0, length = asParentFs.length; i < length; i++) {
       var depFailure = asParentFs[i]
       var r = {}
+      let structure=_self.findStructureNodeById(
+        depFailure.structureNodeId
+      )
+      if(!structure) continue
       r.id = depFailure.id + randomId(5)
       r.Name = depFailure.name
       r.structureNodeId = depFailure.structureNodeId
@@ -1592,7 +1604,22 @@ StructurePane.prototype.UpdateFunctionFailureSValue = function(
   })(ff)
   return result
 }
+///增加了properties的复制07/23/19
+function JsonCloneNonObject(jsonObject, toType) {
+  var to = new toType()
+  if (null == jsonObject || 'object' != typeof jsonObject) return to
 
+  for (var attr in jsonObject) {
+    if (jsonObject.hasOwnProperty(attr)) {
+      if ('object' != typeof jsonObject[attr]) {
+        to[attr] = jsonObject[attr]
+      }else if(attr=='properties'){
+        to[attr] = jsonObject[attr]
+      }
+    }
+  }
+  return to
+}
 export {
   StructurePane,
   StructureFunction,
