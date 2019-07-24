@@ -78,7 +78,6 @@ export default modelExtend(pageModel, {
         Authorization: window.localStorage.getItem('token'),
       }
       const data = yield call(getFmeaData, payload, headers)
-      console.log(data)
       if (data.success) {
         yield put({
           type: 'queryFmeaSuccess',
@@ -89,11 +88,9 @@ export default modelExtend(pageModel, {
       }
     },
     *GetPrecautionOption({ payload = {} }, { call, put }){
-      console.log(payload)
       const headers = {
         Authorization: window.localStorage.getItem('token'),
       }
-      let keyWordsStr=''
       const data={
         keywords:JSON.stringify({
           "scope":"failureProperty",
@@ -101,7 +98,6 @@ export default modelExtend(pageModel, {
         })
       }
       const response = yield call(remotePrecaution, data, headers)
-      console.log(response)
       if(response.success){
         yield put({
           type: 'remotePrecautionSuccess',
@@ -126,7 +122,6 @@ export default modelExtend(pageModel, {
         }
       }
       let structurePaneObj = ConvertJsonToStructurePane(payload.list)
-      console.log(structurePaneObj)
       let nodeData = {
         nodes: [],
         edges: [],

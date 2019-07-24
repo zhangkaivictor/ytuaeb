@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react'
-import { Table, Avatar } from 'antd'
+import { Table, Avatar, Divider, Popconfirm } from 'antd'
 import { DropOption } from 'components'
-import { Trans,withI18n } from '@lingui/react'
+import { Trans, withI18n } from '@lingui/react'
 import { Ellipsis } from 'ant-design-pro'
 import styles from './List.less'
 
@@ -20,7 +20,7 @@ class List extends PureComponent {
     const { i18n, ...tableProps } = this.props
     const columns = [
       {
-        title:'项目名称',
+        title: '项目名称',
         dataIndex: 'name',
         render: text => (
           <Ellipsis tooltip length={30}>
@@ -67,6 +67,25 @@ class List extends PureComponent {
           )
         },
       },
+      // {
+      //   title: <Trans>Operation</Trans>,
+      //   key: 'operation',
+      //   render: (text, record) => (
+      //     <span>
+      //       <a onClick={e => this.handleMenuClick(record, { key: '1', name: "修改信息" })}>Edit</a>
+      //       <Divider type="vertical" />
+      //       <Popconfirm
+      //         placement="left"
+      //         title={'Are you sure to delete this program?'}
+      //         onConfirm={e => this.handleMenuClick(record, { key: '2', name: "删除" })}
+      //         okText="Yes"
+      //         cancelText="No"
+      //       >
+      //         <a>Delete</a>
+      //       </Popconfirm>
+      //     </span>
+      //   ),
+      // },
     ]
     return (
       <Table

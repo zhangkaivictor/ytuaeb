@@ -5,6 +5,7 @@ import {
 } from 'utils'
 import FailDeatail from './failDetail'
 import styles from './treePage.less'
+import Export from './export/index'
 const { TreeNode } = Tree
 const FormItem = Form.Item
 @Form.create()
@@ -96,7 +97,6 @@ class TreePage extends React.Component {
           }
         })
       })
-      console.log(precautions)
       let properties = precautions.map(pre => {
         return <TreeNode
           title={`${pre.dictName}`}
@@ -190,7 +190,9 @@ class TreePage extends React.Component {
       <div className={styles.treePage}>
         {FMEA.selectedStructure && (
           <div className={styles.setTarget}>
-            <div className={styles.currStr}>当前结构:</div>
+            <div className={styles.currStr}>当前结构:
+            <Export {...this.props}/>
+            </div>
             <div className={styles.currN}>
               <Icon type="appstore" theme="filled" />
               {/* <span>{this.props.FMEA.selectedStructure.name}</span> */}
@@ -228,7 +230,7 @@ class TreePage extends React.Component {
             <span>功能树:</span>
             <Button type="dashed" onClick={e => this.addFun(e)}>
               <Icon type="plus" /> 添加功能
-                </Button>
+                </Button>              
           </div>
           {FMEA.selectedStructure &&
             FMEA.selectedStructure.FunctionSet.length > 0 && (<Tree

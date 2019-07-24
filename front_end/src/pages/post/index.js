@@ -38,11 +38,11 @@ class Post extends PureComponent {
       dataSource: list,
       loading: loading.effects['post/query'],
       onchangeItem(item) {
+        console.log(item)
         dispatch({
-          type: 'post/showModal',
+          type: 'post/delete',
           payload: {
-            modalType: 'change',
-            currentItem: item,
+            id: item.id,
           },
         })
       },

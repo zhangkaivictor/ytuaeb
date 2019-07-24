@@ -16,9 +16,7 @@ class FailAction extends React.Component {
 
   constructor(props) {
     super(props);
-    console.log(props)
     const value = props.value || {};
-    console.log(value)
     this.state = {
       key: value.key || "1",
     };
@@ -29,7 +27,6 @@ class FailAction extends React.Component {
     if (text.trim()=='') {
       return;
     }
-    console.log(text,this.props)
     if (!('value' in this.props)) {
       this.setState({ value:text });
     }
@@ -37,7 +34,6 @@ class FailAction extends React.Component {
   };
 
   handlekeyChange = key => {
-    console.log(key)
     if (!('value' in this.props)) {
       this.setState({ key });
     }
@@ -46,7 +42,6 @@ class FailAction extends React.Component {
 
   triggerChange = changedValue => {
     // Should provide an event to pass value to Form.
-    console.log(changedValue)
     const { onChange } = this.props;
     if (onChange) {
       onChange(Object.assign({}, this.state, changedValue));
