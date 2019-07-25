@@ -161,7 +161,6 @@ class UserModal extends PureComponent {
     //下拉level
     const children = []
     let dictionary = dicNameQuery('projectFileLevel')
-    console.log(dictionary)
     for (let i = 0; i < dictionary.length; i++) {
       children.push(
         <Option key={dictionary[i].dictValue}>{dictionary[i].dictName}</Option>

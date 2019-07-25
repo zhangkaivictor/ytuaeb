@@ -53,39 +53,39 @@ class List extends PureComponent {
         title: '项目标签',
         dataIndex: 'tag',
       },
-      {
-        title: <Trans>Operation</Trans>,
-        key: 'operation',
-        render: (text, record) => {
-          return (
-            <DropOption
-              onMenuClick={e => this.handleMenuClick(record, e)}
-              menuOptions={[
-                { key: '1', name: "修改信息" },
-              ]}
-            />
-          )
-        },
-      },
       // {
       //   title: <Trans>Operation</Trans>,
       //   key: 'operation',
-      //   render: (text, record) => (
-      //     <span>
-      //       <a onClick={e => this.handleMenuClick(record, { key: '1', name: "修改信息" })}>Edit</a>
-      //       <Divider type="vertical" />
-      //       <Popconfirm
-      //         placement="left"
-      //         title={'Are you sure to delete this program?'}
-      //         onConfirm={e => this.handleMenuClick(record, { key: '2', name: "删除" })}
-      //         okText="Yes"
-      //         cancelText="No"
-      //       >
-      //         <a>Delete</a>
-      //       </Popconfirm>
-      //     </span>
-      //   ),
+      //   render: (text, record) => {
+      //     return (
+      //       <DropOption
+      //         onMenuClick={e => this.handleMenuClick(record, e)}
+      //         menuOptions={[
+      //           { key: '1', name: "修改信息" },
+      //         ]}
+      //       />
+      //     )
+      //   },
       // },
+      {
+        title: <Trans>Operation</Trans>,
+        key: 'operation',
+        render: (text, record) => (
+          <span>
+            <a onClick={e => this.handleMenuClick(record, { key: '1', name: "修改信息" })}>Edit</a>
+            <Divider type="vertical" />
+            <Popconfirm
+              placement="left"
+              title={'Are you sure to delete this program?'}
+              onConfirm={e => this.handleMenuClick(record, { key: '2', name: "删除" })}
+              okText="Yes"
+              cancelText="No"
+            >
+              <a>Delete</a>
+            </Popconfirm>
+          </span>
+        ),
+      },
     ]
     return (
       <Table
