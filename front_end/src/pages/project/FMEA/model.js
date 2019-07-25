@@ -1,5 +1,5 @@
 import modelExtend from 'dva-model-extend'
-import { getFmeaData, postFmeaData } from 'api'
+import { getFmeaData, postFmeaData ,remotePrecaution} from 'api'
 import { pathMatchRegexp, router } from 'utils'
 import { pageModel } from 'utils/model'
 import { message } from 'antd'
@@ -29,6 +29,7 @@ export default modelExtend(pageModel, {
     selectedFun: null,
     selectedFail: null,
     actionType: -1,
+    remotePrecautions:[]
   },
   subscriptions: {
     setup({ dispatch, history }) {
@@ -59,6 +60,7 @@ export default modelExtend(pageModel, {
         Authorization: window.localStorage.getItem('token'),
       }
       const data = yield call(postFmeaData, payload, headers)
+      console.log(data)
       if (data.success) {
         // yield put({
         //   type: 'querySuccess',
@@ -76,7 +78,6 @@ export default modelExtend(pageModel, {
         Authorization: window.localStorage.getItem('token'),
       }
       const data = yield call(getFmeaData, payload, headers)
-      console.log(data)
       if (data.success) {
         yield put({
           type: 'queryFmeaSuccess',
@@ -86,6 +87,26 @@ export default modelExtend(pageModel, {
         })
       }
     },
+    *GetPrecautionOption({ payload = {} }, { call, put }){
+      const headers = {
+        Authorization: window.localStorage.getItem('token'),
+      }
+      const data={
+        keywords:JSON.stringify({
+          "scope":"failureProperty",
+          "keywords":payload
+        })
+      }
+      const response = yield call(remotePrecaution, data, headers)
+      if(response.success){
+        yield put({
+          type: 'remotePrecautionSuccess',
+          payload: {
+            list: response.list,
+          },
+        })
+      }
+    }
   },
   reducers: {
     //获取结构对象
@@ -101,7 +122,6 @@ export default modelExtend(pageModel, {
         }
       }
       let structurePaneObj = ConvertJsonToStructurePane(payload.list)
-      console.log(structurePaneObj)
       let nodeData = {
         nodes: [],
         edges: [],
@@ -239,7 +259,6 @@ export default modelExtend(pageModel, {
           nodeData: nodeData,
         }
       }
-      console.log(parentNode, childNode)
       if (parentNode && childNode) {
         parentNode.appendChild(childNode)
         return {
@@ -521,6 +540,23 @@ export default modelExtend(pageModel, {
       }
 
     },
+    //添加失效措施
+    editFailProps(state,{payload}){
+      let StructurePaneObj = Object.assign(Object.create(Object.getPrototypeOf(state.StructurePane)), state.StructurePane)
+      console.log(payload)
+      // payload.forEach(prop=>{
+        StructurePaneObj.AddFailureProperties(state.selectedStructure.id,
+          state.selectedFun.id,
+          state.selectedFail.id,
+          payload)
+      // })
+      console.log(StructurePaneObj)
+      return{
+        ...state,
+        failActionModalVisiable: false,
+        StructurePane:StructurePaneObj
+      }
+    },
     //点击modal类型
     triggerType(state, { payload }) {
       let text =
@@ -619,6 +655,7 @@ export default modelExtend(pageModel, {
         nodeData: { ...state.nodeData, nodes: nodes },
       }
     },
+    //排列
     perputation(state, action) {
       console.log(state, action)
       let structurePaneObj = Object.assign(
@@ -703,6 +740,12 @@ export default modelExtend(pageModel, {
         StructurePane: StructurePaneObj,
       }
     },
-
+    remotePrecautionSuccess(state, action){
+      console.log(action)
+      return{
+        ...state,
+        remotePrecautions:action.payload.list
+      }
+    }
   },
 })

@@ -55,14 +55,19 @@ class SiderMenu extends PureComponent {
           </SubMenu>
         )
       }
-      return (
-        <Menu.Item key={item.id} title={item.name}>
-          <Navlink to={addLangPrefix(item.route) || '#'}>
-            {item.icon && <Icon type={item.icon} />}
-            <span>{item.name}</span>
-          </Navlink>
-        </Menu.Item>
-      )
+      if(item.id != '4') {
+        if(item.id == "63" || item.id == "62"){
+          item.route = "/post"
+        }
+        return (
+          <Menu.Item key={item.id} title={item.name}>
+            <Navlink to={addLangPrefix(item.route) || '#'}>
+              {item.icon && <Icon type={item.icon} />}
+              <span>{item.name}</span>
+            </Navlink>
+          </Menu.Item>
+        )
+      }
     })
   }
 

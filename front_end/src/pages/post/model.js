@@ -3,11 +3,13 @@ import {
   queryPostList,
   createPost,
   updatePost,
+  deletePost,
   queryUserList,
   queryPostTypeList,
 } from 'api'
 import { pathMatchRegexp } from 'utils'
 import { pageModel } from 'utils/model'
+import { message } from 'antd';
 
 export default modelExtend(pageModel, {
   namespace: 'post',
@@ -15,6 +17,7 @@ export default modelExtend(pageModel, {
   subscriptions: {
     setup({ dispatch, history }) {
       history.listen(location => {
+        console.log(location)
         if (pathMatchRegexp('/post', location.pathname)) {
           dispatch({
             type: 'query',
@@ -77,6 +80,18 @@ export default modelExtend(pageModel, {
       const data = yield call(updatePost, newUser, headers)
       if (data.success) {
         yield put({ type: 'hideModal' })
+      } else {
+        throw data
+      }
+    },
+    *delete({ payload }, { select, call, put }) {
+      const headers = {
+        Authorization: window.localStorage.getItem('token'),
+      }
+      const data = yield call(deletePost, payload, headers)
+      if (data.success) {
+        message.success('删除成功')
+        yield put({ type: 'app/query' })
       } else {
         throw data
       }

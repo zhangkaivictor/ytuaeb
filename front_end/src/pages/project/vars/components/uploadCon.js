@@ -59,7 +59,7 @@ class UploadCon extends React.Component {
     let dic=JSON.parse(localStorage.getItem('dictionary'))
     ? JSON.parse(localStorage.getItem('dictionary'))
     : []
-    let dictionary = dic.filter(dic=>dic.groupName=== "failureProperties")
+    let dictionary = dic.filter(dic=>dic.groupName=== "projectFileLevel")
     for (let i = 0; i < dictionary.length; i++) {
       children.push(
         <Option key={dictionary[i].id} value={dictionary[i].dictValue}>{dictionary[i].dictName}</Option>

@@ -172,7 +172,7 @@ class ProjectPage extends React.Component {
         : null
       let user = localStorage.getItem('username')
       let userPrivilege = 1
-      if (user != 'admin@dxc.com') {
+      if (user != 'admin@org715.com') {
         let projectUser = this.props.VARS.projectContent.usersPrivileges.find(
           u => u.emailAddress == user
         )

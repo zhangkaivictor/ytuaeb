@@ -10,7 +10,6 @@ export default modelExtend(pageModel, {
   subscriptions: {
     setup({ dispatch, history }) {
       history.listen(location => {
-        // console.log(history)
         if (pathMatchRegexp('/project/FTA', location.pathname)) {
           if (location.query.projectId != undefined) {
             dispatch({
@@ -19,11 +18,6 @@ export default modelExtend(pageModel, {
                 projectId: location.query.projectId,
               },
             })
-          } else {
-            router.push({
-              pathname: '/post',
-            })
-            message.info('目前没有项目，请新建！！！')
           }
         }
       })

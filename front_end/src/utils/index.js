@@ -254,3 +254,16 @@ export function setLocale(language) {
     })
   }
 }
+export function dicNameQuery(groupName,value){
+  let dic=JSON.parse(localStorage.getItem('dictionary'))
+    ? JSON.parse(localStorage.getItem('dictionary'))
+    : []
+    if(!groupName){
+      return dic
+    }
+    let dictionary=dic.filter(dic=>dic.groupName=== groupName)
+    if(!value){
+      return dictionary
+    }
+    return dictionary.find(dic=>dic.dictValue==value)?dictionary.find(dic=>dic.dictValue==value).dictName:null    
+}

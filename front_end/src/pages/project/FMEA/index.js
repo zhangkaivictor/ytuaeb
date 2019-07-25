@@ -19,6 +19,7 @@ class FmeaPage extends React.Component {
 
   // }
   saveFmea(data) {
+    console.log(data)
     const { dispatch, location } = this.props
     const { query } = location
     if (query.projectId != undefined) {

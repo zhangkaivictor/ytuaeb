@@ -9,7 +9,7 @@ const { CancelToken } = axios
 window.cancelRequest = new Map()
 
 export default function request(options) {
-  let { data, url, method = 'get',  } = options
+  let { data, url, method = 'get', } = options
   const cloneData = cloneDeep(data)
 
   try {
@@ -35,6 +35,12 @@ export default function request(options) {
 
   options.url =
     method.toLocaleLowerCase() === 'get' ? `${url}${isEmpty(cloneData) ? '' : '?'}${qs.stringify(cloneData)}` : url
+
+  if (method.toLocaleLowerCase() === 'delete' && (!isEmpty(cloneData))) {
+    options.url = url + '?' + qs.stringify(cloneData)
+  }
+  // options.url =
+  //   method.toLocaleLowerCase() === 'delete' ? `${url}${isEmpty(cloneData) ? '' : '?'}${qs.stringify(cloneData)}` : url
 
   options.cancelToken = new CancelToken(cancel => {
     window.cancelRequest.set(Symbol(Date.now()), {

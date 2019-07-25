@@ -18,27 +18,26 @@ class FailAction extends React.Component {
     super(props);
     const value = props.value || {};
     this.state = {
-      number: value.text || '',
-      currency: value.type || 1,
+      key: value.key || "1",
     };
   }
 
-  handleNumberChange = e => {
+  handleValueChange = e => {
     let text=e.target.value.trim()
     if (text.trim()=='') {
       return;
     }
     if (!('value' in this.props)) {
-      this.setState({ text });
+      this.setState({ value:text });
     }
-    this.triggerChange({ text });
+    this.triggerChange({ value:text });
   };
 
-  handleCurrencyChange = type => {
+  handlekeyChange = key => {
     if (!('value' in this.props)) {
-      this.setState({ type });
+      this.setState({ key });
     }
-    this.triggerChange({ type });
+    this.triggerChange({ key });
   };
 
   triggerChange = changedValue => {
@@ -52,25 +51,32 @@ class FailAction extends React.Component {
   render() {
     const { size } = this.props;
     const { state } = this;
+    const children = []
+    let dic=JSON.parse(localStorage.getItem('dictionary'))
+    ? JSON.parse(localStorage.getItem('dictionary'))
+    : []
+    let dictionary = dic.filter(dic=>dic.groupName=== "failureProperties")
+    for (let i = 0; i < dictionary.length; i++) {
+      children.push(
+        <Option key={dictionary[i].id} value={dictionary[i].dictValue}>{dictionary[i].dictName}</Option>
+      )
+    }
     return (
       <span>
-        <Input
-          type="text"
+        {/* <Input
+          key="text"
           size={size}
-          value={state.number}
-          onChange={this.handleNumberChange}
+          value={state.value}
+          onChange={this.handleValueChange}
           style={{ width: '55%', marginRight: '3%' }}
-        />
+        /> */}
         <Select
-          value={state.currency}
+          value={state.key}
           size={size}
-          style={{ width: '32%' ,marginRight: '3%'}}
-          onChange={this.handleCurrencyChange}
+          style={{marginRight: '3%'}}
+          onChange={this.handlekeyChange}
         >
-          <Option value={1}>预防措施</Option>
-          <Option value={2}>探测措施</Option>
-          <Option value={3}>改进预防措施</Option>
-          <Option value={4}>改进探测措施</Option>
+        {children}
         </Select>
       </span>
     );
