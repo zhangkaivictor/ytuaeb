@@ -12,6 +12,7 @@ const { TabPane } = Tabs
 @withI18n()
 @connect(({ FTA }) => ({ FTA }))
 class onAnalysis extends PureComponent {
+
   renderFailureNameContent = (value, row, index) => {
     const { FTA } = this.props
     const { treeReportList } = FTA
@@ -72,18 +73,12 @@ class onAnalysis extends PureComponent {
     return obj
   }
   render() {
-    const { FTA, location } = this.props
-    if (FTA.list.length <= 0) {
-      router.push({
-        pathname: '/project/FTA',
-        query: {
-          projectId: location.query.projectId,
-        },
-      })
-      // return
-    } else {
-      const { FTA } = this.props
-      const { treeReportList } = FTA
+    const { FTA,location,dispatch } = this.props;
+    console.log(this.props)
+    let reportList;
+    if(FTA.treeReportList !== undefined){
+      reportList = FTA.treeReportList
+    }
       const {
         tableP1,
         tableP2,
@@ -96,7 +91,7 @@ class onAnalysis extends PureComponent {
         dualPointEventNames,
         latentFaultMeasure,
         safeEventNames,
-      } = treeReportList
+      } = reportList
       const columns = [
         {
           title: '事件ID',
@@ -247,7 +242,6 @@ class onAnalysis extends PureComponent {
           ,
         </Page>
       )
-    }
   }
 }
 
