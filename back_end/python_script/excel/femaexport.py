@@ -121,8 +121,10 @@ def ExportDataToTemplate(structureNodeId, structureNodes):
 	sNodeParent = GetStructureNodeById(sNode['parent'], structureNodes)
 	sNodeChildren = GetStructureNodeChildrenById(structureNodeId, structureNodes)
 
-	PutData(12, 4, sNodeParent, sheet, 'parent')
-	PutData(12, 5, sNode, sheet, 'curent')
+	if not (sNodeParent is None):
+		PutData(12, 4, sNodeParent, sheet, 'parent')
+	if not(sNode is None):
+		PutData(12, 5, sNode, sheet, 'curent')
 	lastRowIndex = 12
 	for childNode in sNodeChildren:
 		lastRowIndex = PutData(lastRowIndex, 6, childNode, sheet, 'child')
