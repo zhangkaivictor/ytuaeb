@@ -18,9 +18,6 @@ export default modelExtend(pageModel, {
                 projectId: location.query.projectId,
               },
             })
-          } else {
-            history.push('/post')
-            message.info('目前没有项目，请新建！！！')
           }
         }
       })

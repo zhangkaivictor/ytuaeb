@@ -56,6 +56,9 @@ class SiderMenu extends PureComponent {
         )
       }
       if(item.id != '4') {
+        if(item.id == "63" || item.id == "62"){
+          item.route = "/post"
+        }
         return (
           <Menu.Item key={item.id} title={item.name}>
             <Navlink to={addLangPrefix(item.route) || '#'}>

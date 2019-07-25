@@ -32,7 +32,6 @@ class Post extends PureComponent {
       selectedRowKeys,
       userList,
     } = post
-    console.log(list)
     const { query, pathname } = location
     const listProps = {
       pagination,
