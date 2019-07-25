@@ -90,6 +90,7 @@ export default modelExtend(pageModel, {
       const data = yield call(deletePost, payload, headers)
       if (data.success) {
         message.success('删除成功')
+        yield put({ type: 'app/query' })
       } else {
         throw data
       }

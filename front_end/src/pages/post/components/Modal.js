@@ -3,7 +3,9 @@ import PropTypes from 'prop-types'
 import { Form, Input, Modal, Select } from 'antd'
 import { Trans, withI18n } from '@lingui/react'
 import PartnerLists from './PartnerLists'
-
+import {
+  dicNameQuery
+} from 'utils'
 const FormItem = Form.Item
 
 const guid = () => {
@@ -158,9 +160,8 @@ class UserModal extends PureComponent {
   render() {
     //下拉level
     const children = []
-    let dictionary = JSON.parse(sessionStorage.getItem('dictionary'))
-      ? JSON.parse(sessionStorage.getItem('dictionary'))
-      : []
+    let dictionary = dicNameQuery('projectFileLevel')
+    console.log(dictionary)
     for (let i = 0; i < dictionary.length; i++) {
       children.push(
         <Option key={dictionary[i].dictValue}>{dictionary[i].dictName}</Option>
