@@ -105,7 +105,7 @@ namespace Dxc.Shq.WebApi.Core
             if (!context.Users.Any())
             {
 
-                var shqUser = CreateUser(context, "admin@dxc.com", "admin@dxc.com", "123456", adminRoleId, null);
+                var shqUser = CreateUser(context, "admin@org715.com", "admin@org715.com", "123456", adminRoleId, null);
                 //CreateUser(context, "YangSong", "YangSong@saicmotor.com", "123456", adminRoleId, shqUser);
                 //CreateUser(context, "ZhaoXin", "zhaoxin01@saicmotor.com", "123456", adminRoleId, shqUser);
                 //CreateUser(context, "pm01", "pm01@saicmotor.com", "123456", userRoleId, shqUser);
@@ -114,7 +114,7 @@ namespace Dxc.Shq.WebApi.Core
                 //CreateUser(context, "e01", "e01@saicmotor.com", "123456", userRoleId, shqUser);
                 //CreateUser(context, "e02", "e02@saicmotor.com", "123456", userRoleId, shqUser);
                 //CreateUser(context, "e03", "e03@saicmotor.com", "123456", userRoleId, shqUser);
-                CreateUser(context, "testuser01@saicmotor.com", "testuser01@saicmotor.com", "123456", userRoleId, shqUser);
+                CreateUser(context, "testuser01@org715.com", "testuser01@org715.com", "123456", userRoleId, shqUser);
             }
 
             context.SaveChanges();

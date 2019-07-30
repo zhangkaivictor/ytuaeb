@@ -99,10 +99,6 @@ export default modelExtend(pageModel, {
             list: ftaMapData.list,
           },
         })
-        router.push({
-          pathname: '/project/FTA/onAnalysis',
-          query: payload,
-        })
       } else {
         throw data
       }

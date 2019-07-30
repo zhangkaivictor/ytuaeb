@@ -67,7 +67,7 @@ namespace Dxc.Shq.WebApi.Core
                     }
                 }
 
-                return pvs;
+                return pvs.Where(item=>item.Status == ShqConstants.ProjectActive).ToList();
             }
         }
 

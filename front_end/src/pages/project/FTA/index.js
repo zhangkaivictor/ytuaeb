@@ -1,6 +1,7 @@
 import React from 'react'
 import { connect } from 'dva'
 import { Row, Col, Button } from 'antd'
+import { pathMatchRegexp, router } from 'utils'
 import GGEditor, { Flow } from 'gg-editor'
 import EditorMinimap from './components/EditorMinimap/index'
 import { FlowContextMenu } from './components/EditorContextMenu/index'
@@ -34,7 +35,13 @@ class FlowPage extends React.Component {
       dispatch({
         type: `FTA/getMapTreeReport`,
         payload: { projectId: query.projectId },
-      })
+      }).then(()=>{
+        router.push({
+          pathname: '/project/FTA/onAnalysis',
+          query: { projectId: query.projectId },
+        })
+        }
+      )
     } else {
       alert('无法分析，请移步至项目管理新建项目！！！')
     }
