@@ -123,12 +123,14 @@ class NodeDetail extends React.Component {
     // console.log(item.getModel());
     if (shape == 'round') {
       if(!this.state.qchecked){
-        failureRateQ = Number(invalidRate)*Number(failureTime)*0.0000000001;
-        smallFailureRateQ = Number(invalidRate)*(1-Number(dCrf))*Number(failureTime);
+        failureRateQ = Number(invalidRate)*Number(failureTime)*0.000000001;
+        failureRateQ=failureRateQ.toFixed(6)
+        // smallFailureRateQ = Number(invalidRate)*(1-Number(dCrf))*Number(failureTime);
       }
     }else {
       if(this.state.invalidRateChecked){
-        failureRateQ = Number(invalidRate)*Number(failureTime)*0.0000000001;
+        failureRateQ = Number(invalidRate)*Number(failureTime)*0.000000001;
+        failureRateQ=failureRateQ.toFixed(6)
       }else {
         failureRateQ = smallFailureRateQ;
         invalidRate = failureRateQ /Number(failureTime);

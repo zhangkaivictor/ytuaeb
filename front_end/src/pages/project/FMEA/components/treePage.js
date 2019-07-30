@@ -284,7 +284,7 @@ class TreePage extends React.Component {
               size='small'
               onClick={e => this.addFailDepend(e)}
             >
-              添加失效依赖
+              依赖编辑
             </Button>
           )}
           {FMEA.actionType == 2 && (

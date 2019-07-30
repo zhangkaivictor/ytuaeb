@@ -1,5 +1,5 @@
 import modelExtend from 'dva-model-extend'
-import { getFmeaData, postFmeaData ,remotePrecaution} from 'api'
+import { getFmeaData, postFmeaData, remotePrecaution } from 'api'
 import { pathMatchRegexp, router } from 'utils'
 import { pageModel } from 'utils/model'
 import { message } from 'antd'
@@ -24,12 +24,13 @@ export default modelExtend(pageModel, {
     selectedStructure: null,
     createModalVisible: false,
     failActionModalVisiable: false,
+    DependModalVisiable: false,
     createModalType: 0,
     createModalTitle: '添加功能',
     selectedFun: null,
     selectedFail: null,
     actionType: -1,
-    remotePrecautions:[]
+    remotePrecautions: []
   },
   subscriptions: {
     setup({ dispatch, history }) {
@@ -87,18 +88,18 @@ export default modelExtend(pageModel, {
         })
       }
     },
-    *GetPrecautionOption({ payload = {} }, { call, put }){
+    *GetPrecautionOption({ payload = {} }, { call, put }) {
       const headers = {
         Authorization: window.localStorage.getItem('token'),
       }
-      const data={
-        keywords:JSON.stringify({
-          "scope":"failureProperty",
-          "keywords":payload
+      const data = {
+        keywords: JSON.stringify({
+          "scope": "failureProperty",
+          "keywords": payload
         })
       }
       const response = yield call(remotePrecaution, data, headers)
-      if(response.success){
+      if (response.success) {
         yield put({
           type: 'remotePrecautionSuccess',
           payload: {
@@ -454,21 +455,38 @@ export default modelExtend(pageModel, {
     },
     //添加功能依赖
     addFunctionDependent(state, { payload }) {
-      let dependentFunction = null
-      state.selectedStructure.allAboveNodes().forEach(node => {
-        node.FunctionSet.forEach(fun => {
-          if (fun.id == payload.data.id) {
-            dependentFunction = fun
-          }
+      // let dependentFunction = null
+      // state.selectedStructure.allAboveNodes().forEach(node => {
+      //   node.FunctionSet.forEach(fun => {
+      //     if (fun.id == payload.data.id) {
+      //       dependentFunction = fun
+      //     }
+      //   })
+      // })
+      // if (dependentFunction == null) {
+      //   return {
+      //     ...state,
+      //     createModalVisible: false,
+      //   }
+      // }
+      // state.selectedFun.appendDependentFunction(dependentFunction)
+      payload.data.forEach(funId => {
+        let dependentFunction = null
+        state.selectedStructure.allAboveNodes().forEach(node => {
+          node.FunctionSet.forEach(fun => {
+            if (fun.id == funId) {
+              dependentFunction = fun
+            }
+          })
         })
-      })
-      if (dependentFunction == null) {
-        return {
-          ...state,
-          createModalVisible: false,
+        if (dependentFunction == null) {
+          return {
+            ...state,
+            DependModalVisiable: false,
+          }
         }
-      }
-      state.selectedFun.appendDependentFunction(dependentFunction)
+        state.selectedFun.appendDependentFunction(dependentFunction)
+      })
       return {
         ...state,
         createModalVisible: false,
@@ -541,20 +559,20 @@ export default modelExtend(pageModel, {
 
     },
     //添加失效措施
-    editFailProps(state,{payload}){
+    editFailProps(state, { payload }) {
       let StructurePaneObj = Object.assign(Object.create(Object.getPrototypeOf(state.StructurePane)), state.StructurePane)
       console.log(payload)
       // payload.forEach(prop=>{
-        StructurePaneObj.AddFailureProperties(state.selectedStructure.id,
-          state.selectedFun.id,
-          state.selectedFail.id,
-          payload)
+      StructurePaneObj.AddFailureProperties(state.selectedStructure.id,
+        state.selectedFun.id,
+        state.selectedFail.id,
+        payload)
       // })
       console.log(StructurePaneObj)
-      return{
+      return {
         ...state,
         failActionModalVisiable: false,
-        StructurePane:StructurePaneObj
+        StructurePane: StructurePaneObj
       }
     },
     //点击modal类型
@@ -582,18 +600,25 @@ export default modelExtend(pageModel, {
           createModalVisible: true,
         }
       } else if (payload.type == 2) {
+        // return {
+        //   ...state,
+        //   createModalType: payload.type,
+        //   createModalTitle: text,
+        //   createModalVisible: true,
+        // }
         return {
           ...state,
+          DependModalVisiable: true,
           createModalType: payload.type,
           createModalTitle: text,
-          createModalVisible: true,
         }
       } else if (payload.type == 3) {
         return {
           ...state,
           createModalType: payload.type,
           createModalTitle: text,
-          createModalVisible: true,
+          // createModalVisible: true,
+          DependModalVisiable: true,
         }
       } else {
         return state
@@ -716,15 +741,18 @@ export default modelExtend(pageModel, {
       }
     },
     showFailAction(state, action) {
-      console.log(action)
       return {
         ...state,
         failActionModalVisiable: action.payload.show
       }
     },
-
+    showFailDepend(state, action) {
+      return {
+        ...state,
+        DependModalVisiable: action.payload.show
+      }
+    },
     failAttrSet(state, action) {
-      console.log(state)
       let StructurePaneObj = Object.assign(
         Object.create(Object.getPrototypeOf(state.StructurePane)),
         state.StructurePane
@@ -740,11 +768,11 @@ export default modelExtend(pageModel, {
         StructurePane: StructurePaneObj,
       }
     },
-    remotePrecautionSuccess(state, action){
+    remotePrecautionSuccess(state, action) {
       console.log(action)
-      return{
+      return {
         ...state,
-        remotePrecautions:action.payload.list
+        remotePrecautions: action.payload.list
       }
     }
   },

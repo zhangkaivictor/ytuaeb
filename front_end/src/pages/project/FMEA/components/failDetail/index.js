@@ -3,7 +3,7 @@ import { connect } from 'dva'
 import { Card, Form, Input, Checkbox, InputNumber } from 'antd'
 import { withPropsAPI } from 'gg-editor'
 import styles from './index.less'
-
+import APService from './APService'
 const { Item } = Form
 const inlineFormItemLayout = {
   labelCol: {
@@ -28,7 +28,9 @@ class FailDetail extends React.Component {
     const { form, dispatch } = this.props
     e.preventDefault()
     form.validateFieldsAndScroll((err, values) => {
+      console.log(values)
       if (!err) {
+        values.ap=APService(values)
         dispatch({ type: 'FMEA/failAttrSet', payload: values })
       }
     })
@@ -108,6 +110,20 @@ class FailDetail extends React.Component {
                 }
                 onBlur={this.handleSubmit}
                 disabled={!this.state.qchecked}
+              />
+            )}
+          </Item>
+          <Item
+            label="AP"
+            {...inlineFormItemLayout}
+            className={styles.itemMargin}
+          >
+            {getFieldDecorator('AP', {
+              initialValue: FMEA.selectedFail.ap,
+            })(
+              <Input
+                type="text"
+                disabled
               />
             )}
           </Item>

@@ -24,9 +24,10 @@ function FunctionFailure(name) {
 
   this.dependentFailureSet = []
 
-  this.sValue = 0
-  this.oValue = 0
-  this.dValue = 0
+  this.sValue = 1
+  this.oValue = 1
+  this.dValue = 1
+  this.ap="L"
   this.lambdaValue = 0
 
   this.detectionSet = []
@@ -719,7 +720,7 @@ StructurePane.prototype.UpdateFunctionFailureSValue = function(
     )
   })
   ff.sValue = sValue
-
+console.log(ff)
   var result = []
   result.push(ff)
 
@@ -1567,6 +1568,7 @@ StructurePane.prototype.UpdateFunctionFailureSValue = function(
   ff.sValue = Number(sValue.S)
   ff.oValue = Number(sValue.O)
   ff.dValue = Number(sValue.D)
+  ff.ap =sValue.ap
   ff.lambdaValue = Number(sValue.λ)
   var result = []
   result.push(ff)
@@ -1588,7 +1590,6 @@ StructurePane.prototype.UpdateFunctionFailureSValue = function(
       if (Number(depFailure.sValue) < Number(currentFailure.sValue)) {
         depFailure.sValue = currentFailure.sValue
         result.push(depFailure)
-
         recurse(depFailure)
       }
       /*

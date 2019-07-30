@@ -6,7 +6,6 @@ import {
   dicNameQuery
 } from 'utils'
 import { Trans, withI18n } from '@lingui/react'
-import FailAction from './failAction'
 let id = 0;
 const Option = Select.Option
 

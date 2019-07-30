@@ -88,9 +88,10 @@ export default modelExtend(pageModel, {
       const headers = {
         Authorization: window.localStorage.getItem('token'),
       }
-      const data = yield call(deletePost, payload, headers)
+      const data = yield call(deletePost,{id:payload.id}, headers)
       if (data.success) {
         message.success('删除成功')
+        yield put({ type: 'query' ,payload:{type:payload.type}})
         yield put({ type: 'app/query' })
       } else {
         throw data

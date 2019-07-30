@@ -46,6 +46,7 @@ export default modelExtend(pageModel, {
         Authorization: window.localStorage.getItem('token'),
       }
       const data = yield call(getFtaMap, payload, headers)
+      console.log(JSON.parse(data.list.content))
       if (data.success) {
         yield put({
           type: 'querySuccess',

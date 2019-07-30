@@ -7,6 +7,7 @@ import TreePage from './components/treePage'
 import ViewPage from './components/viewPage'
 import AddModal from './components/Modal'
 import FailActionModal from './components/failAction/failActionModal'
+import DependModal from './components/depend'
 import { connect } from 'dva'
 
 @connect(({ FMEA }) => ({ FMEA }))
@@ -77,8 +78,6 @@ class FmeaPage extends React.Component {
       createModalType,
       createModalTitle,
       createModalVisible,
-      failActionModalVisiable,
-      createModalItem,
     } = FMEA
     const modalProps = {
       type: createModalType,
@@ -224,6 +223,7 @@ class FmeaPage extends React.Component {
         {createModalVisible && <AddModal {...modalProps} />}
         {/* {failActionModalVisiable&&<FailAction {...failActionProps}/>} */}
         <FailActionModal {...this.props}/>
+        {(this.props.FMEA.DependModalVisiable)&&<DependModal {...this.props}/>}
       </div>
     )
   }

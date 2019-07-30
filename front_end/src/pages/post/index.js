@@ -43,6 +43,7 @@ class Post extends PureComponent {
           type: 'post/delete',
           payload: {
             id: item.id,
+            type:item.type
           },
         })
       },
