@@ -116,7 +116,7 @@ class FmeaPage extends React.Component {
           })
         } else {
           dispatch({
-            type: 'FMEA/addFunctionDependent',
+            type: 'FMEA/editFunctionDependent',
             payload: {
               data,
             },

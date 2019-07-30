@@ -720,7 +720,6 @@ StructurePane.prototype.UpdateFunctionFailureSValue = function(
     )
   })
   ff.sValue = sValue
-console.log(ff)
   var result = []
   result.push(ff)
 
@@ -1438,11 +1437,7 @@ StructurePane.prototype.GetFunctionFailureDepTree = function(
       r.structureNodeName = (_self.findStructureNodeById(
         depFailure.structureNodeId
       )).name
-      console.log(_self.findStructureNodeById(
-        depFailure.structureNodeId
-      ))
       childs.push(r)
-
       recurse(depFailure, r.children)
     }
   })(fs, result.leftChilds)

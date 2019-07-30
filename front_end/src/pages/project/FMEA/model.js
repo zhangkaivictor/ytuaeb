@@ -45,11 +45,6 @@ export default modelExtend(pageModel, {
             })
           } else {
             message.info('目前没有项目，请新建！！！')
-            setTimeout(() => {
-              router.push({
-                pathname: '/post',
-              })
-            }, 0)
           }
         }
       })
@@ -453,23 +448,17 @@ export default modelExtend(pageModel, {
         selectedFail: null,
       }
     },
-    //添加功能依赖
-    addFunctionDependent(state, { payload }) {
-      // let dependentFunction = null
-      // state.selectedStructure.allAboveNodes().forEach(node => {
-      //   node.FunctionSet.forEach(fun => {
-      //     if (fun.id == payload.data.id) {
-      //       dependentFunction = fun
-      //     }
-      //   })
-      // })
-      // if (dependentFunction == null) {
-      //   return {
-      //     ...state,
-      //     createModalVisible: false,
-      //   }
-      // }
-      // state.selectedFun.appendDependentFunction(dependentFunction)
+    //编辑功能依赖
+    editFunctionDependent(state, { payload }) {
+      //编辑前依赖
+      let existDepend = state.selectedFun.dependentFunctionSet.map(fun => fun.id)
+      //
+      existDepend.forEach(fun => {
+        //去除
+        if (payload.data.indexOf(fun) < 0) {
+          state.selectedFun.removeDependentFunctionId(fun)
+        }
+      })
       payload.data.forEach(funId => {
         let dependentFunction = null
         state.selectedStructure.allAboveNodes().forEach(node => {
@@ -479,20 +468,45 @@ export default modelExtend(pageModel, {
             }
           })
         })
-        if (dependentFunction == null) {
-          return {
-            ...state,
-            DependModalVisiable: false,
-          }
+        if (dependentFunction !== null) {
+          state.selectedFun.appendDependentFunction(dependentFunction)
         }
-        state.selectedFun.appendDependentFunction(dependentFunction)
       })
       return {
         ...state,
-        createModalVisible: false,
+        DependModalVisiable: false,
       }
     },
-    //添加失效依赖
+    //编辑失效依赖
+    editFailDependent(state, { payload }) {
+      let existDepend = state.selectedFail.dependentFailureSet.map(fail => fail.id)
+      //
+      existDepend.forEach(fail => {
+        //去除
+        if (payload.data.indexOf(fail) < 0) {
+          state.selectedFail.removeDependentFailureById(fail)
+        }
+      })
+      payload.data.forEach(failId => {
+        let dependentFail = null
+        state.selectedStructure.allAboveNodes().forEach(node => {
+          node.FunctionSet.forEach(fun => {
+            fun.FailureSet.forEach(fail => {
+              if (fail.id == failId) {
+                dependentFail = fail
+              }
+            })
+          })
+        })
+        if (dependentFail !== null) {
+          state.selectedFail.appendDependentFailure(dependentFail)
+        }
+      })
+      return {
+        ...state,
+        DependModalVisiable: false,
+      }
+    },
     addFunctionFailureDependent(state, { payload }) {
       let dependentFail = null
       state.selectedStructure.allAboveNodes().forEach(node => {
@@ -507,7 +521,7 @@ export default modelExtend(pageModel, {
       if (dependentFail == null) {
         return {
           ...state,
-          createModalVisible: false,
+          DependModalVisiable: false,
         }
       }
       state.selectedFail.appendDependentFailure(dependentFail)
@@ -521,8 +535,7 @@ export default modelExtend(pageModel, {
       // }
       return {
         ...state,
-        createModalVisible: false,
-        // selectedFun:,
+        DependModalVisiable: false,
       }
     },
     //移除失效

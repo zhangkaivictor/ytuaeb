@@ -8,7 +8,7 @@ class DependModal extends React.Component {
     this.state = {
       targetKeys: [],
       selectedKeys: [],
-      disabled: false,
+      disabled: true,
       itemOptions: [],
       title:'依赖编辑'
     }
@@ -39,7 +39,7 @@ class DependModal extends React.Component {
           fun.FailureSet.forEach(fail => array.push(Object.assign(fail, { key: fail.id })))
         })
       })
-
+      console.log(array)
       if (array.length > 0) {
         this.setState({
           itemOptions: array,
@@ -54,7 +54,7 @@ class DependModal extends React.Component {
       array.push(...this.props.FMEA.selectedFun.dependentFunctionSet)
       title=this.props.FMEA.selectedFun.name
     } else if (this.props.FMEA.createModalType == 2) {
-      array.push(...this.props.FMEA.selectedFun.dependentFunctionSet)
+      array.push(...this.props.FMEA.selectedFail.dependentFailureSet)
       title=this.props.FMEA.selectedFail.name
     }
     array.forEach(fun=>fun.key=fun.id)     
@@ -99,7 +99,12 @@ class DependModal extends React.Component {
   handleOk = e => {
 //
     console.log(this.state.targetKeys)
-    this.props.dispatch({ type: 'FMEA/addFunctionDependent', payload: { data: this.state.targetKeys } })
+    if (this.props.FMEA.createModalType == 3) {
+      this.props.dispatch({ type: 'FMEA/editFunctionDependent', payload: { data: this.state.targetKeys } })
+    } else if (this.props.FMEA.createModalType == 2) {
+      this.props.dispatch({ type: 'FMEA/editFailDependent', payload: { data: this.state.targetKeys } })
+    }
+    
   }
   renderItem = item => {
     const customLabel = (

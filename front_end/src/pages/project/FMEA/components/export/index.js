@@ -1,7 +1,7 @@
 import React from 'react'
 import { Row, Col, Button,Icon } from 'antd'
 import { withPropsAPI } from 'gg-editor'
-import { apiPrefix } from 'utils/config'
+import { expotApi } from 'utils/config'
 
 class Export extends React.Component {
   constructor(props) {
@@ -14,7 +14,6 @@ class Export extends React.Component {
   }
 
   export(e) {
-    console.log(this.props,apiPrefix)
     let _self=this
     var xhr = new XMLHttpRequest();
     const {FMEA}=this.props
@@ -22,7 +21,7 @@ class Export extends React.Component {
     if(!FMEA.selectedStructure){
       return
     }
-    let url=`http://39.100.49.28:8081/export?id=${FMEA.selectedStructure.id}`
+    let url=`${expotApi}/export?id=${FMEA.selectedStructure.id}`
     let inputData=FMEA.StructurePane.toJSONString()
     //http://39.100.49.28:8081/export?id=1761745124
     xhr.open('POST', url, true);

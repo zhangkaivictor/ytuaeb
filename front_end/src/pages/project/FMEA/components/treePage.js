@@ -266,7 +266,7 @@ class TreePage extends React.Component {
               size='small'
               onClick={e => this.addFunDepend(e)}
             >
-              添加功能依赖
+              依赖编辑
             </Button>
           )}
           {FMEA.actionType == 1 && (
@@ -282,20 +282,21 @@ class TreePage extends React.Component {
             <Button
               className={styles.addBtn}
               size='small'
-              onClick={e => this.addFailDepend(e)}
+              onClick={e => this.props.dispatch({ type: 'FMEA/removeFail' })}
             >
-              依赖编辑
+              删除失效
             </Button>
           )}
           {FMEA.actionType == 2 && (
             <Button
               className={styles.addBtn}
               size='small'
-              onClick={e => this.props.dispatch({ type: 'FMEA/removeFail' })}
+              onClick={e => this.addFailDepend(e)}
             >
-              删除失效
+              依赖编辑
             </Button>
           )}
+          
           {FMEA.actionType == 2 && (
             <Button
               className={styles.addBtn}

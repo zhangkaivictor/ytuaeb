@@ -14,7 +14,7 @@ const api = {
   queryPostList: '/api/Projects/All',
   queryPostTypeList: '/api/Projects',
   createPost: 'POST /api/Projects/Add',
-  deletePost:'DELETE api/Projects/Delete',
+  deletePost:'DELETE /api/Projects/Delete',
 
   // createPostFtaMap:'POST /api/FTAProjects/test',
   createPostFtaMap: 'POST /api/FTAProjects/AddTree',

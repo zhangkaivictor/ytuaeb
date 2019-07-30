@@ -156,7 +156,7 @@ class ViewPage extends React.Component {
               fifthSubShape="custom-node"
             />
             <CustomNode />
-            <ContextMenu/>
+            {/* <ContextMenu/> */}
             <RegisterBehaviour
               name="dblclickItemEditLabel"
               behaviour={() => {}}

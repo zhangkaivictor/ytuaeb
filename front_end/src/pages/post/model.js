@@ -17,7 +17,6 @@ export default modelExtend(pageModel, {
   subscriptions: {
     setup({ dispatch, history }) {
       history.listen(location => {
-        console.log(location)
         if (pathMatchRegexp('/post', location.pathname)) {
           dispatch({
             type: 'query',
@@ -65,9 +64,14 @@ export default modelExtend(pageModel, {
         Authorization: window.localStorage.getItem('token'),
       }
       const data = yield call(createPost, payload, headers)
+      console.log(data)
       if (data.success) {
-        yield put({ type: 'hideModal' })
-        yield put({ type: 'app/query' })
+        if (data.data != '已存在') {
+          yield put({ type: 'hideModal' })
+          yield put({ type: 'app/query' })
+        }else{
+          message.info('项目已存在')
+        }
       } else {
         throw data
       }
@@ -88,10 +92,10 @@ export default modelExtend(pageModel, {
       const headers = {
         Authorization: window.localStorage.getItem('token'),
       }
-      const data = yield call(deletePost,{id:payload.id}, headers)
+      const data = yield call(deletePost, { id: payload.id }, headers)
       if (data.success) {
         message.success('删除成功')
-        yield put({ type: 'query' ,payload:{type:payload.type}})
+        yield put({ type: 'query', payload: { type: payload.type } })
         yield put({ type: 'app/query' })
       } else {
         throw data
