@@ -53,6 +53,57 @@ namespace Dxc.Shq.WebApi.Controllers
             var tr = docs.FTATrees.OrderByDescending(item => item.CreatedTime).FirstOrDefault();
             if (tr != null)
             {
+                dynamic jsonSource = JObject.Parse(tr.Content);
+                foreach (var jsNode in jsonSource.nodes)
+                {
+                    string jsNodeId = jsNode.id;
+
+                    using (var con = new MySqlConnection(ConfigurationManager.ConnectionStrings["ShqContext"].ConnectionString))
+                    {
+                        con.Open();
+                        var cmd = con.CreateCommand();
+                        cmd.CommandText = string.Format("select SmallFailureRateQ,failureRateQ,invalidRate,failureTime,dCrf,dClf,nodes.color from ftanodes as nodes inner join ftanodeproperties as ps on nodes.NodeName = ps.Name where ps.FTAProjectId = '{0}' and nodes.EventId = '{1}' limit 1;", docs.Id, jsNodeId);
+                        using (var rdr = cmd.ExecuteReader(CommandBehavior.SequentialAccess | CommandBehavior.CloseConnection))
+                        {
+                            while (rdr.Read())
+                            {
+                                jsNode.smallFailureRateQ = rdr.GetDouble(0);
+                                jsNode.failureRateQ = rdr.GetDouble(1);
+                                jsNode.invalidRate = rdr.GetDouble(2);
+                                jsNode.failureTime = rdr.GetDouble(3);
+                                jsNode.dCrf = rdr.GetDouble(4);
+                                jsNode.dClf = rdr.GetDouble(5);
+                                jsNode.color = rdr.GetString(6);
+                            }
+                        }
+                    }
+                }
+
+                foreach (var jsProperty in jsonSource.attributes)
+                {
+                    string jName = jsProperty.name;
+                    using (var con = new MySqlConnection(ConfigurationManager.ConnectionStrings["ShqContext"].ConnectionString))
+                    {
+                        con.Open();
+                        var cmd = con.CreateCommand();
+                        cmd.CommandText = string.Format("select SmallFailureRateQ,failureRateQ,invalidRate,failureTime,dCrf,dClf from ftanodes as nodes inner join ftanodeproperties as ps on nodes.NodeName = ps.Name where ps.FTAProjectId = '{0}' and ps.Name = '{1}' limit 1;", docs.Id, jName);
+                        using (var rdr = cmd.ExecuteReader(CommandBehavior.SequentialAccess | CommandBehavior.CloseConnection))
+                        {
+                            while (rdr.Read())
+                            {
+                                jsProperty.smallFailureRateQ = rdr.GetDouble(0);
+                                jsProperty.failureRateQ = rdr.GetDouble(1);
+                                jsProperty.invalidRate = rdr.GetDouble(2);
+                                jsProperty.failureTime = rdr.GetDouble(3);
+                                jsProperty.dCrf = rdr.GetDouble(4);
+                                jsProperty.dClf = rdr.GetDouble(5);
+                            }
+                        }
+                    }
+                }
+
+                tr.Content = JsonConvert.SerializeObject(jsonSource);
+
                 return Ok(new FTATreeViewModel(tr, db));
             }
             else
@@ -171,10 +222,33 @@ namespace Dxc.Shq.WebApi.Controllers
                     foreach (var jsProperty in jsonSource.attributes)
                     {
                         string jName = jsProperty.name;
-                        var node = db.FTANodeProperties.FirstOrDefault(item => item.FTAProjectId == docs.Id && item.Name == jName);
-                        if (node != null)
+                        //var node = db.FTANodeProperties.FirstOrDefault(item => item.FTAProjectId == docs.Id && item.Name == jName);
+                        //if (node != null)
+                        //{
+                        //    jsProperty.failureRateQ = node.FailureRateQ;
+                        //    jsProperty.invalidRate = node.InvalidRate;
+                        //    jsProperty.failureTime = node.FailureTime;
+                        //    jsProperty.dCrf = node.DCrf;
+                        //    jsProperty.dClf = node.DClf;
+                        //}
+
+                        using (var con = new MySqlConnection(ConfigurationManager.ConnectionStrings["ShqContext"].ConnectionString))
                         {
-                            jsProperty.invalidRate = node.InvalidRate;
+                            con.Open();
+                            var cmd = con.CreateCommand();
+                            cmd.CommandText = string.Format("select SmallFailureRateQ,failureRateQ,invalidRate,failureTime,dCrf,dClf from ftanodes as nodes inner join ftanodeproperties as ps on nodes.NodeName = ps.Name where ps.FTAProjectId = '{0}' and ps.Name = '{1}' limit 1;", docs.Id, jName);
+                            using (var rdr = cmd.ExecuteReader(CommandBehavior.SequentialAccess | CommandBehavior.CloseConnection))
+                            {
+                                while (rdr.Read())
+                                {
+                                    jsProperty.smallFailureRateQ = rdr.GetDouble(0);
+                                    jsProperty.failureRateQ = rdr.GetDouble(1);
+                                    jsProperty.invalidRate = rdr.GetDouble(2);
+                                    jsProperty.failureTime = rdr.GetDouble(3);
+                                    jsProperty.dCrf = rdr.GetDouble(4);
+                                    jsProperty.dClf = rdr.GetDouble(5);
+                                }
+                            }
                         }
                     }
 
@@ -231,6 +305,7 @@ namespace Dxc.Shq.WebApi.Controllers
                     result.AnalysisStatus = "Error:" + exeString;
                 }
 
+                (new AuditsController()).AddAuditEntry("api/FTAProjects/AnalyzeTree", result.Content);
                 return Ok(result);
             }
             else

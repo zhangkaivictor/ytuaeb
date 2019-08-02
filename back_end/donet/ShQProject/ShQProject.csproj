@@ -88,6 +88,7 @@
     <Compile Include="Areas\HelpPage\SampleGeneration\SampleDirection.cs" />
     <Compile Include="Areas\HelpPage\SampleGeneration\TextSample.cs" />
     <Compile Include="Areas\HelpPage\XmlDocumentationProvider.cs" />
+    <Compile Include="Controllers\AuditsController.cs" />
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\FMEAProjectsController.cs" />
     <Compile Include="Controllers\FTAProjectsController.cs" />
@@ -100,6 +101,7 @@
     <Compile Include="Controllers\WorkProjectTemplatesController.cs" />
     <Compile Include="Core\Constants.cs" />
     <Compile Include="Core\JsonFTATree.cs" />
+    <Compile Include="Models\Audit.cs" />
     <Compile Include="Models\ShqKeywordSet.cs" />
     <Compile Include="Models\ShqDictionary.cs" />
     <Compile Include="Models\ProjectFile.cs" />

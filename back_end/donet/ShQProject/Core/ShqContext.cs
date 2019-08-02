@@ -64,5 +64,6 @@
 
         public DbSet<ShqKeywordSet> ShqKeywordSets { get; set; }
 
+        public DbSet<Audit> Audits { get; set; }
     }
 }
