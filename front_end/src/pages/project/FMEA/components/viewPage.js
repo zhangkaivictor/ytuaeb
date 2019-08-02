@@ -131,14 +131,10 @@ class ViewPage extends React.Component {
       // }
     }
     const panelAction = c => {
-      console.log(c)
-      console.log(this.props)
       if(c.command== "delete"){
-        console.log(c.itemIds)
         this.props.dispatch({type:'FMEA/removeFunDepend',payload:{id:c.itemIds[0]}})
       }
     }
-    const findLeftDepend=(node,id)=>{}
     return (
       <Col span={24} className={styles.view}>
         {viewData != null && (
@@ -160,7 +156,7 @@ class ViewPage extends React.Component {
               fifthSubShape="custom-node"
             />
             <CustomNode />
-            <ContextMenu/>
+            {/* <ContextMenu/> */}
             <RegisterBehaviour
               name="dblclickItemEditLabel"
               behaviour={() => {}}

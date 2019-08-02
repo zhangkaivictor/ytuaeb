@@ -2,8 +2,9 @@ module.exports = {
   siteName: 'Company Name',
   copyright: 'Copyright © 2019 All Company Corporation Limited',
   logoPath: '/logo-small.ico',
-  // apiPrefix: 'http://40.121.23.71/backend', 
-  apiPrefix: 'http://39.100.49.28/backend/',
+  // apiPrefix: 'http://40.121.23.71/backend', //saic
+  apiPrefix: 'http://39.100.49.28/backend',
+  expotApi: 'http://39.100.49.28:8081',
   fixedHeader: true, // sticky primary layout header
   leftPath: '/logoleft.png',
 

@@ -13,69 +13,73 @@ import { deLangPrefix } from 'utils'
 // window.jQuery = $
 // export default $
 // 菜单列表
-let database = [
-  {
-    id: '1',
-    icon: 'dashboard',
-    name: 'Dashboard',
-    zhName: '仪表盘',
-    route: '/dashboard',
-  },
-  {
-    id: '2',
-    breadcrumbParentId: '1',
-    name: 'Users',
-    zhName: '用户管理',
-    icon: 'user',
-    route: '/user',
-  },
-  {
-    id: '7',
-    breadcrumbParentId: '1',
-    name: 'Posts',
-    zhName: '项目管理',
-    icon: 'shopping-cart',
-    route: '/post',
-  },
-  {
-    id: '6',
-    breadcrumbParentId: '1',
-    name: 'Management',
-    zhName: '项目详情',
-    icon: 'user',
-  },
-  {
-    id: '61',
-    breadcrumbParentId: '6',
-    menuParentId: '6',
-    name: 'vars',
-    zhName: '工程项目',
-    icon: 'area-chart',
-    route: '/project/vars',
-  },
-  {
-    id: '62',
-    breadcrumbParentId: '6',
-    menuParentId: '6',
-    name: 'FMEA analysis',
-    zhName: 'FMEA 分析',
-    icon: 'area-chart',
-    route: '/project/FMEA',
-  },
-  {
-    id: '63',
-    breadcrumbParentId: '6',
-    menuParentId: '6',
-    name: 'FTA analysis',
-    zhName: 'FTA 分析',
-    icon: 'area-chart',
-    route: '/project/FTA',
-  },
-  {
-    id: '4',
-    route: '/project/FTA/onAnalysis',
-  },
-]
+let database = []
+
+const initRoute=()=>{
+  database= [
+    {
+      id: '1',
+      icon: 'dashboard',
+      name: 'Dashboard',
+      zhName: '仪表盘',
+      route: '/dashboard',
+    },
+    {
+      id: '2',
+      breadcrumbParentId: '1',
+      name: 'Users',
+      zhName: '用户管理',
+      icon: 'user',
+      route: '/user',
+    },
+    {
+      id: '7',
+      breadcrumbParentId: '1',
+      name: 'Posts',
+      zhName: '项目管理',
+      icon: 'shopping-cart',
+      route: '/post',
+    },
+    {
+      id: '6',
+      breadcrumbParentId: '1',
+      name: 'Management',
+      zhName: '项目详情',
+      icon: 'user',
+    },
+    {
+      id: '61',
+      breadcrumbParentId: '6',
+      menuParentId: '6',
+      name: 'vars',
+      zhName: '工程项目',
+      icon: 'area-chart',
+      route: '/project/vars',
+    },
+    {
+      id: '62',
+      breadcrumbParentId: '6',
+      menuParentId: '6',
+      name: 'FMEA analysis',
+      zhName: 'FMEA 分析',
+      icon: 'area-chart',
+      route: '/project/FMEA',
+    },
+    {
+      id: '63',
+      breadcrumbParentId: '6',
+      menuParentId: '6',
+      name: 'FTA analysis',
+      zhName: 'FTA 分析',
+      icon: 'area-chart',
+      route: '/project/FTA',
+    },
+    {
+      id: '4',
+      route: '/project/FTA/onAnalysis',
+    },
+  ]
+}
 
 export default {
   namespace: 'app',
@@ -124,7 +128,6 @@ export default {
     setupRequestCancel({ history }) {
       history.listen(() => {
         const { cancelRequest = new Map() } = window
-
         cancelRequest.forEach((value, key) => {
           if (value.pathname !== window.location.pathname) {
             value.cancel(CANCEL_REQUEST_MESSAGE)
@@ -133,7 +136,6 @@ export default {
         })
       })
     },
-
     setup({ dispatch }) {
       dispatch({ type: 'query' }).then(() => {
         dispatch({ type: 'queryDic' })
@@ -161,6 +163,8 @@ export default {
             {},
             { Authorization: token }
           )
+          //重置基本Route
+          initRoute()
           // yield put({
           //   type: 'querySuccess',
           //   payload: {
@@ -287,6 +291,7 @@ export default {
               return cases.every(_ => _)
             })
           }
+          console.log(routeList)
           yield put({
             type: 'updateState',
             payload: {

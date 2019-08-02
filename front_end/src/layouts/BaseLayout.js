@@ -41,7 +41,7 @@ class BaseLayout extends PureComponent {
         <Helmet>
           <title>{config.siteName}</title>
         </Helmet>
-        <Loader fullScreen spinning={loading.effects['app/query']} />
+        {/* <Loader fullScreen spinning={loading.effects['app/query']} /> */}
         <Container>{children}</Container>
       </Fragment>
     )

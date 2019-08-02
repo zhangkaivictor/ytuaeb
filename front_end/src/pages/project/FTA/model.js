@@ -46,6 +46,7 @@ export default modelExtend(pageModel, {
         Authorization: window.localStorage.getItem('token'),
       }
       const data = yield call(getFtaMap, payload, headers)
+      console.log(JSON.parse(data.list.content))
       if (data.success) {
         yield put({
           type: 'querySuccess',
@@ -97,10 +98,6 @@ export default modelExtend(pageModel, {
             treeReportList: data.list,
             list: ftaMapData.list,
           },
-        })
-        router.push({
-          pathname: '/project/FTA/onAnalysis',
-          query: payload,
         })
       } else {
         throw data
