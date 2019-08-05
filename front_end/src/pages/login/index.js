@@ -32,7 +32,7 @@ class Login extends PureComponent {
     return (
       <Fragment>
         <div className={styles.companyLogo}>
-          <img alt="logo" src={config.logoPath} />
+          {/* <img alt="logo" src={config.logoPath} /> */}
           {/* <span>{config.siteName}</span> */}
         </div>
         <div className={styles.left}>

@@ -43,7 +43,7 @@ class Post extends PureComponent {
           type: 'post/delete',
           payload: {
             id: item.id,
-            type:item.type
+            type: item.type,
           },
         })
       },
@@ -90,6 +90,7 @@ class Post extends PureComponent {
       userNameList: userList,
       level: this.props.dic,
       onOk(data) {
+        console.log(data)
         dispatch({
           type: `post/${modalType}`,
           payload: data,

@@ -14,8 +14,8 @@ const api = {
   queryPostList: '/api/Projects/All',
   queryPostTypeList: '/api/Projects',
   createPost: 'POST /api/Projects/Add',
-  deletePost:'DELETE /api/Projects/Delete',
-
+  deletePost: 'DELETE /api/Projects/Delete',
+  updatePost: 'PUT /api/Projects/Update',
   // createPostFtaMap:'POST /api/FTAProjects/test',
   createPostFtaMap: 'POST /api/FTAProjects/AddTree',
   getFtaMap: '/api/FTAProjects/GetTree',
@@ -26,7 +26,7 @@ const api = {
   //FMEA
   getFmeaData: '/api/FMEAProjects/GetTree',
   postFmeaData: 'POST /api/FMEAProjects/AddTree',
-  remotePrecaution:'/api/ShqKeywordSets/Search',
+  remotePrecaution: '/api/ShqKeywordSets/Search',
   //vars
   getProjectContent: '/api/WorkProjects/GetWorkProject',
   queryOriginProject: '/api/ProjectFiles',

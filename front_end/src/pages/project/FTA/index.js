@@ -1,7 +1,6 @@
 import React from 'react'
 import { connect } from 'dva'
 import { Row, Col, Button } from 'antd'
-import { pathMatchRegexp, router } from 'utils'
 import GGEditor, { Flow } from 'gg-editor'
 import EditorMinimap from './components/EditorMinimap/index'
 import { FlowContextMenu } from './components/EditorContextMenu/index'
@@ -16,7 +15,7 @@ import Perputation from './components/perputation/index'
 import styles from './index.less'
 
 const guid = () => {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
     let r = (Math.random() * 16) | 0,
       v = c == 'x' ? r : (r & 0x3) | 0x8
     return v.toString(16)
@@ -35,13 +34,7 @@ class FlowPage extends React.Component {
       dispatch({
         type: `FTA/getMapTreeReport`,
         payload: { projectId: query.projectId },
-      }).then(() => {
-        router.push({
-          pathname: '/project/FTA/onAnalysis',
-          query: { projectId: query.projectId },
-        })
-      }
-      )
+      })
     } else {
       alert('无法分析，请移步至项目管理新建项目！！！')
     }

@@ -15,8 +15,8 @@ import { deLangPrefix } from 'utils'
 // 菜单列表
 let database = []
 
-const initRoute=()=>{
-  database= [
+const initRoute = () => {
+  database = [
     {
       id: '1',
       icon: 'dashboard',
@@ -115,13 +115,13 @@ export default {
   subscriptions: {
     setupHistory({ dispatch, history }) {
       history.listen(location => {
-        dispatch({
-          type: 'updateState',
-          payload: {
-            locationPathname: location.pathname,
-            locationQuery: location.query,
-          },
-        })
+        // dispatch({
+        //   type: 'updateState',
+        //   payload: {
+        //     locationPathname: location.pathname,
+        //     locationQuery: location.query,
+        //   },
+        // })
       })
     },
 
@@ -143,7 +143,7 @@ export default {
     },
   },
   effects: {
-    *query({ }, { call, put, select }) {
+    *query({}, { call, put, select }) {
       let email = window.localStorage.getItem('username')
       let token = window.localStorage.getItem('token')
       if (email == null && token == null) {
@@ -350,7 +350,7 @@ export default {
           if (modifiedDateMax < new Date(storeDic[i].lastModfiedTime)) {
             modifiedDateMax = new Date(storeDic[i].lastModfiedTime)
             data.lastModifiedDate = storeDic[i].lastModfiedTime
-          }else{
+          } else {
           }
         }
       }

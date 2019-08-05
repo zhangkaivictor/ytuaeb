@@ -9,7 +9,7 @@ import {
 } from 'api'
 import { pathMatchRegexp } from 'utils'
 import { pageModel } from 'utils/model'
-import { message } from 'antd';
+import { message } from 'antd'
 
 export default modelExtend(pageModel, {
   namespace: 'post',
@@ -69,7 +69,7 @@ export default modelExtend(pageModel, {
         if (data.data != '已存在') {
           yield put({ type: 'hideModal' })
           yield put({ type: 'app/query' })
-        }else{
+        } else {
           message.info('项目已存在')
         }
       } else {
@@ -77,11 +77,13 @@ export default modelExtend(pageModel, {
       }
     },
     *update({ payload }, { select, call, put }) {
+      console.log(payload)
       const headers = {
         Authorization: window.localStorage.getItem('token'),
       }
       const newUser = payload
       const data = yield call(updatePost, newUser, headers)
+      console.log(data)
       if (data.success) {
         yield put({ type: 'hideModal' })
       } else {
