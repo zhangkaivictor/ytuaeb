@@ -14,7 +14,7 @@ const FlowContextMenu = () => {
   return (
     <ContextMenu className={styles.contextMenu}>
       <NodeMenu>
-        <MenuItem command="copy" />
+        <MenuItem command="copy" >复制</MenuItem>/>
         <MenuItem command="delete" />
       </NodeMenu>
       <EdgeMenu>

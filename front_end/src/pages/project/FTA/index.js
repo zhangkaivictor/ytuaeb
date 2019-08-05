@@ -16,7 +16,7 @@ import Perputation from './components/perputation/index'
 import styles from './index.less'
 
 const guid = () => {
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
     let r = (Math.random() * 16) | 0,
       v = c == 'x' ? r : (r & 0x3) | 0x8
     return v.toString(16)
@@ -35,12 +35,12 @@ class FlowPage extends React.Component {
       dispatch({
         type: `FTA/getMapTreeReport`,
         payload: { projectId: query.projectId },
-      }).then(()=>{
+      }).then(() => {
         router.push({
           pathname: '/project/FTA/onAnalysis',
           query: { projectId: query.projectId },
         })
-        }
+      }
       )
     } else {
       alert('无法分析，请移步至项目管理新建项目！！！')
@@ -102,21 +102,25 @@ class FlowPage extends React.Component {
         <GGEditor className={styles.editor}>
           <Row type="flex" className={styles.editorHd}>
             <Col span={24}>
-              <FlowToolbar />
-              <div className={styles.full}>
-                <Full />
-                <Button onClick={this.handlehideClick}>
-                  {this.state.isHideScreen ? '隐藏注释' : '显示注释'}
-                </Button>
-              </div>
-              <div className={styles.perputation}>
-                <Perputation {...this.props} />
-              </div>
-              <div className={styles.save}>
-                <Save {...mapProps} />
-                <Analysis {...analysisProps} />
-                <Button onClick={this.onAnalysis}>结果</Button>
-              </div>
+              <Col span={12}>
+                <FlowToolbar />
+              </Col>
+              <Col span={12}>
+                <div className={styles.full}>
+                  <Full />
+                  <Button onClick={this.handlehideClick}>
+                    {this.state.isHideScreen ? '隐藏注释' : '显示注释'}
+                  </Button>
+                </div>
+                <div className={styles.perputation}>
+                  <Perputation {...this.props} />
+                </div>
+                <div className={styles.save}>
+                  <Save {...mapProps} />
+                  <Analysis {...analysisProps} />
+                  <Button onClick={this.onAnalysis}>结果</Button>
+                </div>
+              </Col>
             </Col>
           </Row>
           <Row type="flex" className={styles.editorBd}>

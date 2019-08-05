@@ -34,6 +34,7 @@ class FmeaPage extends React.Component {
     }
   }
   panelAction(e) {
+    console.log(e)
     if (e.name == 'add') {
       switch (e.type) {
         case 'node':
