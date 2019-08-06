@@ -142,6 +142,7 @@ namespace Dxc.Shq.WebApi.Controllers
                 docs.FTATrees.Add(ftaTree);
                 await db.SaveChangesAsync();
 
+                (new AuditsController()).AddAuditEntry("api/FTAProjects/AddTree", JsonConvert.SerializeObject(new ProjectViewModel(docs.Project, db)));
                 return Ok(new FTATreeViewModel(ftaTree, db));
             }
             else
@@ -305,7 +306,7 @@ namespace Dxc.Shq.WebApi.Controllers
                     result.AnalysisStatus = "Error:" + exeString;
                 }
 
-                (new AuditsController()).AddAuditEntry("api/FTAProjects/AnalyzeTree", result.Content);
+                (new AuditsController()).AddAuditEntry("api/FTAProjects/AnalyzeTree", JsonConvert.SerializeObject(new ProjectViewModel(docs.Project, db)));
                 return Ok(result);
             }
             else

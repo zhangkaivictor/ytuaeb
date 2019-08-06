@@ -105,6 +105,7 @@
     <Compile Include="Models\ShqKeywordSet.cs" />
     <Compile Include="Models\ShqDictionary.cs" />
     <Compile Include="Models\ProjectFile.cs" />
+    <Compile Include="ViewModels\AuditViewModel.cs" />
     <Compile Include="ViewModels\ExplorerInfoViewModel.cs" />
     <Compile Include="ViewModels\ProjectFolderViewModel.cs" />
     <Compile Include="Core\ProjectHelper.cs" />

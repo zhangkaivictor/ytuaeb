@@ -245,6 +245,7 @@ namespace Dxc.Shq.WebApi.Controllers
             //db.ShqUsers.Remove(shqUser);
             await db.SaveChangesAsync();
 
+            (new AuditsController()).AddAuditEntry("api/ShqUsers/Disable", shqUser.EmailAddress);
             return Ok(new ShqUserRespondViewModel(shqUser, db));
         }
 
