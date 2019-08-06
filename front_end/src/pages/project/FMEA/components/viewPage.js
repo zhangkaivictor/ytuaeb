@@ -9,6 +9,7 @@ class ViewPage extends React.Component {
   componentDidMount() {
     const { propsAPI } = this.props
     // console.log(this.props.propsAPI.read());
+    console.log(this.props)
   }
   panelAction(c) {
     console.log(c)
@@ -32,7 +33,7 @@ class ViewPage extends React.Component {
               roots: [
                 {
                   label: this.props.FMEA.selectedFun.name,
-                  id:this.props.FMEA.selectedFun.id,
+                  id: this.props.FMEA.selectedFun.id,
                   structureNodeName: this.props.FMEA.selectedStructure.name,
                   t: 'fun',
                   children: this.props.FMEA.StructurePane.GetStructureFunctionDepTree(
@@ -62,13 +63,14 @@ class ViewPage extends React.Component {
               roots: [
                 {
                   label: this.props.FMEA.selectedFail.name,
-                  id:this.props.FMEA.selectedFail.id,
+                  id: this.props.FMEA.selectedFail.id,
                   structureNodeName: this.props.FMEA.selectedStructure.name,
                   t: 'fail',
                   oValue: this.props.FMEA.selectedFail.oValue,
                   sValue: this.props.FMEA.selectedFail.sValue,
                   dValue: this.props.FMEA.selectedFail.dValue,
                   lambdaValue: this.props.FMEA.selectedFail.lambdaValue,
+                  AP: this.props.FMEA.selectedFail.ap,
                   children: this.props.FMEA.StructurePane.GetFunctionFailureDepTree(
                     this.props.FMEA.selectedStructure.id,
                     this.props.FMEA.selectedFun.id,
@@ -131,8 +133,11 @@ class ViewPage extends React.Component {
       // }
     }
     const panelAction = c => {
-      if(c.command== "delete"){
-        this.props.dispatch({type:'FMEA/removeFunDepend',payload:{id:c.itemIds[0]}})
+      if (c.command == 'delete') {
+        this.props.dispatch({
+          type: 'FMEA/removeFunDepend',
+          payload: { id: c.itemIds[0] },
+        })
       }
     }
     return (

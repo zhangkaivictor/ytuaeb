@@ -215,9 +215,9 @@ export default modelExtend(pageModel, {
       let node = state.StructurePane.structureNodes.find(
         structure => structure.paneId == payload.addModel.source
       )
-      let allAboveNodes = node
+      let allAboveNodes = node?node
         .allAboveNodes()
-        .map(structure => structure.paneId)
+        .map(structure => structure.paneId):[]
       if (allAboveNodes.indexOf(payload.addModel.target) >= 0) {
         alert('闭环')
         canAddEdge = false

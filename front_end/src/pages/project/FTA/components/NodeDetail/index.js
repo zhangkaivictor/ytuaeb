@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { connect } from 'dva'
-import { Card, Form, Input, Checkbox, Switch } from 'antd'
+import { Card, Form, Input,InputNumber, Checkbox, Switch } from 'antd'
 import { withPropsAPI } from 'gg-editor'
 import styles from './index.less'
 
@@ -14,12 +14,38 @@ const inlineFormItemLayout = {
     sm: { span: 18 },
   },
 }
-const toNonExponential = (num) =>{
-  let m = num.toExponential().match(/\d(?:\.(\d*))?e([+-]\d+)/);
-  return num.toFixed(Math.max(0, (m[1] || '').length - m[2]));
+const toNonExponential = (num) => {
+//  console.log(num)
+  // console.log(Number("1e-5"))
+  // console.log(Number(num).toExponential())
+  if(!isNaN(Number(num))){
+    // let m = Number(num).toFixed(6)
+    // console.log(m)
+    let m=Number(num).toExponential().match(/\d(?:\.(\d*))?e([+-]\d+)/);
+  // console.log(m)
+  // console.log(Math.max(0, (m[1] || '').length - m[2]))
+    // return Number(num).toFixed(Math.max(0, (m[1] || '').length - m[2]));
+    return m[0];
+  }else{
+    return 'NaN'
+  }
 }
-
+//科学计数法
+const num2e = (num) => {
+  var p = Math.floor(Math.log(num) / Math.LN10)
+  var n = num * Math.pow(10, -p);
+  return n + 'e' + p;
+}
 @connect(({ FTA, loading }) => ({ FTA, loading }))
+class SubNode extends React.Component {
+  //const tNode= React.ReactNode()``
+  //
+  render() {
+    return (
+      <span style={{ height: '39px' }}>DC<sub>{this.props.f}</sub></span>
+    )
+  }
+}
 class NodeDetail extends React.Component {
   constructor(props) {
     super(props)
@@ -102,7 +128,6 @@ class NodeDetail extends React.Component {
 
     const item = getSelected()[0]
     const itemType = ['andGate', 'orGate', 'nonGate']
-
     if (!item) {
       return null
     }
@@ -121,21 +146,19 @@ class NodeDetail extends React.Component {
       smallFailureRateQValueType,
     } = item.getModel();
     // console.log(item.getModel());
-    if (shape == 'round') {
-      if(!this.state.qchecked){
-        failureRateQ = Number(invalidRate)*Number(failureTime)*0.000000001;
-        failureRateQ=failureRateQ.toFixed(6)
-        // smallFailureRateQ = Number(invalidRate)*(1-Number(dCrf))*Number(failureTime);
-      }
-    }else {
-      if(this.state.invalidRateChecked){
-        failureRateQ = Number(invalidRate)*Number(failureTime)*0.000000001;
-        failureRateQ=failureRateQ.toFixed(6)
-      }else {
-        failureRateQ = smallFailureRateQ;
-        invalidRate = failureRateQ /Number(failureTime);
-      }
-    }
+    // if (shape == 'round') {
+    //   if (!this.state.qchecked) {
+    //     failureRateQ = Number(invalidRate) * Number(failureTime) * 0.000000001;
+    //     // smallFailureRateQ = Number(invalidRate)*(1-Number(dCrf))*Number(failureTime);
+    //   }
+    // } else {
+    //   if (this.state.invalidRateChecked) {
+    //     failureRateQ = Number(invalidRate) * Number(failureTime) * 0.000000001;
+    //   } else {
+    //     failureRateQ = smallFailureRateQ;
+    //     invalidRate = failureRateQ / Number(failureTime);
+    //   }
+    // }
     if (itemType.indexOf(shape) >= 0) {
       return null
     } else {
@@ -154,7 +177,7 @@ class NodeDetail extends React.Component {
             >
               {getFieldDecorator('id', {
                 initialValue: id,
-              })(<Input onBlur={this.handleSubmit} disabled/>)}
+              })(<Input onBlur={this.handleSubmit} disabled />)}
             </Item>
             <Item
               label="name"
@@ -163,7 +186,7 @@ class NodeDetail extends React.Component {
             >
               {getFieldDecorator('name', {
                 initialValue: name,
-              })(<Input onBlur={this.handleSubmit}/>)}
+              })(<Input onBlur={this.handleSubmit} />)}
             </Item>
             <Item
               label="note"
@@ -172,7 +195,7 @@ class NodeDetail extends React.Component {
             >
               {getFieldDecorator('note', {
                 initialValue: note,
-              })(<Input onBlur={this.handleSubmit}/>)}
+              })(<Input onBlur={this.handleSubmit} />)}
             </Item>
             <Item
               label="Q"
@@ -180,9 +203,11 @@ class NodeDetail extends React.Component {
               className={styles.mapType}
             >
               {getFieldDecorator('failureRateQ', {
-                initialValue: failureRateQ,
+                initialValue: toNonExponential(failureRateQ),
               })(
                 <Input
+                type="number"
+                min={0}
                   onBlur={this.handleSubmit}
                   disabled={true}
                 />,
@@ -194,16 +219,16 @@ class NodeDetail extends React.Component {
               className={styles.mapType}
             >
               {getFieldDecorator('invalidRate', {
-                initialValue: invalidRate,
-              })(<Input onBlur={this.handleSubmit}
-                        addonAfter={
-                          <Checkbox
-                            checked={this.state.invalidRateChecked}
-                            onChange={this.onChangeQ.bind(this)}
-                            onBlur={this.handleSubmit}
-                          />
-                        }
-                        disabled={!this.state.invalidRateChecked}/>)}
+                initialValue: toNonExponential(invalidRate),
+              })(<Input min={0} type="number" onBlur={this.handleSubmit}
+                addonAfter={
+                  <Checkbox
+                    checked={this.state.invalidRateChecked}
+                    onChange={this.onChangeQ.bind(this)}
+                    onBlur={this.handleSubmit}
+                  />
+                }
+                disabled={!this.state.invalidRateChecked} />)}
             </Item>
             <Item
               label="T"
@@ -212,27 +237,27 @@ class NodeDetail extends React.Component {
             >
               {getFieldDecorator('failureTime', {
                 initialValue: failureTime,
-              })(<Input onBlur={this.handleSubmit}/>)}
+              })(<InputNumber min={0} onBlur={this.handleSubmit} />)}
             </Item>
             <Item
-              label="dCrf"
+              label={<SubNode f={'RF'} />}
               {...inlineFormItemLayout}
               className={styles.mapType}
               style={{ display: this.state.display_name }}
             >
               {getFieldDecorator('dCrf', {
                 initialValue: dCrf,
-              })(<Input onBlur={this.handleSubmit}/>)}
+              })(<InputNumber min={0} max={1} onBlur={this.handleSubmit} />)}
             </Item>
             <Item
-              label="dClf"
+              label={<SubNode f={'LF'} />}
               {...inlineFormItemLayout}
               className={styles.mapType}
               style={{ display: this.state.display_name }}
             >
               {getFieldDecorator('dClf', {
                 initialValue: dClf,
-              })(<Input onBlur={this.handleSubmit}/>)}
+              })(<InputNumber min={0} max={1} onBlur={this.handleSubmit} />)}
             </Item>
             <Item
               label="q"
@@ -240,7 +265,7 @@ class NodeDetail extends React.Component {
               className={styles.mapType}
             >
               {getFieldDecorator('smallFailureRateQ', {
-                initialValue: smallFailureRateQ,
+                initialValue: toNonExponential(smallFailureRateQ),
               })(
                 <Input
                   addonAfter={
@@ -250,8 +275,10 @@ class NodeDetail extends React.Component {
                       onBlur={this.handleSubmit}
                     />
                   }
+                  type="number"
                   onBlur={this.handleSubmit}
                   disabled={!this.state.qchecked}
+                  style={{ minWidth: '135.5px' }}
                 />,
               )}
             </Item>

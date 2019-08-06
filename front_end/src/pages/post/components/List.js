@@ -72,7 +72,7 @@ class List extends PureComponent {
         key: 'operation',
         render: (text, record) => (
           <span>
-            <a onClick={e => this.handleMenuClick(record, { key: '1', name: "修改信息" })}>Edit</a>
+            <a onClick={e => this.handleMenuClick(record, { key: '1', name: "修改信息" })}>编辑</a>
             <Divider type="vertical" />
             <Popconfirm
               placement="left"
@@ -81,7 +81,7 @@ class List extends PureComponent {
               okText="Yes"
               cancelText="No"
             >
-              <a>Delete</a>
+              <a>删除</a>
             </Popconfirm>
           </span>
         ),
