@@ -27,7 +27,7 @@ function FunctionFailure(name) {
   this.sValue = 1
   this.oValue = 1
   this.dValue = 1
-  this.ap="L"
+  this.ap = 'L'
   this.lambdaValue = 0
 
   this.detectionSet = []
@@ -821,7 +821,7 @@ StructurePane.prototype.AddFailureProperties = function(
   structureNodeId,
   functionId,
   failureId,
-  property,
+  property
 ) {
   var node = this.findStructureNodeById(structureNodeId)
   if (node != null) {
@@ -829,7 +829,7 @@ StructurePane.prototype.AddFailureProperties = function(
     if (sf != null) {
       var ff = sf.findFailureById(failureId)
       if (ff != null) {
-        ff.properties=property
+        ff.properties = property
       }
     }
   }
@@ -1330,10 +1330,8 @@ StructurePane.prototype.GetStructureFunctionDepTree = function(
       i++
     ) {
       var depFunction = currentFunction.dependentFunctionSet[i]
-      let structure=_self.findStructureNodeById(
-        depFunction.structureNodeId
-      )
-      if(!structure) continue
+      let structure = _self.findStructureNodeById(depFunction.structureNodeId)
+      if (!structure) continue
       var r = {}
       r.id = depFunction.id + randomId(5)
       r.Name = depFunction.name
@@ -1364,10 +1362,8 @@ StructurePane.prototype.GetStructureFunctionDepTree = function(
     for (var i = 0, length = asParentFs.length; i < length; i++) {
       var depFunction = asParentFs[i]
       var r = {}
-      let structure=_self.findStructureNodeById(
-        depFunction.structureNodeId
-      )
-      if(!structure) continue
+      let structure = _self.findStructureNodeById(depFunction.structureNodeId)
+      if (!structure) continue
       r.id = depFunction.id + randomId(5)
       r.Name = depFunction.name
       r.structureNodeId = depFunction.structureNodeId
@@ -1418,10 +1414,8 @@ StructurePane.prototype.GetFunctionFailureDepTree = function(
     ) {
       var depFailure = currentFailure.dependentFailureSet[i]
       var r = {}
-      let structure=_self.findStructureNodeById(
-        depFailure.structureNodeId
-      )
-      if(!structure) continue
+      let structure = _self.findStructureNodeById(depFailure.structureNodeId)
+      if (!structure) continue
       r.id = depFailure.id + randomId(5)
       r.Name = depFailure.name
       r.structureNodeId = depFailure.structureNodeId
@@ -1432,11 +1426,12 @@ StructurePane.prototype.GetFunctionFailureDepTree = function(
       r.oValue = depFailure.oValue
       r.sValue = depFailure.sValue
       r.dValue = depFailure.dValue
+      r.AP = depFailure.ap
       r.lambdaValue = depFailure.lambdaValue
       r.t = 'fail'
-      r.structureNodeName = (_self.findStructureNodeById(
+      r.structureNodeName = _self.findStructureNodeById(
         depFailure.structureNodeId
-      )).name
+      ).name
       childs.push(r)
       recurse(depFailure, r.children)
     }
@@ -1457,10 +1452,8 @@ StructurePane.prototype.GetFunctionFailureDepTree = function(
     for (var i = 0, length = asParentFs.length; i < length; i++) {
       var depFailure = asParentFs[i]
       var r = {}
-      let structure=_self.findStructureNodeById(
-        depFailure.structureNodeId
-      )
-      if(!structure) continue
+      let structure = _self.findStructureNodeById(depFailure.structureNodeId)
+      if (!structure) continue
       r.id = depFailure.id + randomId(5)
       r.Name = depFailure.name
       r.structureNodeId = depFailure.structureNodeId
@@ -1469,7 +1462,7 @@ StructurePane.prototype.GetFunctionFailureDepTree = function(
       r.side = 'right'
       r.oValue = depFailure.oValue
       r.sValue = depFailure.sValue
-      r.dValue = depFailure.dValue
+      r.AP = depFailure.ap
       r.lambdaValue = depFailure.lambdaValue
       // r.shape='custom-node'
       r.label = depFailure.name
@@ -1563,7 +1556,7 @@ StructurePane.prototype.UpdateFunctionFailureSValue = function(
   ff.sValue = Number(sValue.S)
   ff.oValue = Number(sValue.O)
   ff.dValue = Number(sValue.D)
-  ff.ap =sValue.ap
+  ff.ap = sValue.ap
   ff.lambdaValue = Number(sValue.λ)
   var result = []
   result.push(ff)
@@ -1609,7 +1602,7 @@ function JsonCloneNonObject(jsonObject, toType) {
     if (jsonObject.hasOwnProperty(attr)) {
       if ('object' != typeof jsonObject[attr]) {
         to[attr] = jsonObject[attr]
-      }else if(attr=='properties'){
+      } else if (attr == 'properties') {
         to[attr] = jsonObject[attr]
       }
     }

@@ -14,7 +14,6 @@ class CustomNode extends React.Component {
         const model = item.getModel()
         const group = item.getGraphicGroup()
         let { label } = item.getModel()
-        console.log(label)
         if (typeof label === 'string') {
           label = {
             text: label,
@@ -58,11 +57,8 @@ class CustomNode extends React.Component {
             fill: 'black',
           },
         })
-
         if (model.sValue !== undefined) {
-          let attr = `{o:${model.oValue},d:${model.dValue},λ:${
-            model.lambdaValue
-          },s:${model.sValue}}`
+          let attr = `{o:${model.oValue},d:${model.dValue},λ:${model.lambdaValue},s:${model.sValue},AP:${model.AP}}`
           group.addShape('text', {
             attrs: {
               x: 10,
@@ -117,7 +113,7 @@ class CustomNode extends React.Component {
         return getRectPath(
           -size[0] / 2,
           -size[1] / 2,
-          size[0] + ICON_SIZE + ICON_SPAN,
+          size[0] + ICON_SIZE + ICON_SPAN + 30,
           size[1],
           style.radius
         )
@@ -218,9 +214,7 @@ class CustomNode extends React.Component {
           },
         })
         if (model.sValue !== undefined) {
-          let attr = `{o:${model.oValue},d:${model.dValue},λ:${
-            model.lambdaValue
-          },s:${model.sValue}}`
+          let attr = `{o:${model.oValue},d:${model.dValue},λ:${model.lambdaValue},s:${model.sValue},AP:${model.AP}}`
           group.addShape('text', {
             attrs: {
               x: 10,
@@ -323,8 +317,8 @@ class CustomNode extends React.Component {
           config={rootConfig}
           extend={'mind-base'}
         />
-        <RegisterNode name="mind-base" config={config} extend={'mind-base'}/>
-        <RegisterNode name="custom-node" config={config} extend={'mind-base' } />
+        <RegisterNode name="mind-base" config={config} extend={'mind-base'} />
+        <RegisterNode name="custom-node" config={config} extend={'mind-base'} />
       </Fragment>
     )
   }

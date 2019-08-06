@@ -10,7 +10,7 @@ const api = {
   updateUser: 'PUT /api/ShqUsers/Update',
   createUser: 'POST /api/ShqUsers/Add',
   changePassword: 'PUT /api/ShqUsers/ChangePassword',
-
+  //umi@2.7.0
   queryPostList: '/api/Projects/All',
   queryPostTypeList: '/api/Projects',
   createPost: 'POST /api/Projects/Add',

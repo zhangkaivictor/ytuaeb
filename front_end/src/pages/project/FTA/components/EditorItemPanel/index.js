@@ -360,7 +360,7 @@ class EditorItemPanel extends React.Component {
             model={{
               color: '#1890FF',
               name: 'F000',
-              note: '根节点注释',
+              note: '',
               checkDis: isHideScreen,
               itemType: 'square',
               failureRateQ: 0,
@@ -381,7 +381,7 @@ class EditorItemPanel extends React.Component {
             model={{
               color: '#1890FF',
               name: 'C000', //center
-              note: '中间节点注释',
+              note: '',
               checkDis: isHideScreen,
               itemType: 'rectangle',
               failureRateQ: 0,
@@ -403,7 +403,7 @@ class EditorItemPanel extends React.Component {
             model={{
               color: '#1890FF',
               name: 'E000',
-              note: '叶子节点注释',
+              note: '',
               checkDis: isHideScreen,
               itemType: 'round',
               failureRateQ: 0,
