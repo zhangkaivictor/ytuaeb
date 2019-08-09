@@ -51,7 +51,7 @@ namespace Dxc.Shq.WebApi.Controllers
             foreach (var u in logins)
             {
                 string[] us = u.Split(',');
-                dbContent = string.Format("<FONT COLOR='black'>{0}</FONT>用户在<FONT COLOR='black'>{1}</FONT>时间登陆了系统<br>", us[0], us[1]);
+                dbContent = string.Format("<strong style='color:blue;'>{0}</strong>用户在<strong style='color:blue;'>{1}</strong>时间登陆了系统<br>", us[0], us[1]);
                 //sb.Append(dbContent);
                 auditsList.Add(new { content = dbContent, date = us[1] });
             }
@@ -65,7 +65,7 @@ namespace Dxc.Shq.WebApi.Controllers
             foreach (var u in logouts)
             {
                 string[] us = u.Split(',');
-                dbContent = string.Format("<FONT COLOR='black'>{0}</FONT>用户在<FONT COLOR='black'>{1}</FONT>时间登出了系统<br>", us[0], us[1]);
+                dbContent = string.Format("<strong style='color:blue;'>{0}</strong>用户在<strong style='color:blue;'>{1}</strong>时间登出了系统<br>", us[0], us[1]);
                 //sb.Append(dbContent);
                 auditsList.Add(new { content = dbContent, date = us[1] });
             }
@@ -79,7 +79,7 @@ namespace Dxc.Shq.WebApi.Controllers
             foreach (var u in addUsers)
             {
                 string[] us = u.Split(',');
-                dbContent = string.Format("<FONT COLOR='black'>{0}</FONT>用户在<FONT COLOR='black'>{1}</FONT>时间创建了新的用户账号<FONT COLOR='black'>{2}</FONT><br>", us[0], us[2], us[1]);
+                dbContent = string.Format("<strong style='color:blue;'>{0}</strong>用户在<strong style='color:blue;'>{1}</strong>时间创建了新的用户账号<strong style='color:blue;'>{2}</strong><br>", us[0], us[2], us[1]);
                 //sb.Append(dbContent);
                 auditsList.Add(new { content = dbContent, date = us[2] });
             }
@@ -93,7 +93,7 @@ namespace Dxc.Shq.WebApi.Controllers
             foreach (var u in updateUsers)
             {
                 string[] us = u.Split(',');
-                dbContent = string.Format("<FONT COLOR='black'>{0}</FONT>用户在<FONT COLOR='black'>{1}</FONT>时间修改了<FONT COLOR='black'>{2}</FONT><br>", us[0], us[2], us[1]);
+                dbContent = string.Format("<strong style='color:blue;'>{0}</strong>用户在<strong style='color:blue;'>{1}</strong>时间修改了<strong style='color:blue;'>{2}</strong><br>", us[0], us[2], us[1]);
                 //sb.Append(dbContent);
                 auditsList.Add(new { content = dbContent, date = us[2] });
             }
@@ -108,7 +108,7 @@ namespace Dxc.Shq.WebApi.Controllers
             {
                 string[] us = u.Split('`');
                 var p = JsonConvert.DeserializeObject<ProjectViewModel>(us[1]);
-                dbContent = string.Format("<FONT COLOR='black'>{0}</FONT>用户在<FONT COLOR='black'>{1}</FONT>时间新建了<FONT COLOR='black'>{2}</FONT>类型项目<FONT COLOR='black'>{3}</FONT><br>", us[0], us[2], ShqConstants.GetProjectType(p.Type), p.Name);
+                dbContent = string.Format("<strong style='color:blue;'>{0}</strong>用户在<strong style='color:blue;'>{1}</strong>时间新建了<strong style='color:blue;'>{2}</strong>类型项目<strong style='color:blue;'>{3}</strong><br>", us[0], us[2], ShqConstants.GetProjectType(p.Type), p.Name);
                 //sb.Append(dbContent);
                 auditsList.Add(new { content = dbContent, date = us[2] });
             }
@@ -123,7 +123,7 @@ namespace Dxc.Shq.WebApi.Controllers
             {
                 string[] us = u.Split('`');
                 var p = JsonConvert.DeserializeObject<ProjectViewModel>(us[1]);
-                dbContent = string.Format("<FONT COLOR='black'>{0}</FONT>用户在<FONT COLOR='black'>{1}</FONT>时间编辑了<FONT COLOR='black'>{2}</FONT>类型项目<FONT COLOR='black'>{3}</FONT><br>", us[0], us[2], ShqConstants.GetProjectType(p.Type), p.Name);
+                dbContent = string.Format("<strong style='color:blue;'>{0}</strong>用户在<strong style='color:blue;'>{1}</strong>时间编辑了<strong style='color:blue;'>{2}</strong>类型项目<strong style='color:blue;'>{3}</strong><br>", us[0], us[2], ShqConstants.GetProjectType(p.Type), p.Name);
                 //sb.Append(dbContent);
                 auditsList.Add(new { content = dbContent, date = us[2] });
             }
@@ -138,7 +138,7 @@ namespace Dxc.Shq.WebApi.Controllers
             {
                 string[] us = u.Split('`');
                 var p = JsonConvert.DeserializeObject<ProjectViewModel>(us[1]);
-                dbContent = string.Format("<FONT COLOR='black'>{0}</FONT>用户在<FONT COLOR='black'>{1}</FONT>时间修改了<FONT COLOR='black'>{2}</FONT>类型项目<FONT COLOR='black'>{3}</FONT><br>", us[0], us[2], ShqConstants.GetProjectType(p.Type), p.Name);
+                dbContent = string.Format("<strong style='color:blue;'>{0}</strong>用户在<strong style='color:blue;'>{1}</strong>时间修改了<strong style='color:blue;'>{2}</strong>类型项目<strong style='color:blue;'>{3}</strong><br>", us[0], us[2], ShqConstants.GetProjectType(p.Type), p.Name);
                 //sb.Append(dbContent);
                 auditsList.Add(new { content = dbContent, date = us[2] });
             }
@@ -153,7 +153,7 @@ namespace Dxc.Shq.WebApi.Controllers
             {
                 string[] us = u.Split('`');
                 var p = JsonConvert.DeserializeObject<ProjectViewModel>(us[1]);
-                dbContent = string.Format("<FONT COLOR='black'>{0}</FONT>用户在<FONT COLOR='black'>{1}</FONT>时间对<FONT COLOR='black'>{2}</FONT>类型项目<FONT COLOR='black'>{3}</FONT>运行了FTA分析<br>", us[0], us[2], ShqConstants.GetProjectType(p.Type), p.Name);
+                dbContent = string.Format("<strong style='color:blue;'>{0}</strong>用户在<strong style='color:blue;'>{1}</strong>时间对<strong style='color:blue;'>{2}</strong>类型项目<strong style='color:blue;'>{3}</strong>运行了FTA分析<br>", us[0], us[2], ShqConstants.GetProjectType(p.Type), p.Name);
                 //sb.Append(dbContent);
                 auditsList.Add(new { content = dbContent, date = us[2] });
             }
@@ -191,14 +191,14 @@ namespace Dxc.Shq.WebApi.Controllers
                                  select user.UserName + "`" + user.OperationDetails + "`" + user.CreatedTime;
             int total = 3;
             string lastProjectName = "";
-            avm.LatestEditProjects = "";
+            avm.LatestEditProjects = new List<dynamic>();
             foreach (var u in projectsAccess)
             {
                 string[] us = u.Split('`');
                 var p = JsonConvert.DeserializeObject<ProjectViewModel>(us[1]);
                 if (lastProjectName != p.Name && total > 0)
                 {
-                    avm.LatestEditProjects += string.Format("<FONT COLOR='black'>{0}</FONT><br>", p.Name);
+                    avm.LatestEditProjects.Add(new {content= string.Format("<strong style='color:blue;'>{0}</strong><br>", p.Name) , projectId = p.Id, projectType = p.Type}) ;
                     total--;
                 }
             }

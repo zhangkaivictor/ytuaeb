@@ -19,7 +19,7 @@ namespace Dxc.Shq.WebApi.ViewModels
 
         public int ProjectsCreateCount { get; set; }
         public int ProjectsInvoleCount { get; set; }
-        public string LatestEditProjects { get; set; }
+        public List<dynamic> LatestEditProjects { get; set; }
 
         public List<AuditProjectData> ProjectsActivitiesCount { get; set; }
         //public string LoginActivities { get; set; }
