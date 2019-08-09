@@ -215,12 +215,19 @@ namespace Dxc.Shq.WebApi.Controllers
             {
                 con.Open();
                 var cmd = con.CreateCommand();
-                cmd.CommandText = string.Format("select * from ((SELECT date(temp1.CreatedTime) as CreatedTime,'FMEA' as projectType, (select count(*) from fmeaprojects as temp2 where temp2.CreatedTime<=temp1.CreatedTime) as num FROM fmeaprojects as temp1 group by date(temp1.CreatedTime) order by date(temp1.CreatedTime) desc) " +
+                cmd.CommandText = string.Format("(select * from ((SELECT date(temp1.CreatedTime) as CreatedTime,'FMEA' as projectType, (select count(*) from fmeaprojects as temp2 where temp2.CreatedTime<=temp1.CreatedTime) as num FROM fmeaprojects as temp1 group by date(temp1.CreatedTime) order by date(temp1.CreatedTime) desc) " +
                                                 "union all " +
                                                 "(SELECT date(temp1.CreatedTime) as CreatedTime, 'FTA' as projectType, (select count(*) from ftaprojects as temp2 where temp2.CreatedTime <= temp1.CreatedTime) as num FROM ftaprojects as temp1 group by date(temp1.CreatedTime) order by date(temp1.CreatedTime) desc) " +
                                                 "union all " +
                                                 "(SELECT date(temp1.CreatedTime) as CreatedTime,'Workproject' as projectType, (select count(*) from workprojects as temp2 where temp2.CreatedTime <= temp1.CreatedTime) as num FROM workprojects as temp1 group by date(temp1.CreatedTime) order by date(temp1.CreatedTime) desc)) as groupTemp " +
-                                                "where groupTemp.CreatedTime >= '" + now.AddDays(maxDay).Date.ToString("yyyy-MM-dd") + "'");
+                                                "where groupTemp.CreatedTime >= '" + now.AddDays(maxDay).Date.ToString("yyyy-MM-dd") + "') " +
+                                                "union all " +
+                                                "(SELECT date(temp1.CreatedTime) as CreatedTime,'FMEA' as projectType, (select count(*) from fmeaprojects as temp2 where temp2.CreatedTime<=temp1.CreatedTime) as num FROM fmeaprojects as temp1 group by date(temp1.CreatedTime) order by date(temp1.CreatedTime) desc limit 1) " +
+                                                "union all " +
+                                                "(SELECT date(temp1.CreatedTime) as CreatedTime, 'FTA' as projectType, (select count(*) from ftaprojects as temp2 where temp2.CreatedTime <= temp1.CreatedTime) as num FROM ftaprojects as temp1 group by date(temp1.CreatedTime) order by date(temp1.CreatedTime) desc  limit 1) " +
+                                                "union all " +
+                                                "(SELECT date(temp1.CreatedTime) as CreatedTime,'Workproject' as projectType, (select count(*) from workprojects as temp2 where temp2.CreatedTime <= temp1.CreatedTime) as num FROM workprojects as temp1 group by date(temp1.CreatedTime) order by date(temp1.CreatedTime) desc limit 1)"
+                                                );
                 using (var rdr = cmd.ExecuteReader(CommandBehavior.SequentialAccess | CommandBehavior.CloseConnection))
                 {
                     while (rdr.Read())
@@ -242,6 +249,8 @@ namespace Dxc.Shq.WebApi.Controllers
                     }
                 }
             }
+
+            avm.ProjectsActivitiesCount = avm.ProjectsActivitiesCount.OrderBy(item => DateTime.Parse(item.date)).ToList();
 
             for (int i = avm.ProjectsActivitiesCount.Count - 1; i > 0; i--)
             {
@@ -272,6 +281,11 @@ namespace Dxc.Shq.WebApi.Controllers
                     }
                 }
 
+            }
+
+            if (avm.ProjectsActivitiesCount.Count > auditProjectsMaxcount)
+            {
+                avm.ProjectsActivitiesCount = avm.ProjectsActivitiesCount.GetRange(avm.ProjectsActivitiesCount.Count - auditProjectsMaxcount, auditProjectsMaxcount);
             }
 
             return avm;

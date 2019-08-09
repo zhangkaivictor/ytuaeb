@@ -55,7 +55,7 @@ namespace Dxc.Shq.WebApi.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("api/ShqDictionaries")]
-        public IQueryable<ShqDictionary> GetShqDictionary(string groupName, string lastModifiedDate)
+        public IQueryable<ShqDictionary> GetShqDictionary(string groupName, string lastModifiedDate="2010-1-1")
         {
 
             if (string.IsNullOrEmpty(lastModifiedDate) == true)
