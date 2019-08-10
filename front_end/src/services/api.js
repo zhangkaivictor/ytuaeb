@@ -5,6 +5,9 @@ const api = {
   loginUser: '/api/ShqUsers',
   token: 'POST /oauth2/token',
 
+  //dashboard
+  queryLog: 'GET /api/Audits/All',
+
   queryUser: '/user/:id',
   queryUserList: '/api/ShqUsers/All',
   updateUser: 'PUT /api/ShqUsers/Update',

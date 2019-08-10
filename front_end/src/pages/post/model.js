@@ -64,7 +64,6 @@ export default modelExtend(pageModel, {
         Authorization: window.localStorage.getItem('token'),
       }
       const data = yield call(createPost, payload, headers)
-      console.log(data)
       if (data.success) {
         if (data.data != '已存在') {
           yield put({ type: 'hideModal' })
@@ -77,13 +76,11 @@ export default modelExtend(pageModel, {
       }
     },
     *update({ payload }, { select, call, put }) {
-      console.log(payload)
       const headers = {
         Authorization: window.localStorage.getItem('token'),
       }
       const newUser = payload
       const data = yield call(updatePost, newUser, headers)
-      console.log(data)
       if (data.success) {
         yield put({ type: 'hideModal' })
       } else {

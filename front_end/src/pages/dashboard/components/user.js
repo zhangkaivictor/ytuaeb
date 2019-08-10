@@ -24,13 +24,13 @@ function User({ avatar, username, sales = 0, sold = 0 }) {
       </div>
       <div className={styles.number}>
         <div className={styles.item}>
-          <p>EARNING SALES</p>
+          <p>创建项目数量</p>
           <p style={{ color: Color.green }}>
-            <CountUp end={sales} prefix="$" {...countUpProps} />
+            <CountUp end={sales} prefix="" {...countUpProps} />
           </p>
         </div>
         <div className={styles.item}>
-          <p>ITEM SOLD</p>
+          <p>参与项目数量</p>
           <p style={{ color: Color.blue }}>
             <CountUp end={sold} {...countUpProps} />
           </p>

@@ -8,6 +8,7 @@ import Completed from './completed'
 import Browser from './browser'
 import Cpu from './cpu'
 import User from './user'
+import Log from './logs'
 
 export {
   NumberCard,
@@ -20,4 +21,5 @@ export {
   Browser,
   Cpu,
   User,
+  Log,
 }

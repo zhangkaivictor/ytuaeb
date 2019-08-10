@@ -11,15 +11,38 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
+  BarChart,
+  LabelList,
+  Bar,
 } from 'recharts'
 import styles from './sales.less'
 
+const renderCustomizedLabel = props => {
+  const { x, y, width, height, value } = props
+  const radius = 10
+
+  return (
+    <g>
+      <circle cx={x + width / 2} cy={y - radius} r={radius} fill="#8884d8" />
+      <text
+        x={x + width / 2}
+        y={y - radius}
+        fill="#fff"
+        textAnchor="middle"
+        dominantBaseline="middle"
+      >
+        {value.split(' ')[1]}
+      </text>
+    </g>
+  )
+}
 function Sales({ data }) {
+  console.log(data)
   return (
     <div className={styles.sales}>
-      <div className={styles.title}>Yearly Sales</div>
+      <div className={styles.title}>项目活动条形图</div>
       <ResponsiveContainer minHeight={360}>
-        <LineChart data={data}>
+        {/* <LineChart data={data}>
           <Legend
             verticalAlign="top"
             content={prop => {
@@ -102,7 +125,19 @@ function Sales({ data }) {
             dot={{ fill: Color.green }}
             activeDot={{ r: 5, strokeWidth: 0 }}
           />
-        </LineChart>
+        </LineChart> */}
+        <BarChart width={730} height={250} data={data}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="date" />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Bar dataKey="ftaCount" fill="#8884d8" />
+          <Bar dataKey="fmeaCount" fill="#82ca9d" />
+          <Bar dataKey="workProjectCount" fill="#8fc9fb">
+            {/* <LabelList dataKey="date" content={renderCustomizedLabel} /> */}
+          </Bar>
+        </BarChart>
       </ResponsiveContainer>
     </div>
   )
