@@ -4,6 +4,7 @@ using System.Security.Principal;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
+using Dxc.Shq.WebApi.Controllers;
 using Dxc.Shq.WebApi.Core;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
@@ -29,6 +30,8 @@ namespace Dxc.Shq.WebApi.Identity
 
             var ticket = new AuthenticationTicket(SetClaimsIdentity(context, user), new AuthenticationProperties());
             context.Validated(ticket);
+
+            (new AuditsController()).AddAuditEntry("login", user.Email);
 
             return Task.FromResult<object>(null);
         }

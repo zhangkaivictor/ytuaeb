@@ -13,6 +13,7 @@ using System.Web.Http.Description;
 using Dxc.Shq.WebApi.Core;
 using Dxc.Shq.WebApi.Models;
 using Dxc.Shq.WebApi.ViewModels;
+using Newtonsoft.Json;
 
 namespace Dxc.Shq.WebApi.Controllers
 {
@@ -116,6 +117,7 @@ namespace Dxc.Shq.WebApi.Controllers
 
             ProjectViewModel result = new ProjectViewModel(pro, db);
             result.Privilege = ShqConstants.AllowProjectUpdate;
+            (new AuditsController()).AddAuditEntry("api/Projects/Update", JsonConvert.SerializeObject(result));
             return Ok(result);
         }
 
@@ -197,6 +199,7 @@ namespace Dxc.Shq.WebApi.Controllers
             result.Description = i.ToString();
             result.Privilege = ShqConstants.AllowProjectUpdate;
 
+            (new AuditsController()).AddAuditEntry("api/Projects/Add", JsonConvert.SerializeObject(result));
             return Ok(result);
         }
 
@@ -251,6 +254,7 @@ namespace Dxc.Shq.WebApi.Controllers
 
             await db.SaveChangesAsync();
 
+            (new AuditsController()).AddAuditEntry("api/Projects/AddOrUpdateAccess", JsonConvert.SerializeObject(projectShqUsersViewModel));
             return Ok(projectShqUsersViewModel);
         }
 
@@ -296,6 +300,7 @@ namespace Dxc.Shq.WebApi.Controllers
 
             await db.SaveChangesAsync();
 
+            (new AuditsController()).AddAuditEntry("api/Projects/AddOrUpdateAccess", JsonConvert.SerializeObject(projectShqUsersViewModel));
             return Ok(projectShqUsersViewModel);
         }
 

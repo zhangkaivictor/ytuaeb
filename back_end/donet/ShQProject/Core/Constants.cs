@@ -72,5 +72,17 @@ namespace Dxc.Shq.WebApi.Core
 
             return 0;
         }
+
+        public static string GetProjectType(string type)
+        {
+            switch(type)
+            {
+                case "FTAProject": return "FTA";
+                case "FMEAProject": return "FMEA";
+                case "WorkProject": return "工程";
+            }
+
+            return "";
+        }
     }
 }

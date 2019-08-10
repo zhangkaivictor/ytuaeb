@@ -339,7 +339,9 @@ namespace Dxc.Shq.WebApi.Controllers
                                 wp.ProjectFiles.Add(dbFile);
                             }
 
+                             
                             db.SaveChanges();
+                            (new AuditsController()).AddAuditEntry("uploadFile", JsonConvert.SerializeObject(dbFile));
                         }
                         else
                         {
