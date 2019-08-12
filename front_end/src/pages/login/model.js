@@ -1,5 +1,5 @@
 import { router, pathMatchRegexp } from 'utils'
-import { loginUser, token } from 'api'
+import { loginUser, token, queryDic } from 'api'
 
 export default {
   namespace: 'login',
@@ -38,6 +38,7 @@ export default {
         if (shqUser.success && shqUser.list.status == 1) {
           //const { from } = locationQuery
           yield put({ type: 'app/query' })
+          yield put({ type: 'app/queryDictionary' })
           //if (!pathMatchRegexp('/login', from)) {
           //if (from === '/') router.push('/dashboard')
           // else router.push(from)

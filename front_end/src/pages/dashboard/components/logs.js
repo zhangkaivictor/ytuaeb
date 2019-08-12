@@ -19,25 +19,25 @@ const status = {
   },
 }
 
-function Browser({ data }) {
+function Log({ data }) {
   const columns = [
     {
       title: 'name',
-      dataIndex: 'content',
+      dataIndex: 'name',
       className: styles.name,
       render: (text, it) => <span dangerouslySetInnerHTML={{ __html: text }} />,
     },
-    {
-      title: 'percent',
-      dataIndex: 'projectType',
-      className: styles.percent,
-      // render: (text, it) => <Tag color={status[it.status].color}>{text}%</Tag>,
-      render: (text, it) => <span>{text}</span>,
-    },
+    // {
+    //   title: 'percent',
+    //   dataIndex: 'percent',
+    //   className: styles.percent,
+    //   // render: (text, it) => <Tag color={status[it.status].color}>{text}%</Tag>,
+    //   render: (text, it) => <Tag color={status[it.status].color}>{'type'}</Tag>,
+    // },
   ]
   return (
     <div>
-      <h4>最近打开项目</h4>
+      <h4>系统日志</h4>
       <Table
         pagination={false}
         showHeader={false}
@@ -49,8 +49,8 @@ function Browser({ data }) {
   )
 }
 
-Browser.propTypes = {
+Log.propTypes = {
   data: PropTypes.array,
 }
 
-export default Browser
+export default Log

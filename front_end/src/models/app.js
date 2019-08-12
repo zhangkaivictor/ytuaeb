@@ -137,9 +137,7 @@ export default {
       })
     },
     setup({ dispatch }) {
-      dispatch({ type: 'query' }).then(() => {
-        dispatch({ type: 'queryDic' })
-      })
+      dispatch({ type: 'query' }).then(() => {})
     },
   },
   effects: {
@@ -339,11 +337,12 @@ export default {
         })
       }
     },
-    *queryDic({ payload }, { call, put }) {
+    *queryDictionary({ payload }, { call, put }) {
       let storeDic = JSON.parse(localStorage.getItem('dictionary'))
       let data = {
         lastModifiedDate: null,
       }
+      console.log(storeDic)
       if (storeDic) {
         let modifiedDateMax = new Date(storeDic[0].lastModfiedTime)
         for (let i = 0; i < storeDic.length; i++) {

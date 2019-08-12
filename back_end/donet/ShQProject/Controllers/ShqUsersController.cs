@@ -16,6 +16,7 @@ using Dxc.Shq.WebApi.Models;
 using Dxc.Shq.WebApi.ViewModels;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using Newtonsoft.Json;
 
 namespace Dxc.Shq.WebApi.Controllers
 {
@@ -125,6 +126,7 @@ namespace Dxc.Shq.WebApi.Controllers
                 }
             }
 
+            (new AuditsController()).AddAuditEntry("api/ShqUsers/Add", shqUser.EmailAddress);
             return Ok(new ShqUserRespondViewModel(shqUser, db));
         }
 
@@ -169,6 +171,7 @@ namespace Dxc.Shq.WebApi.Controllers
                 await db.SaveChangesAsync();
             }
 
+            (new AuditsController()).AddAuditEntry("api/ShqUsers/Update", shqUser.EmailAddress);
             return Ok(new ShqUserRespondViewModel(shqUser, db));
         }
 
@@ -213,6 +216,7 @@ namespace Dxc.Shq.WebApi.Controllers
                     shqUser.LastModfiedTime = DateTime.Now;
                     await db.SaveChangesAsync();
 
+                    (new AuditsController()).AddAuditEntry("api/ShqUsers/ChangePassword", shqUser.EmailAddress);
                     return Ok(new ShqUserRespondViewModel(shqUser, db));
                 }
                 else
@@ -241,6 +245,7 @@ namespace Dxc.Shq.WebApi.Controllers
             //db.ShqUsers.Remove(shqUser);
             await db.SaveChangesAsync();
 
+            (new AuditsController()).AddAuditEntry("api/ShqUsers/Disable", shqUser.EmailAddress);
             return Ok(new ShqUserRespondViewModel(shqUser, db));
         }
 

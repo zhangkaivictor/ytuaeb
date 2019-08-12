@@ -481,6 +481,14 @@
             </summary>
             <param name="documentPath">The physical path to XML document.</param>
         </member>
+        <member name="M:Dxc.Shq.WebApi.Controllers.AuditsController.GetAudits(System.Int32,System.Int32)">
+            <summary>
+            get the report data of user activities
+            </summary>
+            <param name="auditsListMaxCount">the max count for the auditsList fields</param>
+            <param name="auditProjectsMaxcount">the max count for the projectsActivitiesCount fields</param>
+            <returns></returns>
+        </member>
         <member name="M:Dxc.Shq.WebApi.Controllers.ShqDictionariesController.GetShqDictionaryAll(System.String)">
             <summary>
             GetShqDictionaryAll

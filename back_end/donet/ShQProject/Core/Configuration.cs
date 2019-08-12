@@ -6,6 +6,7 @@ namespace Dxc.Shq.WebApi.Core
 {
     using System;
     using System.Data.Entity.Migrations;
+    using Dxc.Shq.WebApi.Controllers;
     using Models;
 
     public class Configuration : DbMigrationsConfiguration<ShqContext>
@@ -38,6 +39,25 @@ namespace Dxc.Shq.WebApi.Core
                 //pmId = context.Roles.First(c => c.Name == "ProjectManager").Id;
                 //eid = context.Roles.First(c => c.Name == "Engineer").Id;
                 userRoleId = context.Roles.First(c => c.Name == "User").Id;
+            }
+
+            string folder = ShqConstants.ProjectRootFolder + "\\" + ShqConstants.DefaultWorkProjectTemplateId + "\\" + "Root"+ "\\01 相关项定义";
+            if (System.IO.Directory.Exists(folder)==false)
+            {
+                try
+                {
+                    ProjectFilesController pfc = new ProjectFilesController();
+                    pfc.Update(new ViewModels.ExplorerInfoViewModel { TartgetPath = "Root", ProjectId = ShqConstants.DefaultWorkProjectTemplateId, Name = "01 相关项定义", cmd = "createFolder" });
+                    pfc.Update(new ViewModels.ExplorerInfoViewModel { TartgetPath = "Root", ProjectId = ShqConstants.DefaultWorkProjectTemplateId, Name = "02 危害分析与风险评估", cmd = "createFolder" });
+                    pfc.Update(new ViewModels.ExplorerInfoViewModel { TartgetPath = "Root", ProjectId = ShqConstants.DefaultWorkProjectTemplateId, Name = "03 安全目标与安全需求", cmd = "createFolder" });
+                    pfc.Update(new ViewModels.ExplorerInfoViewModel { TartgetPath = "Root", ProjectId = ShqConstants.DefaultWorkProjectTemplateId, Name = "04 系统设计", cmd = "createFolder" });
+                    pfc.Update(new ViewModels.ExplorerInfoViewModel { TartgetPath = "Root", ProjectId = ShqConstants.DefaultWorkProjectTemplateId, Name = "05 安全分析", cmd = "createFolder" });
+                    pfc.Update(new ViewModels.ExplorerInfoViewModel { TartgetPath = "Root", ProjectId = ShqConstants.DefaultWorkProjectTemplateId, Name = "06 系统测试", cmd = "createFolder" });
+                }
+                catch(Exception)
+                {
+
+                }
             }
 
             if (!context.WorkProjectTemplates.Any())

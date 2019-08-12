@@ -114,6 +114,7 @@ namespace Dxc.Shq.WebApi.Controllers
 
                 await db.SaveChangesAsync();
 
+                (new AuditsController()).AddAuditEntry("api/FMEAProjects/AddTree", JsonConvert.SerializeObject(new ProjectViewModel(docs.Project, db)));
                 return Ok(new FTATreeRequestViewModel() { Id = FMEATree.Id, Content = FMEATree.Content, ProjectId = docs.ProjectId });
             }
             else
