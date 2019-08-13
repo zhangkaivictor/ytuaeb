@@ -27,6 +27,10 @@ class FlowPage extends React.Component {
     //检测隐藏状态
     isHideScreen: false,
   }
+  //画布行为
+  panelAction(command) {
+    console.log('gg', command)
+  }
   onAnalysis = () => {
     const { dispatch, FTA, location } = this.props
     const { query } = location
@@ -92,7 +96,12 @@ class FlowPage extends React.Component {
     }
     return (
       <div id="ggFTA" className={styles.bgf}>
-        <GGEditor className={styles.editor}>
+        <GGEditor
+          className={styles.editor}
+          onAfterCommandExecute={({ command }) => {
+            this.panelAction(command)
+          }}
+        >
           <Row type="flex" className={styles.editorHd}>
             <Col span={24}>
               <Col span={12}>
