@@ -29,7 +29,8 @@ class FlowPage extends React.Component {
   }
   //画布行为
   panelAction(command) {
-    console.log('gg', command)
+    let container = document.getElementById('primaryLayout')
+    container.scrollTop = 0
   }
   onAnalysis = () => {
     const { dispatch, FTA, location } = this.props
